@@ -1,9 +1,69 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title class="ion-text-center">Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="backGroundColor">
+  <ion-grid fixed>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <div class="ion-text-end">
+              <ion-label style="position: relative; top: -12px;">Register New Account</ion-label>
+              <ion-toggle [(ngModel)]="isRegister" color="primary" (ionChange)="setLoginForm()"></ion-toggle>
+            </div>
+            <ion-card-title class="ion-text-center">Login With Email And Password</ion-card-title>
+          </ion-card-header>
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+            <ion-card-content>
+              <ion-item *ngIf="isRegister">
+                <ion-label position="floating">User Name</ion-label>
+                <ion-input formControlName="userName" inputmode="text"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label inputmode="email" position="floating">Email</ion-label>
+                <ion-input formControlName="email" inputmode="email"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Password</ion-label>
+                <ion-input formControlName="password" inputmode="password" (ionChange)="checkPasswordMatch()"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="isRegister">
+                <ion-label position="floating">Confirm Password</ion-label>
+                <ion-input formControlName="confirmPass" inputmode="password" (ionChange)="checkPasswordMatch()"></ion-input>
+              </ion-item>
+            </ion-card-content>
+            <ion-row>
+              <ion-col class="ion-text-center" size="12">
+                <ion-button *ngIf="!isRegister" [disabled]="!loginForm.valid" color="primary" type="submit">
+                  Login
+                </ion-button>
+                <ion-button *ngIf="isRegister" [disabled]="!loginForm.valid" color="primary" type="submit">
+                  Register
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </form>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-text-center">Login With Google</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="ion-text-center">
+              <ion-button color="primary" (click)="onLoginWithGoogle()">
+                <ion-icon name="logo-google"></ion-icon>oogle
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
