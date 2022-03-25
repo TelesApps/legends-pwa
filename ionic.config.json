@@ -1,0 +1,7 @@
+{
+  "name": "legends",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
