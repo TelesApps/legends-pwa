@@ -11,3 +11,8 @@ export const environment = {
   },
   useEmulators: {}
 };
+
+export const actionCodeSettings = {
+  url: 'https://mydatachats.web.app/dashboard?email-verified',
+  handleCodeInApp: true
+}
