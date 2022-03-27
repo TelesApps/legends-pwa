@@ -4,7 +4,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./character-creation-tabs/tabs.module').then(m => m.TabsPageModule)
+    redirectTo: 'character-tabs',
+    pathMatch: 'full'
   },
   {
     path: 'login',
@@ -13,6 +14,18 @@ const routes: Routes = [
   {
     path: 'character-tabs',
     loadChildren: () => import('./character-tabs/character-tabs.module').then( m => m.CharacterTabsPageModule)
+  },
+  {
+    path: 'main-lobby',
+    loadChildren: () => import('./main-lobby/main-lobby.module').then( m => m.MainLobbyPageModule)
+  },
+  {
+    path: 'my-profile',
+    loadChildren: () => import('./my-profile/my-profile.module').then( m => m.MyProfilePageModule)
+  },
+  {
+    path: 'select-character',
+    loadChildren: () => import('./select-character/select-character.module').then( m => m.SelectCharacterPageModule)
   }
 ];
 @NgModule({
