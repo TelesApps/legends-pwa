@@ -14,6 +14,10 @@ export class LoginPage implements OnInit {
   isRegister = false;
   loginForm: FormGroup;
   loadingModal: HTMLIonLoadingElement;
+  userName = new FormControl('', [Validators.required, Validators.maxLength(22)]);
+  email = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [Validators.required, Validators.minLength(6)]);
+  confirmPass = new FormControl('', [Validators.required, Validators.minLength(6)]);
 
   constructor(public loadingController: LoadingController, public authService: AuthService, private router: Router) { }
 
@@ -31,16 +35,16 @@ export class LoginPage implements OnInit {
   setLoginForm() {
     if (this.isRegister) {
       this.loginForm = new FormGroup({
-        userName: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        confirmPass: new FormControl('', [Validators.required, Validators.minLength(6)])
+        userName: this.userName,
+        email: this.email,
+        password: this.password,
+        confirmPass: this.confirmPass
       })
     }
     else {
       this.loginForm = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        email: this.email,
+        password: this.password,
       })
     }
   }
@@ -110,7 +114,7 @@ export class LoginPage implements OnInit {
         console.log('matches')
       } else {
         console.log('not matching')
-        this.loginForm.get('confirmPass').setErrors({ 'valid': false });
+        this.loginForm.get('confirmPass').setErrors({ 'notMatch': true });
       }
     }
   }

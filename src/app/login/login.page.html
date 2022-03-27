@@ -18,22 +18,48 @@
           </ion-card-header>
           <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
             <ion-card-content>
+              <!-- USER NAME -->
               <ion-item *ngIf="isRegister">
                 <ion-label position="floating">User Name</ion-label>
-                <ion-input formControlName="userName" inputmode="text"></ion-input>
+                <ion-input [formControl]="userName" inputmode="text"></ion-input>
               </ion-item>
+              <ion-text *ngIf="userName.errors" color="danger">
+                <span *ngIf="(userName.dirty || userName.touched) && userName.errors['required']">User Name is
+                  required</span>
+                <span *ngIf="(userName.dirty || userName.touched) && userName.errors['maxlength']">Please use a maximum
+                  of 22 characters</span>
+              </ion-text>
+              <!-- EMAIL -->
               <ion-item>
                 <ion-label inputmode="email" position="floating">Email</ion-label>
-                <ion-input formControlName="email" inputmode="email"></ion-input>
+                <ion-input [formControl]="email" inputmode="email" autocomplete="email"></ion-input>
               </ion-item>
+              <ion-text *ngIf="email.errors" color="danger">
+                <span *ngIf="(email.dirty || email.touched) && email.errors['required']">Email is required</span>
+                <span *ngIf="(email.dirty || email.touched) && email.errors['email']">Must be a valid Email</span>
+              </ion-text>
+              <!-- PASSWORD -->
               <ion-item>
                 <ion-label position="floating">Password</ion-label>
-                <ion-input formControlName="password" inputmode="password" (ionChange)="checkPasswordMatch()"></ion-input>
+                <ion-input [formControl]="password" inputmode="password" (ionChange)="checkPasswordMatch()"></ion-input>
               </ion-item>
+              <ion-text *ngIf="password.errors" color="danger">
+                <span *ngIf="(password.dirty || password.touched) && password.errors['required']">Password is
+                  required</span>
+                <span *ngIf="(password.dirty || password.touched) && password.errors['minlength']">Password must be a
+                  minimum of 6 characters long</span>
+              </ion-text>
+              <!-- CONFIRM PASSWORD -->
               <ion-item *ngIf="isRegister">
                 <ion-label position="floating">Confirm Password</ion-label>
-                <ion-input formControlName="confirmPass" inputmode="password" (ionChange)="checkPasswordMatch()"></ion-input>
+                <ion-input [formControl]="confirmPass" inputmode="password" (ionChange)="checkPasswordMatch()">
+                </ion-input>
               </ion-item>
+              <ion-text *ngIf="confirmPass.errors" color="danger">
+                <span *ngIf="(confirmPass.dirty || confirmPass.touched) && confirmPass.errors['required']">confirmPass is
+                  required</span>
+                <span *ngIf="isRegister && (confirmPass.dirty || confirmPass.touched) && confirmPass.errors['notMatch']">Password does not match</span>
+              </ion-text>
             </ion-card-content>
             <ion-row>
               <ion-col class="ion-text-center" size="12">
