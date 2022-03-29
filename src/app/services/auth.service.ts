@@ -100,7 +100,8 @@ export class AuthService {
 
   logOut() {
     this.afAuth.signOut().then(() => {
-      this.router.navigate(['/login']).then((v) => location.reload());
+      console.log('User has been logged out');
+      this.router.navigate(['/login']);
     });
   }
 }

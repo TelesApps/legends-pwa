@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Route } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -8,9 +9,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class MyProfilePage implements OnInit {
 
-  constructor(private auth: AuthService) { }
+  backUrl: string = '';
+  
+  constructor(private auth: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      console.log(params);
+      if(params) {
+        this.backUrl = params.breadcrumb;
+      }
+    })
   }
 
   onLogout() {

@@ -2,12 +2,15 @@
   <ion-toolbar>
     <ion-grid fixed>
       <ion-row class="ion-align-items-center">
-        <ion-col size="6">
-          <ion-icon slot="start" name="add"></ion-icon>My Profile
+        <ion-col>
           <ion-title>
+            <ion-button [routerLink]="['/', backUrl]" routerLinkActive="router-link-active"  fill="clear">
+              <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+            <span>My Profile</span>
           </ion-title>
         </ion-col>
-        <ion-col size="6" class="ion-text-end">
+        <ion-col class="ion-text-end">
           <ion-button (click)="onLogout()" color="danger">
             Log Out
           </ion-button>

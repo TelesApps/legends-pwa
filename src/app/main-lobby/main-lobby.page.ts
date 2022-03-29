@@ -24,7 +24,6 @@ export class MainLobbyPage implements OnInit {
         this.avatarText = player.userName.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '')
         this.photoUrl = player.photoUrl;
       }
-
       this.isLoading = false;
     })
   }
