@@ -1,6 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Main Lobby</ion-title>
+    <ion-grid fixed>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="6">
+          <ion-title>
+            Main Lobby
+          </ion-title>
+        </ion-col>
+        <ion-col size="6">
+          <ion-item lines="none">
+            <ion-avatar class="ion-justify-content-center" slot="end" [routerLink]="['/my-profile']"
+              [queryParams]="{breadcrumb: 'main-lobby'}" routerLinkActive="router-link-active">
+              <img *ngIf="photoUrl" [src]="photoUrl">
+              <ion-text *ngIf="!photoUrl" color="primary">
+                {{avatarText}}
+              </ion-text>
+              <ion-icon *ngIf="!isLoading && !auth.Player$" color="secondary" name="person-circle-outline"></ion-icon>
+            </ion-avatar>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 

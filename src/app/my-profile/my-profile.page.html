@@ -1,6 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>my-profile</ion-title>
+    <ion-grid fixed>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="6">
+          <ion-icon slot="start" name="add"></ion-icon>My Profile
+          <ion-title>
+          </ion-title>
+        </ion-col>
+        <ion-col size="6" class="ion-text-end">
+          <ion-button (click)="onLogout()" color="danger">
+            Log Out
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
