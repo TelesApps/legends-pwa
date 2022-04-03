@@ -6,7 +6,7 @@ export interface Player {
     email: string;
     emailVerified: boolean;
     charactersId: Array<string>;
-    selectedCharactes: Array<Character>;
+    selectedCharactersIds: Array<string>;
     gameRooms: Array<string>;
     currentGameRoom: string;
     photoUrl?: string;
@@ -19,7 +19,7 @@ export function CreateUser(playerId: string, userName: string, email: string, em
         email,
         emailVerified,
         charactersId: [],
-        selectedCharactes: [],
+        selectedCharactersIds: [],
         gameRooms: [],
         currentGameRoom: '',
         photoUrl

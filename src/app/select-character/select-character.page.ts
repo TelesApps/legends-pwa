@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-select-character',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectCharacterPage implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
+  backUrl: string = '';
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      console.log(params);
+      if(params) {
+        this.backUrl = params.breadcrumb;
+      }
+    })
   }
 
 }

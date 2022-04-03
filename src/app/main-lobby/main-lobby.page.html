@@ -24,6 +24,75 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="background-color-darker">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle *ngIf="charactersService.selectedCharacters">Selected Characters</ion-card-subtitle>
+            <ion-card-title *ngIf="charactersService.selectedCharacters">Leto Atrietes</ion-card-title>
+            <ion-card-title *ngIf="!charactersService.selectedCharacters" class="ion-text-center">
+              You do not have any selected characters, please select one before proceeding</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Current Room</ion-card-subtitle>
+            <ion-card-title>Weazel's Room</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <h3>Rooms you belong to:</h3>
+            <ion-item>
+              <ion-label>Awesome Label</ion-label>
+              <ion-button (click)="onClick()">
+                Leave Room
+              </ion-button>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label position="floating">Enter room number to join a new room</ion-label>
+          <ion-input type="text" placeholder="Awesome Input"></ion-input>
+        </ion-item>
+        <div class="ion-text-end">
+          <ion-button (click)="onClick()">
+            Join
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Search Public Rooms
+              <ion-button (click)="onClick()" size="small">
+                Refresh
+              </ion-button>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button slot="start" (click)="onClick()">
+      Create a Room
+    </ion-button>
+    <ion-button slot="end" [routerLink]="['/select-character']" [queryParams]="{breadcrumb: 'main-lobby'}">
+      Character Selection
+    </ion-button>
+
+  </ion-toolbar>
+</ion-footer>
