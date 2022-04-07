@@ -1,11 +1,31 @@
 <ion-header>
+  <ion-text class="ion-text-center">
+    <h2>Select Characters</h2>
+  </ion-text>
   <ion-toolbar>
-    <ion-title>select-character</ion-title>
+    <ion-button slot="start" color="danger" (click)="onDeleteCharacters()">
+      Delete
+    </ion-button>
+    <ion-button slot="end" [routerLink]="['/character-creation-tabs']">
+      Create New
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+<ion-grid fixed>
+  <ion-row>
+    <ion-col size="12">
+      <ion-item lines="none">
+        <ion-thumbnail>
+          <img src="https://i.pinimg.com/564x/13/e0/77/13e077229349587d15a65b3b3f5b4466.jpg" />
+        </ion-thumbnail>
+        <ion-label class="ion-margin-start">Leto Atrietes</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 </ion-content>
 
 <ion-footer>

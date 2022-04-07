@@ -14,8 +14,10 @@ export class SelectCharacterPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       console.log(params);
-      if(params) {
+      if(params.breadcrumb) {
         this.backUrl = params.breadcrumb;
+      } else {
+        this.backUrl = 'main-lobby'
       }
     })
   }

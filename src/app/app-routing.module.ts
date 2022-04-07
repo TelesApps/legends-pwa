@@ -18,6 +18,10 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'character-creation-tabs',
+    loadChildren: () => import('./character-creation-tabs/character-creation-tabs.module').then(m => m.CharacterCreationTabsPageModule)
+  },
+  {
     path: 'main-lobby',
     loadChildren: () => import('./main-lobby/main-lobby.module').then( m => m.MainLobbyPageModule),
     canActivate: [AuthGuard]
@@ -31,6 +35,10 @@ const routes: Routes = [
     path: 'select-character',
     loadChildren: () => import('./select-character/select-character.module').then( m => m.SelectCharacterPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'character-creation-tabs',
+    loadChildren: () => import('./character-creation-tabs/character-creation-tabs.module').then( m => m.CharacterCreationTabsPageModule)
   }
 ];
 @NgModule({

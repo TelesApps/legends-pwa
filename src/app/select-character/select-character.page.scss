@@ -1,0 +1,20 @@
+@import "../../theme/variables.scss";
+
+ion-toolbar {
+    ion-button {
+        min-width: 40%;
+    }
+}
+
+ion-item {
+    --border-color: var(--ion-color-primary);;
+    --border-radius: 8px;
+    --border-style: solid;
+    --border-width: 1px;
+}
+
+ion-checkbox {
+    position: relative;
+    left: -12px;
+    transform: scale(1.2);
+}
