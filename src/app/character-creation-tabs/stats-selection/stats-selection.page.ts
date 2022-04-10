@@ -12,4 +12,8 @@ export class StatsSelectionPage implements OnInit {
   ngOnInit() {
   }
 
+  onStatChange(stat: string, value: number) {
+
+  }
+
 }

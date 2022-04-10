@@ -1,0 +1,13 @@
+@import '../../theme/variables.scss';
+
+.header-box {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    text-align: center;
+    border: 1px solid var(--ion-color-dark);
+    border-radius: 6px;
+    padding: 6px;
+    margin: 2px;
+    min-width: 18vw;
+}

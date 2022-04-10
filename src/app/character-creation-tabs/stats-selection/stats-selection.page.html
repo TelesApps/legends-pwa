@@ -1,9 +1,165 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>stats-selection</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="parent-header">
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="12">
+                <ion-row>
+                    <ion-col size="9">
+                        <ion-item>
+                            <ion-label position="floating">Name</ion-label>
+                            <ion-input type="text" placeholder="Awesome Input"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">Bios</ion-label>
+                            <ion-input type="text" placeholder="Awesome Input"></ion-input>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col style="display: flex; align-items: center;" size="3">
+                        <ion-thumbnail class="portrait">
+                            <img src="image" />
+                        </ion-thumbnail>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-text color="primary" class="ion-text-center">
+                            <h3>Primary Stats</h3>
+                        </ion-text>
+                        <!-- Health -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Health: 150
+                            </span>
+                        </div>
+                        <!-- Stamina -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Stamina: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Power -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Power: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Attack -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Attack: 150
+                            </span>
+                        </div>
+                        <!-- Defence -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Defence: 150
+                            </span>
+                        </div>
+                        <!-- Strength -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Strength: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Agility -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Agility: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Accuracy -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Accuracy: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Perception -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Perception: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Mental -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Mental: 50
+                            </span>
+                            <span>
+                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                    <ion-icon name="remove-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                    <ion-icon slot="icon-only" name="add"></ion-icon>
+                                </ion-button>
+                            </span>
+                        </div>
+                        <!-- Movement -->
+                        <div class="stat-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                Movement: 150
+                            </span>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

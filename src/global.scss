@@ -29,7 +29,7 @@
     --ion-font-family: "Roboto", sans-serif;
     ion-content.background-color-darker {
         --ion-background-color: var(--ion-color-medium);
-        --color: #333333;
+        --color: var(--ion-color-dark);
         ion-card {
             background: var(--ion-color-light);
         }
@@ -51,10 +51,24 @@
         cursor: pointer;
     }
 
+    .flex-between {
+        display: flex;
+        justify-content: space-between;
+    }
+
     hr {
         border-top: 1px rgb(219, 219, 219) solid;
         width: 90%;
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+
+    ion-content.parent-header {
+        --padding-top: 70px;
+    }
+
+
+    ion-thumbnail.portrait {
+        transform: scale(1.2);
     }
 }

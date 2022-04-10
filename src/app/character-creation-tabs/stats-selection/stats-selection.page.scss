@@ -1,0 +1,35 @@
+@import '../../../theme/variables.scss';
+
+
+ion-row {
+    margin-top: -10px;
+}
+
+ion-thumbnail.portrait {
+    transform: scale(1.6);
+    margin-left: 12px;
+}
+
+.stat-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--ion-color-dark);
+    border-radius: 6px;
+    padding: 6px;
+    margin: 2px;
+    height: 36px;
+    font-size: 14pt;
+    ion-button {
+        margin-left: 24px;
+        width: 28px;
+        transform: scale(.9);
+        ion-icon {
+            transform: scale(4);
+        }
+    }
+}
+
+ion-icon.info:hover {
+    cursor: pointer;
+}
