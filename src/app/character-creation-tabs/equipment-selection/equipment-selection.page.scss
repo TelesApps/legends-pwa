@@ -1,0 +1,42 @@
+ion-col {
+    --ion-grid-column-padding: 2px;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.equipment-box {
+    b {
+        font-weight: 600;
+    }
+    .box-title {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+    div {
+        padding: 4px;
+    }
+    ion-icon {
+        transform: scale(1.3);
+    }
+}
+
+.backpack-row {
+    flex-grow: 1;
+}
+
+.backpack {
+    display: flex;
+    flex-direction: column;
+}
+
+.backpack-items {
+    flex-grow: 1;
+}
+
+.add-icon {
+    align-self: end;
+    float: right;
+}

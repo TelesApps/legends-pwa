@@ -56,6 +56,12 @@
         justify-content: space-between;
     }
 
+    .stats-box {
+        border: 1px solid var(--ion-color-dark);
+        border-radius: 6px;
+        padding: 6px;
+    }
+
     hr {
         border-top: 1px rgb(219, 219, 219) solid;
         width: 90%;
@@ -66,7 +72,6 @@
     ion-content.parent-header {
         --padding-top: 70px;
     }
-
 
     ion-thumbnail.portrait {
         transform: scale(1.2);
