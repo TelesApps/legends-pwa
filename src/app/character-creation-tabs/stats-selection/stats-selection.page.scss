@@ -5,6 +5,10 @@ ion-row {
     margin-top: -10px;
 }
 
+ion-card {
+    --ion-background-color: var(--ion-color-light) !important;
+}
+
 ion-thumbnail.portrait {
     transform: scale(1.6);
     margin-left: 12px;
