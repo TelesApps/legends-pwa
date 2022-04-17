@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AbilitiesSelectionPage implements OnInit {
 
+  segmentSelection = 'traits';
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSegmentChanged(event) {
+    console.log(event);
   }
 
 }

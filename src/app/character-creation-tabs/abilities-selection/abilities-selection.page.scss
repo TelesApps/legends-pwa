@@ -1,0 +1,38 @@
+ion-grid {
+    margin-top: 8px;
+}
+
+.stat-item {
+    min-width: 46%;
+    margin: 6px;
+    div {
+        border-bottom: 1px dashed black;
+        flex-grow: 1;
+        margin-bottom: 2px;
+    }
+}
+
+ion-item {
+    --border-style: none;
+}
+
+.selected-item {
+    --ion-background-color: var(--ion-color-light) !important;
+    background: var(--ion-color-darker) !important;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    margin: 4px;
+}
+
+.selected-header {
+    width: 60vw;
+}
+
+.selected-details {
+    padding: 12px;
+
+    .selected-details-title {
+        display: flex; 
+        flex-direction: column;
+    }
+}

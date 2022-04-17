@@ -19,6 +19,10 @@
     width: 100vw;
 }
 
+
+ion-item {
+    --border-style: none;
+}
 .skill-item {
     --ion-background-color: var(--ion-color-light) !important;
     background: var(--ion-color-darker) !important;
@@ -26,8 +30,12 @@
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     margin: 4px;
 }
+.skill-details {
+    padding: 12px;
 
-ion-item {
-    --border-style: none;
+    .skill-details-title {
+        display: flex; 
+        flex-direction: column;
+    }
 }
 

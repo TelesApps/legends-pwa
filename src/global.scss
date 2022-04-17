@@ -56,6 +56,11 @@
         justify-content: space-between;
     }
 
+    .flex-around {
+        display: flex;
+        justify-content: space-around;
+    }
+
     .stats-box {
         border: 1px solid var(--ion-color-dark);
         border-radius: 6px;
