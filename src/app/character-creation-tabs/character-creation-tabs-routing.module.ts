@@ -28,7 +28,11 @@ const routes: Routes = [
       {
         path: 'abilities-selection',
         loadChildren: () => import('./abilities-selection/abilities-selection.module').then(m => m.AbilitiesSelectionPageModule)
-      }
+      },
+      {
+        path: 'review',
+        loadChildren: () => import('./review/review.module').then( m => m.ReviewPageModule)
+      },
     ]
   },
 ];
