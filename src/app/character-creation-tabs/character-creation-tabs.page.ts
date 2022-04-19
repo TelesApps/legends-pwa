@@ -26,7 +26,6 @@ export class CharacterCreationTabsPage implements OnInit {
     });
     modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
     if(data.isConfirm) {
       this.router.navigate(['/select-character']);
     }

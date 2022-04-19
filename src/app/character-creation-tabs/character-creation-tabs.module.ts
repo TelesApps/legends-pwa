@@ -8,6 +8,7 @@ import { CharacterCreationTabsPageRoutingModule } from './character-creation-tab
 
 import { CharacterCreationTabsPage } from './character-creation-tabs.page';
 import { ModalsModule } from '../modals/modals.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ModalsModule } from '../modals/modals.module';
     FormsModule,
     IonicModule,
     CharacterCreationTabsPageRoutingModule,
-    ModalsModule
+    ModalsModule,
+    HttpClientModule
   ],
   declarations: [CharacterCreationTabsPage],
 })
