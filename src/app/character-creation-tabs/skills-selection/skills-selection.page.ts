@@ -16,7 +16,7 @@ export class SkillsSelectionPage implements OnInit {
 
   onOpenSkillsList() {
     // const headers: HttpHeaders = new HttpHeaders({
-    //   "Authorization" : "Bearer keyiQeUMh8M9dAatG"
+    //   "Authorization" : "Bearer "
     // })
     // console.log('calling airtable')
     // this.http.delete('https://api.airtable.com/v0/app7aRxuTeZPmuQlE/Skills/rec7vO1XFV6bTXF4r', { headers }).subscribe((res) => {
