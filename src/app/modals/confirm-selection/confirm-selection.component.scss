@@ -1,0 +1,20 @@
+ion-header,
+ion-content,
+ion-footer {
+    padding: 8px;
+}
+
+.back-icon {
+    margin-left: 4px;
+    transform: scale(1.8);
+}
+
+.back-icon:hover {
+    cursor: pointer;
+}
+
+.center-body {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

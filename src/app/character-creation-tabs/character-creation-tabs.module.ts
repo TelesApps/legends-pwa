@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { CharacterCreationTabsPageRoutingModule } from './character-creation-tabs-routing.module';
 
 import { CharacterCreationTabsPage } from './character-creation-tabs.page';
+import { ModalsModule } from '../modals/modals.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CharacterCreationTabsPageRoutingModule
+    CharacterCreationTabsPageRoutingModule,
+    ModalsModule
   ],
-  declarations: [CharacterCreationTabsPage]
+  declarations: [CharacterCreationTabsPage],
 })
 export class CharacterCreationTabsPageModule {}

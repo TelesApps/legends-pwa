@@ -11,6 +11,7 @@ import * as firebase from 'firebase/app';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { ConfirmSelectionComponent } from './modals/confirm-selection/confirm-selection.component';
 
 firebase.initializeApp(environment.firebaseConfig);
 

@@ -6,7 +6,7 @@ ion-grid {
     min-width: 46%;
     margin: 6px;
     div {
-        border-bottom: 1px dashed black;
+        border-bottom: 1px dashed var(--ion-color-dark) !important;;
         flex-grow: 1;
         margin-bottom: 2px;
     }

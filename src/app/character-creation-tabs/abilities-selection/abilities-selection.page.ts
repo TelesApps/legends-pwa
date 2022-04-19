@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AbilitiesSelectionPage implements OnInit {
 
-  segmentSelection = 'traits';
+  segmentSelection = 'overview';
 
   constructor() { }
 

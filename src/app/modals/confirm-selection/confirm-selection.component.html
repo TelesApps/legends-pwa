@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-icon class="back-icon" slot="start" name="arrow-back-outline" (click)="onCancel()"></ion-icon>
+    <ion-title *ngIf="headerTxt">{{ headerTxt }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col class="center-body" size="12">
+        <div *ngIf="bodyTxt">{{ bodyTxt }}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button slot="start" (click)="onCancel()" color="primary">
+      Cancel
+    </ion-button>
+    <ion-button slot="end" (click)="onConfirm()" color="danger">
+      Confirm
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
