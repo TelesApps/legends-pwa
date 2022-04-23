@@ -1,41 +1,38 @@
-.box-title {
-    text-align: center;
-    font-weight: 600;
-    margin-bottom: 6px;
+ion-grid {
+    margin-top: 8px;
 }
 
-.foundations-list {
-    display: flex;
-    flex-wrap: wrap;
+.stat-item {
+    min-width: 46%;
+    margin: 6px;
+    div {
+        border-bottom: 1px dashed var(--ion-color-dark) !important;;
+        flex-grow: 1;
+        margin-bottom: 2px;
+    }
 }
-
-.foundation-tags {
-    font-size: 9pt;
-    padding: 8px;
-    margin: 1px;
-}
-
-.skill-header {
-    width: 100vw;
-}
-
 
 ion-item {
     --border-style: none;
 }
-.skill-item {
+
+.selected-item {
     --ion-background-color: var(--ion-color-light) !important;
     background: var(--ion-color-darker) !important;
     border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     margin: 4px;
 }
-.skill-details {
+
+.selected-header {
+    width: 60vw;
+}
+
+.selected-details {
     padding: 12px;
 
-    .skill-details-title {
+    .selected-details-title {
         display: flex; 
         flex-direction: column;
     }
 }
-

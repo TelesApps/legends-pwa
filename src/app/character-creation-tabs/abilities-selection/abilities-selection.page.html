@@ -1,134 +1,6 @@
 <ion-content class="parent-header background-color-darker">
-  <ion-segment (ionChange)="onSegmentChanged($event)" [(ngModel)]="segmentSelection">
-    <ion-segment-button value="overview">
-      <ion-label>Overview</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="traits">
-      <ion-label>Traits</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="abilities">
-      <ion-label>Abilities</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-
-  <ion-grid [ngSwitch]="segmentSelection" fixed>
-    <!-- OVERVIEW TAB -->
-    <ion-row *ngSwitchCase="'overview'">
-      <ion-col size="12">
-        <div class="stats-box">
-          <ion-text class="ion-text-center" color="primary">
-            <h5>Primary Stats</h5>
-          </ion-text>
-          <div class="stats-items-list" style="display: flex; flex-wrap: wrap;">
-            <!-- ngfor here -->
-            <div class="stat-item" style="display: flex;">
-              <b>Health</b>
-              <div></div>
-              <span>150</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Stamina</b>
-              <div></div>
-              <span>50</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Power</b>
-              <div></div>
-              <span>50</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Attack</b>
-              <div></div>
-              <span>50</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Defence</b>
-              <div></div>
-              <span>50</span>
-            </div>
-          </div>
-        </div>
-      </ion-col>
-      <ion-col size="12">
-        <div class="stats-box">
-          <ion-text class="ion-text-center" color="primary">
-            <h5>Secondary Stats</h5>
-          </ion-text>
-          <div class="stats-items-list" style="display: flex; flex-wrap: wrap;">
-            <!-- ngfor here -->
-            <div class="stat-item" style="display: flex;">
-              <b>Stealth</b>
-              <div></div>
-              <span>6</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Lock Picking</b>
-              <div></div>
-              <span>6</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Sly Hands</b>
-              <div></div>
-              <span>6</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Charisma</b>
-              <div></div>
-              <span>6</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
-              <b>Herbalism</b>
-              <div></div>
-              <span>6</span>
-            </div>
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <!-- TRAITS TAB -->
-    <ion-row *ngSwitchCase="'traits'">
-      <ion-col class="flex-between" size="12">
-        <ion-button size="small">
-          arrange
-        </ion-button>
-        <ion-text color="primary">
-          <h2>Traits</h2>
-        </ion-text>
-        <ion-fab-button size="small">
-          <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
-      </ion-col>
-      <ion-col size="12">
-        <ion-accordion-group>
-          <ion-reorder-group disabled="true">
-            <!-- ngFor the selected Traits here -->
-            <ion-item>
-              <ion-reorder slot="start"></ion-reorder>
-              <ion-accordion class="selected-item" value="colors">
-                <ion-item slot="header">
-                  <div class="flex-between selected-header">
-                    <div>Hard Worker</div>
-                    <div>12 AP</div>
-                  </div>
-                </ion-item>
-                <ion-list class="selected-details" slot="content">
-                  <hr>
-                  <p>
-                    Roll 6 dice plus your total M. Enemy rolls Ag -75% to deduct Dmg from your roll.
-                    If it Hits every unit imediatly adjacent to target suffers 25% of the Dmg afflicted.
-                    (Can be used to counter energy based attacks if your Action is still available this turn)
-                  </p>
-                </ion-list>
-              </ion-accordion>
-            </ion-item>
-          </ion-reorder-group>
-        </ion-accordion-group>
-      </ion-col>
-    </ion-row>
-
-    <!-- ABILITIES TAB -->
-    <ion-row *ngSwitchCase="'abilities'">
+  <ion-grid fixed>
+    <ion-row>
       <ion-col class="flex-between" size="12">
         <ion-button size="small">
           arrange
@@ -136,37 +8,57 @@
         <ion-text color="primary">
           <h2>Abilities</h2>
         </ion-text>
-        <ion-fab-button size="small">
+        <ion-fab-button size="small" (click)="onOpenAbilitiesList()">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="stats-box" size="12">
+        <div class="box-title">Foundations</div>
+        <div class="foundations-list">
+          <!-- ngFor the selected items here -->
+          <div class="stats-box foundation-tags">
+            basic anatomy
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row style="width: 106%; margin-left: -3%;">
       <ion-col size="12">
         <ion-accordion-group>
           <ion-reorder-group disabled="true">
-            <!-- ngFor the selected Traits here -->
+            <!-- ngFor the selected Skills here -->
             <ion-item>
               <ion-reorder slot="start"></ion-reorder>
-              <ion-accordion class="selected-item" value="colors">
-                <ion-item slot="header">
-                  <div class="flex-between selected-header">
-                    <div>Swordsmanshop</div>
-                    <div>20 AP</div>
-                  </div>
-                </ion-item>
-                <ion-list class="selected-details" slot="content">
-                  <hr>
-                  <p>
-                    Roll 6 dice plus your total M. Enemy rolls Ag -75% to deduct Dmg from your roll.
-                    If it Hits every unit imediatly adjacent to target suffers 25% of the Dmg afflicted.
-                    (Can be used to counter energy based attacks if your Action is still available this turn)
-                  </p>
-                </ion-list>
-              </ion-accordion>
+                  <ion-accordion class="ability-item" value="colors">
+                    <ion-item slot="header">
+                      <div class="flex-between ability-header">
+                        <div>Fireball</div>
+                        <div>-1TU</div>
+                        <div>-1 Stam. -3P.</div>
+                      </div>
+                    </ion-item>
+                    <ion-list class="ability-details" slot="content">
+                      <hr>
+                      <div class="ability-details-title">
+                        <b>Tags: Templar, Fire</b>
+                        <b>Prereq: Air Manipulation, Ionic Transmutation</b>
+                        <b>Cost: -1 Stam. -3P. -1TU</b>
+                      </div>
+                      <div>
+                        <p>
+                          Roll 6 dice plus your total M. Enemy rolls Ag -75% to deduct Dmg from your roll. 
+                          If it Hits every unit imediatly adjacent to target suffers 25% of the Dmg afflicted. 
+                          (Can be used to counter energy based attacks if your Action is still available this turn)
+                        </p>
+                      </div>
+                    </ion-list>
+                  </ion-accordion>
             </ion-item>
           </ion-reorder-group>
         </ion-accordion-group>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

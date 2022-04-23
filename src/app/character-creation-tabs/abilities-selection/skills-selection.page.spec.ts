@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SkillsSelectionPage } from './skills-selection.page';
+import { SkillsSelectionPage } from './abilities-selection.page';
 
 describe('SkillsSelectionPage', () => {
   let component: SkillsSelectionPage;

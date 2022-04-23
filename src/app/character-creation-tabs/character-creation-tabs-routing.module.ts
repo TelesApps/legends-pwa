@@ -22,12 +22,12 @@ const routes: Routes = [
         loadChildren: () => import('./equipment-selection/equipment-selection.module').then(m => m.EquipmentSelectionPageModule)
       },
       {
-        path: 'skills-selection',
-        loadChildren: () => import('./skills-selection/skills-selection.module').then(m => m.SkillsSelectionPageModule)
-      },
-      {
         path: 'abilities-selection',
         loadChildren: () => import('./abilities-selection/abilities-selection.module').then(m => m.AbilitiesSelectionPageModule)
+      },
+      {
+        path: 'skills-selection',
+        loadChildren: () => import('./skills-selection/skills-selection.module').then(m => m.SkillsSelectionPageModule)
       },
       {
         path: 'review',
