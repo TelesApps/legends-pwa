@@ -15,7 +15,7 @@
                     </ion-col>
                     <ion-col style="display: flex; align-items: center;" size="3">
                         <ion-thumbnail class="portrait">
-                            <img src="image" />
+                            <img src="*" />
                         </ion-thumbnail>
                     </ion-col>
                 </ion-row>
@@ -28,20 +28,20 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (H) Health: 150
+                                (H) Health: {{ character.primaryStats.maxHealth }}
                             </span>
                         </div>
                         <!-- Stamina -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Stam) Stamina: 50
+                                (Stam) Stamina: {{ character.primaryStats.maxStamina }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Stam', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Stam', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>

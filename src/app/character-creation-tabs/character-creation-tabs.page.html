@@ -5,19 +5,19 @@
         <ion-col class="flex-between">
           <div class="header-box">
             <div>Stats:</div>
-            <div>28</div>
+            <div>{{ creation.statsPoints }}</div>
           </div>
           <div class="header-box">
             <div>Gold:</div>
-            <div>280</div>
+            <div>{{ creation.goldPoints }}</div>
           </div>
           <div class="header-box">
             <div>Abilities:</div>
-            <div>30</div>
+            <div>{{ creation.abilityPoints }}</div>
           </div>
           <div class="header-box">
             <div>Skills:</div>
-            <div>28</div>
+            <div>{{ creation.skillsPoints }}</div>
           </div>
           <div>
             <ion-fab-button (click)="onCloseCreation()" size="small">

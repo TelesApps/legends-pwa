@@ -9,6 +9,7 @@ import { CharacterCreationTabsPageRoutingModule } from './character-creation-tab
 import { CharacterCreationTabsPage } from './character-creation-tabs.page';
 import { ModalsModule } from '../modals/modals.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CharacterCreationService } from '../services/character-creation.service';
 
 @NgModule({
   imports: [
@@ -20,5 +21,6 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule
   ],
   declarations: [CharacterCreationTabsPage],
+  providers: [CharacterCreationService]
 })
 export class CharacterCreationTabsPageModule {}

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { Character } from '../interfaces/character.interface';
 import { ConfirmSelectionComponent } from '../modals/confirm-selection/confirm-selection.component';
+import { CharacterCreationService } from '../services/character-creation.service';
 
 @Component({
   selector: 'app-character-creation-tabs',
@@ -10,9 +12,11 @@ import { ConfirmSelectionComponent } from '../modals/confirm-selection/confirm-s
 })
 export class CharacterCreationTabsPage implements OnInit {
 
-  constructor(public modalController: ModalController, private router: Router) { }
+  character: Character;
+  constructor(public modalController: ModalController, private router: Router, public creation: CharacterCreationService) { }
 
   ngOnInit() {
+    this.creation.characterSubj.subscribe((character) => this.character = character);
   }
 
   async onCloseCreation() {
@@ -26,7 +30,7 @@ export class CharacterCreationTabsPage implements OnInit {
     });
     modal.present();
     const { data } = await modal.onWillDismiss();
-    if(data.isConfirm) {
+    if (data.isConfirm) {
       this.router.navigate(['/select-character']);
     }
   }
