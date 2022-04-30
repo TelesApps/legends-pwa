@@ -28,14 +28,14 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (H) Health: {{ character.primaryStats.maxHealth }}
+                                Health: {{ character.primaryStats.maxHealth }}
                             </span>
                         </div>
                         <!-- Stamina -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Stam) Stamina: {{ character.primaryStats.maxStamina }}
+                                Stamina: {{ character.primaryStats.maxStamina }}
                             </span>
                             <span>
                                 <ion-button (click)="onStatChange('Stam', -1)" size="small" color="secondary" shape="round">
@@ -50,13 +50,13 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (P) Power: 50
+                                Power: {{ character.primaryStats.maxPower }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('P', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('P', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -65,7 +65,7 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (RA) Ranged Attack: 150
+                                Ranged Attack: {{ character.primaryStats.core_ranged }}
                             </span>
                             <span class="ion-text-end">Crit: 5%</span>
                         </div>
@@ -73,7 +73,7 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (MA) Melee Attack: 150
+                                Melee Attack: {{ character.primaryStats.core_melee }}
                             </span>
                             <span class="ion-text-end">Crit: 5%</span>
                         </div>
@@ -81,20 +81,20 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (D) Defence: 150
+                                Defence: {{ character.primaryStats.core_defense }}
                             </span>
                         </div>
                         <!-- Strength -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Str) Strength: 50
+                                Strength: {{ character.primaryStats.core_strength }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Str', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Str', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -103,13 +103,13 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Ag) Agility: 50
+                                Agility: {{ character.primaryStats.core_agility }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Ag', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Ag', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -118,13 +118,13 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Acc) Accuracy: 50
+                                Accuracy: {{ character.primaryStats.core_accuracy }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Acc', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Acc', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -133,13 +133,13 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Per) Perception: 50
+                                Perception: {{ character.primaryStats.core_perception }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Per', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Per', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -148,13 +148,13 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (M) Mental: 50
+                                Mental: {{ character.primaryStats.core_mental }}
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('M', -1)" size="small" color="secondary" shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('M', 1)" size="small" color="secondary" shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -163,7 +163,7 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                (Mov) Movement: 150
+                                Movement: {{ character.primaryStats.core_movement }}
                             </span>
                         </div>
                     </ion-col>

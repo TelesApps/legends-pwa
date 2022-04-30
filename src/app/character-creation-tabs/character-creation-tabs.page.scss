@@ -1,4 +1,4 @@
-@import '../../theme/variables.scss';
+@import "../../theme/variables.scss";
 
 .header-box {
     display: flex;
@@ -10,4 +10,9 @@
     padding: 6px;
     margin: 2px;
     min-width: 18vw;
+    div {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 }
