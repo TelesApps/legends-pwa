@@ -17,27 +17,23 @@ const routes: Routes = [
         path: 'abilities-list',
         loadChildren: () => import('./abilities-list/abilities-list.module').then(m => m.AbilitiesListPageModule)
       },
-      // {
-      //   path: 'equipment-selection',
-      //   loadChildren: () => import('./equipment-selection/equipment-selection.module').then(m => m.EquipmentSelectionPageModule)
-      // },
-      // {
-      //   path: 'abilities-selection',
-      //   loadChildren: () => import('./abilities-selection/abilities-selection.module').then(m => m.AbilitiesSelectionPageModule)
-      // },
-      // {
-      //   path: 'skills-selection',
-      //   loadChildren: () => import('./skills-selection/skills-selection.module').then(m => m.SkillsSelectionPageModule)
-      // },
-      // {
-      //   path: 'review',
-      //   loadChildren: () => import('./review/review.module').then( m => m.ReviewPageModule)
-      // },
+      {
+        path: 'items-list',
+        loadChildren: () => import('./items-list/items-list-routing.module').then(m => m.ItemsListPageRoutingModule)
+      },
+      {
+        path: 'skills-traits-list',
+        loadChildren: () => import('./skills-traits-list/skills-traits-list-routing.module').then(m => m.SkillsTraitsListPageRoutingModule)
+      },
+      {
+        path: 'rules',
+        loadChildren: () => import('./rules/rules-routing.module').then(m => m.RulesPageRoutingModule)
+      },
+      {
+        path: 'lore',
+        loadChildren: () => import('./lore/lore-routing.module').then( m => m.LorePageRoutingModule)
+      },
     ]
-  },
-  {
-    path: 'abilities-list',
-    loadChildren: () => import('./abilities-list/abilities-list.module').then( m => m.AbilitiesListPageModule)
   },
 ];
 
