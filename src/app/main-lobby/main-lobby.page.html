@@ -9,6 +9,9 @@
         </ion-col>
         <ion-col size="6">
           <ion-item lines="none">
+              <ion-fab-button slot="end" [routerLink]="['/encyclopedia-tabs']" routerLinkActive="router-link-active">
+                <ion-icon id="encyclopedia-icon" name="library-outline"></ion-icon>
+              </ion-fab-button>
             <ion-avatar class="ion-justify-content-center" slot="end" [routerLink]="['/my-profile']"
               [queryParams]="{breadcrumb: 'main-lobby'}" routerLinkActive="router-link-active">
               <img *ngIf="photoUrl" [src]="photoUrl">

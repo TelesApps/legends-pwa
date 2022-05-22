@@ -39,6 +39,10 @@ const routes: Routes = [
   {
     path: 'character-creation-tabs',
     loadChildren: () => import('./character-creation-tabs/character-creation-tabs.module').then( m => m.CharacterCreationTabsPageModule)
+  },
+  {
+    path: 'encyclopedia-tabs',
+    loadChildren: () => import('./encyclopedia-tabs/encyclopedia-tabs.module').then( m => m.EncyclopediaTabsPageModule)
   }
 ];
 @NgModule({

@@ -30,6 +30,23 @@ ion-header {
     ion-icon {
         font-size: 42pt;
     }
+    // #encyclopedia-icon {
+    //     font-size: 18pt;
+    //     // margin: 0px;
+    //     // margin-right: 18px;
+    // }
+    // #encyclopedia-icon:hover {
+    //     cursor: pointer;
+    // }
+    ion-fab-button {
+        width: 45px;
+        height: 45px;
+        --box-shadow: -2px 2px 5px -2px #2c2c2c;
+        margin-right: 20px;
+        ion-icon {
+            font-size: 18pt;
+        }
+    }
 }
 
 ion-card {
