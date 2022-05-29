@@ -12,6 +12,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ConfirmSelectionComponent } from './modals/confirm-selection/confirm-selection.component';
+import { HttpClientModule } from '@angular/common/http';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -21,6 +22,7 @@ firebase.initializeApp(environment.firebaseConfig);
   imports: [
     BrowserModule, 
     IonicModule.forRoot(),
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {

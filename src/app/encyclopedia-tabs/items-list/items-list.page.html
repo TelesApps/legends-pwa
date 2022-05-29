@@ -1,9 +1,38 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>itemsList</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <ion-text color="primary" class="ion-text-center">
+    <h1>Items</h1>
+  </ion-text>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar placeholder="Search" inputmode="text" type="text"
+          (ionChange)="onSearchChange($event)" [debounce]="250"></ion-searchbar>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-label position="floating">Item Type</ion-label>
+          <ion-select placeholder="Filter By Item Type" multiple="true">
+            <ion-select-option value="warrior">Weapon</ion-select-option>
+            <ion-select-option value="templar">Equipment</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-label position="floating">Tags</ion-label>
+          <ion-select placeholder="Filter By Tags" multiple="true">
+            <ion-select-option value="warrior">1 Hand</ion-select-option>
+            <ion-select-option value="templar">2 Hands</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="test()">
+          Test
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AirtableDataService } from 'src/app/services/airtable-data.service';
 
 @Component({
   selector: 'app-items-list',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemsListPage implements OnInit {
 
-  constructor() { }
+  constructor(public airtable: AirtableDataService) { }
 
   ngOnInit() {
+  }
+
+  test() {
+    this.airtable.loadItems();
+    this.airtable.$allItems.subscribe((res) => {
+      console.log('all items', res);
+    })
   }
 
 }
