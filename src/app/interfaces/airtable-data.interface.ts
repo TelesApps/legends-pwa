@@ -18,7 +18,7 @@ export interface Fields {
     weight:                 number;
     effects:                string[];
     item_type:              ItemType;
-    crafting_requierments?: string[];
+    crafting_requirements?: string[];
     tags:                   string[];
     airtable_id:            string;
     image?:                 Image[];

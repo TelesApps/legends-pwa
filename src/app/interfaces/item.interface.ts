@@ -8,7 +8,7 @@ export interface Item {
     dmg_type?: DmgType[];
     weight: number;
     effects: string[];
-    crafting_requierments?: string[];
+    crafting_requirements?: string[];
     tags: string[];
     airtable_id: string;
     description?: string;

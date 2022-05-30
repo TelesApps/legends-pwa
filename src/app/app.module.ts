@@ -14,14 +14,17 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { ConfirmSelectionComponent } from './modals/confirm-selection/confirm-selection.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AirtableDataService } from './services/airtable-data.service';
+import { ItemsListPage } from './encyclopedia-tabs/items-list/items-list.page';
+import { FormsModule } from '@angular/forms';
 
 firebase.initializeApp(environment.firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ItemsListPage],
   entryComponents: [],
   imports: [
-    BrowserModule, 
+    BrowserModule,
+    FormsModule, 
     IonicModule.forRoot(),
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
