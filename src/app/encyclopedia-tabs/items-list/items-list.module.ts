@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ItemsListPageRoutingModule } from './items-list-routing.module';
 
 import { ItemsListPage } from './items-list.page';
+import { AirtableDataService } from 'src/app/services/airtable-data.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ItemsListPage } from './items-list.page';
     IonicModule,
     ItemsListPageRoutingModule
   ],
-  declarations: [ItemsListPage]
+  declarations: [ItemsListPage],
+  providers: [AirtableDataService]
 })
 export class ItemsListPageModule {}

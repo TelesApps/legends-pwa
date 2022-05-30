@@ -1,0 +1,27 @@
+.item-header {
+    width: 100vw;
+    align-items:center;
+    ion-thumbnail {
+        margin-right: 8px;
+    }
+}
+
+
+ion-item {
+    --border-style: none;
+}
+.legends-item {
+    --ion-background-color: var(--ion-color-light) !important;
+    background: var(--ion-color-darker) !important;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    margin: 4px;
+}
+.item-details {
+    padding: 12px;
+
+    .item-details-title {
+        display: flex; 
+        flex-direction: column;
+    }
+}

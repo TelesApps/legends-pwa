@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import { AirTableData } from '../interfaces/airtable-data.interface';
@@ -19,7 +19,7 @@ export class AirtableDataService {
     headers: this.httpHeaders,
   };
 
-  $allItems: Observable<Array<Item>> = new Observable<Array<Item>>();
+  $allItems: ReplaySubject<Array<Item>> = new ReplaySubject<Array<Item>>(1);
 
   constructor(private http: HttpClient) {
     // TO QUERY AIRTABLE FOR SPECIFIC PARAMATERS, USE SOMETHING LIKE THE CODE BELLOW
@@ -29,11 +29,18 @@ export class AirtableDataService {
 
   loadItems() {
     const allItems = [];
-    // Make an Array of promises for all the calls to get items, then call Once all promises are done.
-    this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Weapons/`, this.options).subscribe((response: AirTableData) => {
-      response.records.forEach(record => {
-        allItems.push(record.fields);
+    const allPromises: Array<Promise<any>> = [];
+    console.log('calling')
+    allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Weapons/`, this.options).toPromise());
+    allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Equipment/`, this.options).toPromise());
+    Promise.all(allPromises).then((allData: Array<AirTableData>) => {
+      allData.forEach(data => {
+        data.records.forEach(record => {
+          const item: Item = record.fields;
+          allItems.push(item);
+        });
       });
+      this.$allItems.next(allItems);
     })
   }
 }

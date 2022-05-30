@@ -1,4 +1,4 @@
-import { DmgType, ItemType } from "./airtable-data.interface";
+import { DmgType, Image, ItemType } from "./airtable-data.interface";
 
 export interface Item {
     item_type: ItemType;
@@ -14,4 +14,5 @@ export interface Item {
     description?: string;
     body_property?: string;
     armor?: number;
+    image?: Image[];
 }

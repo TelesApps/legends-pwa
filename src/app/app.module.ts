@@ -13,6 +13,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ConfirmSelectionComponent } from './modals/confirm-selection/confirm-selection.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AirtableDataService } from './services/airtable-data.service';
 
 firebase.initializeApp(environment.firebaseConfig);
 
