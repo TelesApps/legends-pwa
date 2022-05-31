@@ -36,11 +36,17 @@ export class AirtableDataService {
     Promise.all(allPromises).then((allData: Array<AirTableData>) => {
       allData.forEach(data => {
         data.records.forEach(record => {
-          const item: Item = record.fields;
+          const item: Item = <Item>record.fields;
           allItems.push(item);
         });
       });
       this.$allItems.next(allItems);
+    })
+  }
+
+  loadSkillsAndTraits() {
+    this.http.get(`https://api.airtable.com/v0/app2iTLZLWFFxHulK/Skills/`, this.options).subscribe((res) => {
+      console.log('res from get  skills and traits', res);
     })
   }
 }

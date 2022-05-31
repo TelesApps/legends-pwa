@@ -11,16 +11,16 @@ export interface Record {
 }
 
 export interface Fields {
-    cost:                   number;
-    title:                  string;
+    cost?:                   number;
+    title?:                  string;
     components?:            string[];
     dmg_type?:              DmgType[];
-    weight:                 number;
-    effects:                string[];
-    item_type:              ItemType;
+    weight?:                 number;
+    effects?:                string[];
+    item_type?:              ItemType;
     crafting_requirements?: string[];
-    tags:                   string[];
-    airtable_id:            string;
+    tags?:                   string[];
+    airtable_id?:            string;
     image?:                 Image[];
     description?:           string;
 }

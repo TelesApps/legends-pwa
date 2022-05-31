@@ -1,9 +1,59 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>skillsTraitsList</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <ion-text color="primary" class="ion-text-center">
+    <h1>Skills and Traits</h1>
+  </ion-text>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text" (ionChange)="onFilterChange($event)"
+          [debounce]="250"></ion-searchbar>
+      </ion-col>
+      <ion-col size="6">
+        <div class="clear-filter">
+          <ion-icon *ngIf="typeFilter.value" slot="start" name="close" (click)="typeFilter.value = ''"></ion-icon>
+        </div>
+        <ion-item class="filter-select">
+          <ion-label position="floating">Item Type</ion-label>
+          <ion-select #typeFilter [(ngModel)]="itemTypeFilter" placeholder="Filter By Tags" multiple="true" (ionChange)="onFilterChange($event)">
+            <ion-select-option value="weapon">Attack</ion-select-option>
+            <ion-select-option value="equipment">Defence</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+      <ion-col size="6">
+        
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-accordion-group>
+          <ion-accordion class="legends-item" [value]="item.title">
+            <ion-item slot="header">
+              <div class="flex-between item-header">
+                <div class="flex-between" style="align-items:center">
+                  <ion-thumbnail *ngIf="item.image && item.image[0]">
+                    <img [src]="item.image[0].url" />
+                  </ion-thumbnail>
+                  <div class="title-txt">Swordsmanship Lvl 1</div>
+                </div>
+                <div>20 SP.</div>
+              </div>
+            </ion-item>
+            <ion-list class="item-details" slot="content">
+              <hr>
+              <div class="item-details-title">
+                <b>Tags: attack, defence</b>
+              </div>
+              <div>
+                <p>Increases the bonus gained by any item that has the "Sword" tag by 50%</p>
+              </div>
+              <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
+                Select Item
+              </ion-button>
+            </ion-list>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

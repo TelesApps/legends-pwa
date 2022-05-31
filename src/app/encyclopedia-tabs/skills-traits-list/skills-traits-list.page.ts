@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SkillsTraitsListPage implements OnInit {
 
+  filterredSkills = [];
   constructor() { }
 
   ngOnInit() {
