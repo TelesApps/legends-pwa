@@ -48,7 +48,7 @@
             <h3>Rooms you belong to:</h3>
             <ion-item>
               <ion-label>Awesome Label</ion-label>
-              <ion-button (click)="onClick()">
+              <ion-button>
                 Leave Room
               </ion-button>
             </ion-item>
@@ -63,7 +63,7 @@
           <ion-input type="text" placeholder="Awesome Input"></ion-input>
         </ion-item>
         <div class="ion-text-end">
-          <ion-button (click)="onClick()">
+          <ion-button>
             Join
           </ion-button>
         </div>
@@ -74,7 +74,7 @@
         <ion-card>
           <ion-card-header>
             <ion-card-subtitle>Search Public Rooms
-              <ion-button (click)="onClick()" size="small">
+              <ion-button size="small">
                 Refresh
               </ion-button>
             </ion-card-subtitle>
@@ -90,7 +90,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button slot="start" (click)="onClick()">
+    <ion-button slot="start">
       Create a Room
     </ion-button>
     <ion-button slot="end" [routerLink]="['/select-character']" [queryParams]="{breadcrumb: 'main-lobby'}">

@@ -16,6 +16,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AirtableDataService } from './services/airtable-data.service';
 import { ItemsListPage } from './encyclopedia-tabs/items-list/items-list.page';
 import { FormsModule } from '@angular/forms';
+import { CharacterCreationTabsPageModule } from './character-creation-tabs/character-creation-tabs.module';
+import { CharacterTabsPageModule } from './character-tabs/character-tabs.module';
+import { EncyclopediaTabsPageModule } from './encyclopedia-tabs/encyclopedia-tabs.module';
+import { LoginPageModule } from './login/login.module';
+import { MainLobbyPageModule } from './main-lobby/main-lobby.module';
+import { MyProfilePageModule } from './my-profile/my-profile.module';
+import { SelectCharacterPageModule } from './select-character/select-character.module';
+import { InformPlayerComponent } from './modals/inform-player/inform-player.component';
+import { ModalsModule } from './modals/modals.module';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -29,6 +38,14 @@ firebase.initializeApp(environment.firebaseConfig);
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AppRoutingModule,
+    LoginPageModule,
+    MainLobbyPageModule,
+    SelectCharacterPageModule,
+    MyProfilePageModule,
+    CharacterCreationTabsPageModule,
+    CharacterTabsPageModule,
+    EncyclopediaTabsPageModule,
+    ModalsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the application is stable

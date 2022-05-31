@@ -22,4 +22,8 @@ export class SelectCharacterPage implements OnInit {
     })
   }
 
+  onDeleteCharacters() {
+    
+  }
+
 }

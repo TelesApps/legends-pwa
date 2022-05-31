@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,6 +11,10 @@ export class AbilitiesListPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSearchChange(e) {
+
   }
 
 }

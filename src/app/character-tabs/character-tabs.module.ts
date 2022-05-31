@@ -7,13 +7,23 @@ import { IonicModule } from '@ionic/angular';
 import { CharacterTabsPageRoutingModule } from './character-tabs-routing.module';
 
 import { CharacterTabsPage } from './character-tabs.page';
+import { AbilitiesPageModule } from './abilities/abilities.module';
+import { EquipmentPageModule } from './equipment/equipment.module';
+import { MainPageModule } from './main/main.module';
+import { PartyPageModule } from './party/party.module';
+import { SkillsPageModule } from './skills/skills.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CharacterTabsPageRoutingModule
+    CharacterTabsPageRoutingModule,
+    AbilitiesPageModule,
+    EquipmentPageModule,
+    MainPageModule,
+    PartyPageModule,
+    SkillsPageModule,
   ],
   declarations: [CharacterTabsPage]
 })
