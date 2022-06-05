@@ -39,6 +39,9 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
+        <div *ngIf="isLoading" class="loading-icon">
+          <ion-spinner name="bubbles"></ion-spinner>
+        </div>
         <ion-accordion-group>
           <ion-accordion *ngFor="let item of filterredItems" class="legends-item" [value]="item.title">
             <ion-item slot="header">

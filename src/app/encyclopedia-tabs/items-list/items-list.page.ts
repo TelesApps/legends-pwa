@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { isEmpty } from 'rxjs/operators';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
@@ -16,24 +16,28 @@ export class ItemsListPage implements OnInit {
   searchInput: string;
   itemTypeFilter: string[];
   bodyPropertyFilter: string[];
+  isLoading = true;
 
   constructor(
     public airtable: AirtableDataService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.airtable.$allItems.subscribe((all_items) => {
-      this.allItems = all_items; 
+      this.allItems = all_items;
       this.filterredItems = this.allItems;
       console.log(all_items);
+      this.isLoading = false;
     });
     if (this.allItems.length < 1) this.airtable.loadItems();
   }
 
+
   onFilterChange(event) {
     console.log(event.detail.value);
     this.filterredItems = this.allItems
-    if(this.searchInput) {
+    if (this.searchInput) {
       let userWord1 = this.searchInput;
       let userWord2;
       if (this.searchInput.indexOf(' ') >= 0) {
@@ -53,7 +57,7 @@ export class ItemsListPage implements OnInit {
     // FILTER ITEM TYPE
     console.log('item type filter: ', this.itemTypeFilter);
     const newTypeFilter: Array<Item> = [];
-    if(this.itemTypeFilter) {
+    if (this.itemTypeFilter) {
       this.itemTypeFilter.forEach(type => {
         console.log(type);
         this.filterredItems.forEach(item => {
@@ -62,7 +66,7 @@ export class ItemsListPage implements OnInit {
           }
         });
       });
-      if(newTypeFilter.length > 0) {
+      if (newTypeFilter.length > 0) {
         this.filterredItems = newTypeFilter;
       }
       console.log('typefilter:', newTypeFilter);
@@ -70,7 +74,7 @@ export class ItemsListPage implements OnInit {
 
     // FILTER BODY_PROPERTY
     const newBodyPropertyFilter: Array<Item> = [];
-    if(this.bodyPropertyFilter) {
+    if (this.bodyPropertyFilter) {
       this.bodyPropertyFilter.forEach(property => {
         this.filterredItems.forEach(item => {
           if (item.body_property && item.body_property.toLowerCase().includes(property.toLowerCase())) {
@@ -78,7 +82,7 @@ export class ItemsListPage implements OnInit {
           }
         });
       });
-      if(newBodyPropertyFilter.length > 0) {
+      if (newBodyPropertyFilter.length > 0) {
         this.filterredItems = newBodyPropertyFilter;
       }
       console.log('property filter:', newBodyPropertyFilter);
