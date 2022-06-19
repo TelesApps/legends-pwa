@@ -45,3 +45,9 @@ ion-item {
         cursor: pointer;
     }
 }
+
+.loading-icon {
+    ion-spinner {
+        transform: scale(2);
+    }
+}

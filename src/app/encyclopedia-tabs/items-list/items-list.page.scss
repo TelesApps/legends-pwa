@@ -47,10 +47,6 @@ ion-item {
 }
 
 .loading-icon {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-    padding: 20px;
     ion-spinner {
         transform: scale(2);
     }

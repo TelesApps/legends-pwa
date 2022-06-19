@@ -13,10 +13,10 @@
           <ion-icon *ngIf="typeFilter.value" slot="start" name="close" (click)="typeFilter.value = ''"></ion-icon>
         </div>
         <ion-item class="filter-select">
-          <ion-label position="floating">Item Type</ion-label>
-          <ion-select #typeFilter [(ngModel)]="itemTypeFilter" placeholder="Filter By Tags" multiple="true" (ionChange)="onFilterChange($event)">
-            <ion-select-option value="weapon">Attack</ion-select-option>
-            <ion-select-option value="equipment">Defence</ion-select-option>
+          <ion-label position="floating">Tags</ion-label>
+          <ion-select #typeFilter [(ngModel)]="skillTagFilter" placeholder="Filter By Tags" multiple="true" (ionChange)="onFilterChange($event)">
+            <ion-select-option value="attack">Attack</ion-select-option>
+            <ion-select-option value="defence">Defence</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -26,26 +26,29 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
+        <div *ngIf="isLoading" class="loading-icon">
+          <ion-spinner name="bubbles"></ion-spinner>
+        </div>
         <ion-accordion-group>
-          <ion-accordion class="legends-item" [value]="item.title">
+          <ion-accordion *ngFor="let skillTraits of filterredSkills" class="legends-item" [value]="filterredSkills.title">
             <ion-item slot="header">
               <div class="flex-between item-header">
                 <div class="flex-between" style="align-items:center">
-                  <ion-thumbnail *ngIf="item.image && item.image[0]">
+                  <ion-thumbnail *ngIf="filterredSkills.image && item.image[0]">
                     <img [src]="item.image[0].url" />
                   </ion-thumbnail>
-                  <div class="title-txt">Swordsmanship Lvl 1</div>
+                  <div class="title-txt">{{ skillTraits.title }}</div>
                 </div>
-                <div>20 SP.</div>
+                <div>{{ skillTraits.cost }}</div>
               </div>
             </ion-item>
             <ion-list class="item-details" slot="content">
               <hr>
               <div class="item-details-title">
-                <b>Tags: attack, defence</b>
+                <b>{{ skillTraits.tags }}</b>
               </div>
               <div>
-                <p>Increases the bonus gained by any item that has the "Sword" tag by 50%</p>
+                <p>{{ skillTraits.effects }}</p>
               </div>
               <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
                 Select Item

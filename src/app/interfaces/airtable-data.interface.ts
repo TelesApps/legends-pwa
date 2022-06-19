@@ -17,12 +17,18 @@ export interface Fields {
     dmg_type?:              DmgType[];
     weight?:                 number;
     effects?:                string[];
+    effect?:                string;
     item_type?:              ItemType;
     crafting_requirements?: string[];
     tags?:                   string[];
     airtable_id?:            string;
     image?:                 Image[];
     description?:           string;
+    execution_cost?:        string[];
+    level?:                 number;
+    points_req?:            number;
+    prereq?:                string[];
+    turn_units_req?:        string;
 }
 
 export enum DmgType {
