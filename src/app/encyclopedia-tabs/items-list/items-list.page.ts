@@ -1,4 +1,5 @@
-import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { isEmpty } from 'rxjs/operators';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
@@ -6,20 +7,23 @@ import { AirtableDataService } from 'src/app/services/airtable-data.service';
 @Component({
   selector: 'app-items-list',
   templateUrl: './items-list.page.html',
-  styleUrls: ['./items-list.page.scss'],
+  styleUrls: ['../encyclopedia-tabs.page.scss', './items-list.page.scss'],
 })
 export class ItemsListPage implements OnInit {
 
-  isSelectMode = false;
+  isSelectType: string = '';
   public allItems: Array<Item> = [];
   public filterredItems: Array<Item> = [];
   searchInput: string;
   itemTypeFilter: string[];
   bodyPropertyFilter: string[];
   isLoading = true;
+  backUrl: string = '/character-creation-tabs/equipment-selection'
 
   constructor(
-    public airtable: AirtableDataService
+    public airtable: AirtableDataService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
@@ -27,15 +31,34 @@ export class ItemsListPage implements OnInit {
     this.airtable.$allItems.subscribe((all_items) => {
       this.allItems = all_items;
       this.filterredItems = this.allItems;
-      console.log(all_items);
-      this.isLoading = false;
+      this.route.queryParams.subscribe((params) => {
+        console.log('params: ', params);
+        if (params && params.itemType) {
+          this.itemTypeFilter = [];
+          this.itemTypeFilter.push(params.itemType);
+        }
+        if (params && params.bodyProperty) {
+          this.bodyPropertyFilter = [];
+          this.bodyPropertyFilter.push(params.bodyProperty);
+        }
+        if(params && params.breadcrumb) {
+          this.backUrl = params.breadcrumb;
+        }
+        if (this.itemTypeFilter && this.itemTypeFilter.length > 0 || this.bodyPropertyFilter && this.bodyPropertyFilter.length > 0) {
+          this.onFilterChange();
+        }
+        if(params && params.isSelectType) {
+          this.isSelectType = params.isSelectType;
+          console.log('select type', this.isSelectType);
+        }
+        this.isLoading = false;
+      })
     });
     if (this.allItems.length < 1) this.airtable.loadItems();
   }
 
 
-  onFilterChange(event) {
-    console.log(event.detail.value);
+  onFilterChange(event?) {
     this.filterredItems = this.allItems
     if (this.searchInput) {
       let userWord1 = this.searchInput;
@@ -89,25 +112,9 @@ export class ItemsListPage implements OnInit {
     }
   }
 
-  // onFilterBodyProperty(event) {
-  //   console.log(event);
-  //   const filters: string[] = event.detail.value;
-  //   console.log(filters);
-  //   const newFilter: Array<Item> = [];
-  //   filters.forEach(filter => {
-  //     this.allItems.forEach(item => {
-  //       if (item.body_property.toLowerCase().includes(filter.toLowerCase())) {
-  //         newFilter.push(item);
-  //         if (newFilter.length > 0) {
-  //           this.filterredItems = newFilter;
-  //         }
-  //       }
-  //     });
-  //   });
-  // }
-
-  onItemSelected() {
-
+  onItemSelected(item: Item) {
+    this.router.navigate([this.backUrl]);
+    // use character-creation service to tell them the item selected;
   }
 
 

@@ -5,7 +5,7 @@ import { AirtableDataService } from 'src/app/services/airtable-data.service';
 @Component({
   selector: 'app-skills-traits-list',
   templateUrl: './skills-traits-list.page.html',
-  styleUrls: ['./skills-traits-list.page.scss'],
+  styleUrls: ['../encyclopedia-tabs.page.scss', './skills-traits-list.page.scss'],
 })
 export class SkillsTraitsListPage implements OnInit {
 
@@ -17,12 +17,13 @@ export class SkillsTraitsListPage implements OnInit {
   constructor(public airtable: AirtableDataService) { }
 
   ngOnInit() {
-    console.log('skills and traits init');
     this.airtable.$skillsTraits.subscribe((skillsTraits) => {
+      console.log('skills inside subscribe');
       this.allSkills = skillsTraits;
       this.filterredSkills = skillsTraits;
       this.isLoading = false;
     })
+    console.log('length', this.filterredSkills.length)
     if (this.filterredSkills.length < 1)
       this.airtable.loadSkillsAndTraits();
   }

@@ -1,12 +1,15 @@
 <ion-content>
   <ion-text color="primary" class="ion-text-center">
-    <h1>Items</h1>
+    <h1><span *ngIf="isSelectType">Select an</span> Item<span *ngIf="!isSelectType">s</span></h1>
+  </ion-text>
+  <ion-text color="primary" class="ion-text-center">
+    <p>Awesome text</p>
   </ion-text>
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text" (ionChange)="onFilterChange($event)"
-          [debounce]="250"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text"
+          (ionChange)="onFilterChange($event)" [debounce]="250"></ion-searchbar>
       </ion-col>
       <ion-col size="6">
         <div class="clear-filter">
@@ -14,7 +17,8 @@
         </div>
         <ion-item class="filter-select">
           <ion-label position="floating">Item Type</ion-label>
-          <ion-select #typeFilter [(ngModel)]="itemTypeFilter" placeholder="Filter By Item Type" multiple="true" (ionChange)="onFilterChange($event)">
+          <ion-select #typeFilter [(ngModel)]="itemTypeFilter" placeholder="Filter By Item Type" multiple="true"
+            (ionChange)="onFilterChange($event)">
             <ion-select-option value="weapon">Weapon</ion-select-option>
             <ion-select-option value="equipment">Equipment</ion-select-option>
           </ion-select>
@@ -26,7 +30,8 @@
         </div>
         <ion-item>
           <ion-label position="floating">Body Property</ion-label>
-          <ion-select  #bodyProperty [(ngModel)]="bodyPropertyFilter" placeholder="Filter By Body Property" multiple="true" (ionChange)="onFilterChange($event)">
+          <ion-select #bodyProperty [(ngModel)]="bodyPropertyFilter" placeholder="Filter By Body Property"
+            multiple="true" (ionChange)="onFilterChange($event)">
             <ion-select-option value="equipment">Equipment</ion-select-option>
             <ion-select-option value="shield">Shield</ion-select-option>
             <ion-select-option value="boots">Boots</ion-select-option>
@@ -70,7 +75,9 @@
                 <p>Crafting Requirement: {{ item.crafting_requirements }}</p>
                 <p>Crafting Components: {{ item.components }}</p>
               </div>
-              <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
+              <ion-button *ngIf="item.body_property && isSelectType === item.body_property.toLowerCase() || 
+                item.item_type && isSelectType === item.item_type.toLowerCase()" (click)="onItemSelected(item)"
+                expand="block" shape="round">
                 Select Item
               </ion-button>
             </ion-list>

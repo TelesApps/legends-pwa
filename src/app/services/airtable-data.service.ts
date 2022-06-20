@@ -74,7 +74,7 @@ export class AirtableDataService {
         allAbilities.push(skills);
       });
       this.$abilities.next(allAbilities);
-      this.$skillsTraits.complete();
+      this.$abilities.complete();
     })
   }
 }
