@@ -62,18 +62,25 @@
             </ion-item>
             <ion-list class="item-details" slot="content">
               <hr>
-              <div class="item-details-title">
-                <b *ngIf="item.armor">Armor: +{{ item.armor }}</b>
-                <b>Effects: {{ item.effects }}</b>
-                <b *ngIf="item.tags">Tags: {{ item.tags }}</b>
-                <b *ngIf="item.dmg_type">Dmg Type: {{ item.dmg_type }}</b>
-                <b *ngIf="item.weight">Weight: {{ item.weight }}</b>
-                <b>Item Type: {{ item.item_type }}</b>
-              </div>
-              <div>
-                <p> {{ item.description }} </p>
-                <p>Crafting Requirement: {{ item.crafting_requirements }}</p>
-                <p>Crafting Components: {{ item.components }}</p>
+              <div class="flex-between wrap-reverse">
+                <div>
+                  <div class="item-details-title">
+                    <b *ngIf="item.armor">Armor: +{{ item.armor }}</b>
+                    <b>Effects: {{ item.effects }}</b>
+                    <b *ngIf="item.tags">Tags: {{ item.tags }}</b>
+                    <b *ngIf="item.dmg_type">Dmg Type: {{ item.dmg_type }}</b>
+                    <b *ngIf="item.weight">Weight: {{ item.weight }}</b>
+                    <b>Item Type: {{ item.item_type }}</b>
+                  </div>
+                  <div>
+                    <p> {{ item.description }} </p>
+                    <p>Crafting Requirement: {{ item.crafting_requirements }}</p>
+                    <p>Crafting Components: {{ item.components }}</p>
+                  </div>
+                </div>
+                <div>
+                  <ion-img *ngIf="item.image && item.image[0]" [src]="item.image[0].url"></ion-img>
+                </div>
               </div>
               <ion-button *ngIf="item.body_property && isSelectType === item.body_property.toLowerCase() || 
                 item.item_type && isSelectType === item.item_type.toLowerCase()" (click)="onItemSelected(item)"

@@ -25,6 +25,9 @@ ion-item {
         display: flex;
         flex-direction: column;
     }
+    ion-img {
+        max-width: 180px;
+    }
 }
 .title-txt {
     margin-right: 4px;
