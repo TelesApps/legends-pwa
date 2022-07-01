@@ -1,3 +1,5 @@
+import { Image } from "./airtable-data.interface";
+
 export interface Ability {
     airtable_id: string;
     effect: string;
@@ -8,4 +10,5 @@ export interface Ability {
     tags: string[];
     title: string;
     turn_units_req: string;
+    image?: Image[];
 }

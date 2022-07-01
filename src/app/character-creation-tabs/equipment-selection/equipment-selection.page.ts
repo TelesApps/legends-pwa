@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EquipmentSelectionPage implements OnInit {
 
+  isShowHead: boolean = false;
   constructor() { }
 
   ngOnInit() {

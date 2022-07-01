@@ -30,12 +30,12 @@
           <ion-spinner name="bubbles"></ion-spinner>
         </div>
         <ion-accordion-group>
-          <ion-accordion *ngFor="let skillTraits of filterredSkills" class="legends-item" [value]="filterredSkills.title">
+          <ion-accordion *ngFor="let skillTraits of filterredSkills" class="legends-item" [value]="skillTraits.title">
             <ion-item slot="header">
               <div class="flex-between item-header">
                 <div class="flex-between" style="align-items:center">
-                  <ion-thumbnail *ngIf="filterredSkills.image && item.image[0]">
-                    <img [src]="item.image[0].url" />
+                  <ion-thumbnail *ngIf="skillTraits.image && skillTraits.image[0]">
+                    <img [src]="skillTraits.image[0].url" />
                   </ion-thumbnail>
                   <div class="title-txt">{{ skillTraits.title }}</div>
                 </div>

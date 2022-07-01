@@ -1,3 +1,5 @@
+import { Image } from "./airtable-data.interface";
+
 export interface SkillTraits {
     cost: number;
     title: string;
@@ -5,4 +7,5 @@ export interface SkillTraits {
     tags: string[];
     effects: string[];
     description?: string;
+    image?: Image[];
 }
