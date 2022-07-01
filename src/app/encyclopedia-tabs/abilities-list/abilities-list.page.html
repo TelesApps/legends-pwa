@@ -37,12 +37,12 @@
         </div>
         <ion-accordion-group>
           <ion-accordion *ngFor="let ability of filteredAbilities" class="legends-item"
-            [value]="filteredAbilities.title">
+            [value]="ability.title">
             <ion-item slot="header">
               <div class="flex-between item-header">
                 <div class="flex-between" style="align-items:center">
-                  <ion-thumbnail *ngIf="filteredAbilities.image && item.image[0]">
-                    <img [src]="item.image[0].url" />
+                  <ion-thumbnail *ngIf="ability.image && ability.image[0]">
+                    <img [src]="ability.image[0].url" />
                   </ion-thumbnail>
                   <div class="title-txt">{{ ability.title }}</div>
                 </div>
@@ -61,9 +61,9 @@
                 <p>{{ ability.effect }}</p>
                 <p>{{ ability.description }}</p>
               </div>
-              <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
+              <!-- <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
                 Select Item
-              </ion-button>
+              </ion-button> -->
             </ion-list>
           </ion-accordion>
         </ion-accordion-group>

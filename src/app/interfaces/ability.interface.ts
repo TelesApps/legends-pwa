@@ -11,4 +11,5 @@ export interface Ability {
     title: string;
     turn_units_req: string;
     image?: Image[];
+    description: string;
 }
