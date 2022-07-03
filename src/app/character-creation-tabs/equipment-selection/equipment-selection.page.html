@@ -7,14 +7,16 @@
           <ion-col size="6">
             <div class="stats-box equipment-box">
               <div class="img-slot">
-                <ion-img src="../../../assets/icons/helmet-empty.png"></ion-img>
+                <ion-img [src]="getImgFromId(character.equipments.headId, 
+                  '../../../assets/icons/helmet-empty.png')">
+                </ion-img>
               </div>
               <div class="box-title"><b>Head</b></div>
               <div class="edit-icon icon-btn">
-                <ion-icon slot="end" name="pencil"></ion-icon>
+                <ion-icon slot="end" name="pencil" (click)="onSelectEquipment('head', character.equipments.headId)"></ion-icon>
               </div>
               <div class="box-body">
-                <span>Really long named Item</span>
+                <span>Leather Cap</span>
               </div>
               <div class="arrow-icon icon-btn">
                 <ion-icon *ngIf="!isShowHead" name="chevron-down-outline" (click)="isShowHead = true"></ion-icon>
@@ -35,11 +37,13 @@
           <ion-col size="6">
             <div class="stats-box equipment-box">
               <div class="img-slot">
-                <ion-img src="../../../assets/icons/cell-empty.png"></ion-img>
+                <ion-img [src]="getImgFromId(character.equipments.mainHandId, 
+                  '../../../assets/icons/main-hand-empty.png')">
+                </ion-img>
               </div>
               <div class="box-title">Main Hand</div>
               <div class="edit-icon icon-btn">
-                <ion-icon slot="end" name="pencil"></ion-icon>
+                <ion-icon slot="end" name="pencil" (click)="onSelectEquipment('weapon', character.equipments.mainHandId)"></ion-icon>
               </div>
               <div class="box-body">
                 <span>Really long named Item</span>

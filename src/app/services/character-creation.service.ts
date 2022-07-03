@@ -11,6 +11,12 @@ export class CharacterCreationService {
   goldPoints = 280;
   abilityPoints = 30;
   skillsPoints = 30;
+  itemSelection = {
+    currentlyEquipped: undefined,
+    bodyProperty: '',
+    isStartingItem: true,
+    onSelectedItem: undefined
+  }
   characterSubj: ReplaySubject<Character> = new ReplaySubject<Character>(1);
   statSubscription: Subscription
   constructor() {
@@ -29,7 +35,10 @@ export class CharacterCreationService {
   saveNewCharacterToCloud() {
     // Perform logic and function to save character to Firestore
     // Unsubscribe and delete data.
-    this.characterSubj.unsubscribe();
+    this.statSubscription.unsubscribe();
+  }
+
+  closeCreation() {
     this.statSubscription.unsubscribe();
   }
 

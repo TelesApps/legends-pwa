@@ -24,11 +24,16 @@ export class AirtableDataService {
   $allItems: ReplaySubject<Array<Item>> = new ReplaySubject<Array<Item>>(1);
   $skillsTraits: ReplaySubject<Array<SkillTraits>> = new ReplaySubject<Array<SkillTraits>>(1);
   $abilities: ReplaySubject<Array<Ability>> = new ReplaySubject<Array<Ability>>(1);
+  allItems: Array<Item> = [];
+  skillsTraits: Array<SkillTraits> =  [];
+  abilities: Array<Ability> = []
 
   constructor(private http: HttpClient) {
     // TO QUERY AIRTABLE FOR SPECIFIC PARAMATERS, USE SOMETHING LIKE THE CODE BELLOW
     //this.options['params'] = {filterByFormula: 'Weight=1'}
-
+    this.$allItems.subscribe(allItems => this.allItems = allItems);
+    this.$skillsTraits.subscribe(skillsTraits => this.skillsTraits = skillsTraits);
+    this.$abilities.subscribe(abilities => this.abilities = abilities);
   }
 
   loadItems() {
@@ -76,5 +81,19 @@ export class AirtableDataService {
       this.$abilities.next(allAbilities);
       this.$abilities.complete();
     })
+  }
+
+  getItemById(id: string): Item {
+    if(id) {
+      const item = this.allItems.find(i => i.airtable_id === id);
+      if(item) return item;
+      else {
+        console.error('Item not found');
+        return undefined
+      }
+    } else {
+      console.error('id is invalid', id);
+      return undefined
+    }
   }
 }

@@ -16,3 +16,4 @@ export interface Item {
     armor?: number;
     image?: Image[];
 }
+

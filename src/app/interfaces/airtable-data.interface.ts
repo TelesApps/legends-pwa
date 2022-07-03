@@ -11,6 +11,7 @@ export interface Record {
 }
 
 export interface Fields {
+    airtable_id?:            string;
     cost?:                   number;
     title?:                  string;
     components?:            string[];
@@ -21,7 +22,6 @@ export interface Fields {
     item_type?:              ItemType;
     crafting_requirements?: string[];
     tags?:                   string[];
-    airtable_id?:            string;
     image?:                 Image[];
     description?:           string;
     execution_cost?:        string[];
@@ -29,6 +29,7 @@ export interface Fields {
     points_req?:            number;
     prereq?:                string[];
     turn_units_req?:        string;
+    body_property:          string;
 }
 
 export enum DmgType {

@@ -13,7 +13,9 @@ import { CharacterCreationService } from '../services/character-creation.service
 export class CharacterCreationTabsPage implements OnInit {
 
   character: Character;
-  constructor(public modalController: ModalController, private router: Router, public creation: CharacterCreationService) { }
+  constructor(public modalController: ModalController, private router: Router, public creation: CharacterCreationService) {
+    this.creation.setCharacterStats();
+   }
 
   ngOnInit() {
     this.creation.characterSubj.subscribe((character) => this.character = character);
@@ -30,7 +32,8 @@ export class CharacterCreationTabsPage implements OnInit {
     });
     modal.present();
     const { data } = await modal.onWillDismiss();
-    if (data.isConfirm) {
+    if (data && data.isConfirm) {
+      this.creation.closeCreation();
       this.router.navigate(['/select-character']);
     }
   }
