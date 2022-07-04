@@ -38,11 +38,13 @@ const routes: Routes = [
   },
   {
     path: 'character-creation-tabs',
-    loadChildren: () => import('./character-creation-tabs/character-creation-tabs.module').then( m => m.CharacterCreationTabsPageModule)
+    loadChildren: () => import('./character-creation-tabs/character-creation-tabs.module').then( m => m.CharacterCreationTabsPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'encyclopedia-tabs',
-    loadChildren: () => import('./encyclopedia-tabs/encyclopedia-tabs.module').then( m => m.EncyclopediaTabsPageModule)
+    loadChildren: () => import('./encyclopedia-tabs/encyclopedia-tabs.module').then( m => m.EncyclopediaTabsPageModule),
+    canActivate: [AuthGuard]
   }
 ];
 @NgModule({

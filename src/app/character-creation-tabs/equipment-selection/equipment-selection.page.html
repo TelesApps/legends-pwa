@@ -13,16 +13,24 @@
               </div>
               <div class="box-title"><b>Head</b></div>
               <div class="edit-icon icon-btn">
-                <ion-icon slot="end" name="pencil" (click)="onSelectEquipment('head', character.equipments.headId)"></ion-icon>
+                <ion-icon slot="end" name="pencil" (click)="onSelectEquipment('head', character.equipments.headId)">
+                </ion-icon>
               </div>
               <div class="box-body">
-                <span>Leather Cap</span>
+                <span *ngIf="character.equipments.headId"
+                  (click)="isShowHead = !isShowHead">{{dataService.getItemById(character.equipments.headId).title}}</span>
+                <span *ngIf="!character.equipments.headId">
+                  <ion-button (click)="onSelectEquipment('head', character.equipments.headId)" expand="block"
+                    fill="clear">
+                    none
+                  </ion-button>
+                </span>
               </div>
-              <div class="arrow-icon icon-btn">
+              <div *ngIf="character.equipments.headId" class="arrow-icon icon-btn">
                 <ion-icon *ngIf="!isShowHead" name="chevron-down-outline" (click)="isShowHead = true"></ion-icon>
                 <ion-icon *ngIf="isShowHead" name="chevron-up-outline" (click)="isShowHead = false"></ion-icon>
               </div>
-              <div *ngIf="isShowHead" class="effects-area">
+              <div *ngIf="character.equipments.headId && isShowHead" class="effects-area">
                 +1A +3D
               </div>
             </div>
@@ -43,7 +51,8 @@
               </div>
               <div class="box-title">Main Hand</div>
               <div class="edit-icon icon-btn">
-                <ion-icon slot="end" name="pencil" (click)="onSelectEquipment('weapon', character.equipments.mainHandId)"></ion-icon>
+                <ion-icon slot="end" name="pencil"
+                  (click)="onSelectEquipment('weapon', character.equipments.mainHandId)"></ion-icon>
               </div>
               <div class="box-body">
                 <span>Really long named Item</span>

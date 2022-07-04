@@ -25,6 +25,7 @@ import { MyProfilePageModule } from './my-profile/my-profile.module';
 import { SelectCharacterPageModule } from './select-character/select-character.module';
 import { InformPlayerComponent } from './modals/inform-player/inform-player.component';
 import { ModalsModule } from './modals/modals.module';
+import { CharacterCreationService } from './services/character-creation.service';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -52,7 +53,7 @@ firebase.initializeApp(environment.firebaseConfig);
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     })],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CharacterCreationService, AirtableDataService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

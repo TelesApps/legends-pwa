@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isEmpty } from 'rxjs/operators';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
+import { CharacterCreationService } from 'src/app/services/character-creation.service';
 
 @Component({
   selector: 'app-items-list',
@@ -23,7 +24,8 @@ export class ItemsListPage implements OnInit {
   constructor(
     public airtable: AirtableDataService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private creation: CharacterCreationService
   ) {
   }
 
@@ -113,8 +115,10 @@ export class ItemsListPage implements OnInit {
   }
 
   onItemSelected(item: Item) {
+    this.creation.itemSelection.onSelectedItem = item;
     this.router.navigate([this.backUrl]);
     // use character-creation service to tell them the item selected;
+
   }
 
 

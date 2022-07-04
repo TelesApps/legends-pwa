@@ -53,6 +53,9 @@ ion-col {
     grid-row: 2;
     text-align: center;
     place-self: center;
+    span:hover {
+        cursor: pointer;
+    }
 }
 .arrow-icon {
     grid-column: 3;

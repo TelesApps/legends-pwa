@@ -17,9 +17,16 @@ export class EquipmentSelectionPage implements OnInit {
   constructor(public creation: CharacterCreationService, public dataService: AirtableDataService, private router: Router) { }
 
   ngOnInit() {
+    console.log('item selection: ', this.creation.itemSelection);
     this.creation.characterSubj.subscribe((character) => {
       this.character = character;
-    })
+    });
+    if(this.creation.itemSelection.onSelectedItem) {
+      this.character.equipments.headId = this.creation.itemSelection.onSelectedItem.airtable_id
+    }
+    setTimeout(() => {
+      console.log('character', this.character);
+    }, 1000);
   }
 
   onSelectEquipment(bodyProperty: string, currentId: string) {
@@ -31,6 +38,7 @@ export class EquipmentSelectionPage implements OnInit {
     this.creation.itemSelection.bodyProperty = bodyProperty;
     this.creation.itemSelection.isStartingItem = true;
     this.router.navigate(['/encyclopedia-tabs/items-list'], {
+      replaceUrl: true,
       queryParams: {
         breadcrumb: '/character-creation-tabs/equipment-selection',
         bodyProperty: bodyProperty,

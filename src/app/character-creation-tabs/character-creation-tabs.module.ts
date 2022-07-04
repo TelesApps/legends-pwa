@@ -29,6 +29,5 @@ import { StatsSelectionPageModule } from './stats-selection/stats-selection.modu
     StatsSelectionPageModule
   ],
   declarations: [CharacterCreationTabsPage],
-  providers: [CharacterCreationService]
 })
 export class CharacterCreationTabsPageModule {}
