@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { Character, CreateNewCharacter } from '../interfaces/character.interface';
+import { Item, ItemSelection } from '../interfaces/item.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +12,24 @@ export class CharacterCreationService {
   goldPoints = 280;
   abilityPoints = 30;
   skillsPoints = 30;
-  itemSelection = {
-    currentlyEquipped: undefined,
-    bodyProperty: '',
-    isStartingItem: true,
-    onSelectedItem: undefined
-  }
+  itemSelection: ItemSelection
   characterSubj: ReplaySubject<Character> = new ReplaySubject<Character>(1);
   statSubscription: Subscription
   constructor() {
     const character = CreateNewCharacter();
     this.characterSubj.next(character);
     this.setCharacterStats();
+    this.initItemSelection();
+  }
+
+  initItemSelection() {
+    this.itemSelection = {
+      currentlyEquipped: undefined,
+      bodyProperty: '',
+      hand: undefined,
+      isStartingItem: true,
+      onSelectedItem: undefined,
+    }
   }
 
   setCharacterStats() {

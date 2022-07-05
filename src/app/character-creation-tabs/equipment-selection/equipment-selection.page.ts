@@ -12,7 +12,6 @@ import { CharacterCreationService } from 'src/app/services/character-creation.se
 })
 export class EquipmentSelectionPage implements OnInit {
 
-  isShowHead: boolean = false;
   character: Character
   constructor(public creation: CharacterCreationService, public dataService: AirtableDataService, private router: Router) { }
 
@@ -20,16 +19,16 @@ export class EquipmentSelectionPage implements OnInit {
     console.log('item selection: ', this.creation.itemSelection);
     this.creation.characterSubj.subscribe((character) => {
       this.character = character;
+      if (this.creation.itemSelection.onSelectedItem) {
+        this.onEquipmentSelected(this.creation.itemSelection.onSelectedItem.airtable_id);
+      }
     });
-    if(this.creation.itemSelection.onSelectedItem) {
-      this.character.equipments.headId = this.creation.itemSelection.onSelectedItem.airtable_id
-    }
     setTimeout(() => {
       console.log('character', this.character);
     }, 1000);
   }
 
-  onSelectEquipment(bodyProperty: string, currentId: string) {
+  onSelectEquipment(bodyProperty: string, currentId: string, hand?: 'main-hand' | 'off-hand') {
     if (currentId) {
       const currentItem = this.dataService.getItemById(currentId);
       if (currentItem)
@@ -37,6 +36,7 @@ export class EquipmentSelectionPage implements OnInit {
     }
     this.creation.itemSelection.bodyProperty = bodyProperty;
     this.creation.itemSelection.isStartingItem = true;
+    this.creation.itemSelection.hand = hand;
     this.router.navigate(['/encyclopedia-tabs/items-list'], {
       replaceUrl: true,
       queryParams: {
@@ -45,6 +45,25 @@ export class EquipmentSelectionPage implements OnInit {
         isSelectType: bodyProperty
       }
     });
+  }
+
+  onEquipmentSelected(selectedId: string) {
+    if (this.creation.itemSelection.hand === 'main-hand') {
+      this.character.equipments.mainHandId = selectedId;
+    } else if (this.creation.itemSelection.hand === 'off-hand') {
+      this.character.equipments.offHandId = selectedId;
+    } else {
+      switch (this.creation.itemSelection.bodyProperty) {
+        case 'head': this.character.equipments.headId = selectedId;   break;
+        case 'chest': this.character.equipments.chestId = selectedId; break;
+        case 'hands': this.character.equipments.handsId = selectedId; break;
+        case 'legs' : this.character.equipments.legsId = selectedId;  break;
+        case 'boots' : this.character.equipments.feetId = selectedId; break;
+      }
+
+    }
+    this.creation.initItemSelection();
+
   }
 
   getImgFromId(id: string, defaultUrl: string): string {

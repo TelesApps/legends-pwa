@@ -17,3 +17,11 @@ export interface Item {
     image?: Image[];
 }
 
+export interface ItemSelection {
+    currentlyEquipped: Item,
+    bodyProperty: string,
+    hand?: undefined | 'main-hand' | 'off-hand',
+    isStartingItem: boolean,
+    onSelectedItem: Item
+  }
+
