@@ -51,7 +51,6 @@ export class SkillsTraitsListPage implements OnInit {
       });
     }
     // FILTER ITEM TAGS
-    console.log('item type filter: ', this.skillTagFilter);
     const newTagFilter: Array<SkillTraits> = [];
     if (this.skillTagFilter) {
       this.skillTagFilter.forEach(tagTxt => {

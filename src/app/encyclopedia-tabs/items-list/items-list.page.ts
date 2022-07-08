@@ -41,7 +41,12 @@ export class ItemsListPage implements OnInit {
         }
         if (params && params.bodyProperty) {
           this.bodyPropertyFilter = [];
-          this.bodyPropertyFilter.push(params.bodyProperty);
+          if(params.hand) {
+            this.bodyPropertyFilter.push('weapon');
+            this.bodyPropertyFilter.push('shield');
+          } else {
+            this.bodyPropertyFilter.push(params.bodyProperty);
+          }
         }
         if(params && params.breadcrumb) {
           this.backUrl = params.breadcrumb;
@@ -80,7 +85,6 @@ export class ItemsListPage implements OnInit {
       });
     }
     // FILTER ITEM TYPE
-    console.log('item type filter: ', this.itemTypeFilter);
     const newTypeFilter: Array<Item> = [];
     if (this.itemTypeFilter) {
       this.itemTypeFilter.forEach(type => {
@@ -110,7 +114,6 @@ export class ItemsListPage implements OnInit {
       if (newBodyPropertyFilter.length > 0) {
         this.filterredItems = newBodyPropertyFilter;
       }
-      console.log('property filter:', newBodyPropertyFilter);
     }
   }
 

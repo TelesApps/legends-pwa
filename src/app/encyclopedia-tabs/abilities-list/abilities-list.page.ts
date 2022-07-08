@@ -50,7 +50,6 @@ export class AbilitiesListPage implements OnInit {
       });
     }
     // FILTER BY TAGS
-    console.log('item type filter: ', this.tagFilterTxt);
     const newTagFilter: Array<Ability> = [];
     if (this.tagFilterTxt) {
       this.tagFilterTxt.forEach(tagTxt => {

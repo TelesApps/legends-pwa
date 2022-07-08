@@ -37,12 +37,14 @@ export class EquipmentSelectionPage implements OnInit {
     this.creation.itemSelection.bodyProperty = bodyProperty;
     this.creation.itemSelection.isStartingItem = true;
     this.creation.itemSelection.hand = hand;
+    const isSelectType = hand ? 'all' : bodyProperty;
     this.router.navigate(['/encyclopedia-tabs/items-list'], {
       replaceUrl: true,
       queryParams: {
         breadcrumb: '/character-creation-tabs/equipment-selection',
         bodyProperty: bodyProperty,
-        isSelectType: bodyProperty
+        isSelectType: isSelectType,
+        hand: hand,
       }
     });
   }
@@ -52,6 +54,8 @@ export class EquipmentSelectionPage implements OnInit {
       this.character.equipments.mainHandId = selectedId;
     } else if (this.creation.itemSelection.hand === 'off-hand') {
       this.character.equipments.offHandId = selectedId;
+    } else if (this.creation.itemSelection.bodyProperty === 'trinket') {
+      this.character.equipments.trinketsId.push(selectedId);
     } else {
       switch (this.creation.itemSelection.bodyProperty) {
         case 'head': this.character.equipments.headId = selectedId;   break;
@@ -63,7 +67,10 @@ export class EquipmentSelectionPage implements OnInit {
 
     }
     this.creation.initItemSelection();
+  }
 
+  onRemoveTrinket(index: number) {
+    this.character.equipments.trinketsId.splice(index, 1);
   }
 
   getImgFromId(id: string, defaultUrl: string): string {
