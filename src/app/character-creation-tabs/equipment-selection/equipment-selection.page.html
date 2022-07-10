@@ -87,7 +87,8 @@
           <!-- OFF HAND -->
           <ion-col size="6">
             <div *ngIf="{ isShowOffHand: false } as variable" class="stats-box equipment-box">
-              <div class="img-slot">
+              <div class="img-slot"
+                [ngClass]="{'off-hand-shadow': character.equipments.offHandId && character.equipments.mainHandId == character.equipments.offHandId}">
                 <ion-img [src]="getImgFromId(character.equipments.offHandId, 
                   '../../../assets/icons/main-hand-empty.png')">
                 </ion-img>
@@ -286,7 +287,9 @@
               <div class="trinkets-list">
                 <div *ngFor="let trinketId of character.equipments.trinketsId; let i = index" class="trinket">
                   <div class="img-trinket">
-                    <div class="remove-trinket-btn btn-effect" (click)="onRemoveTrinket(i)"><ion-icon name="close"></ion-icon></div>
+                    <div class="remove-trinket-btn btn-effect" (click)="onRemoveTrinket(i)">
+                      <ion-icon name="close"></ion-icon>
+                    </div>
                     <ion-img [src]="getImgFromId(trinketId, 
                     '')">
                     </ion-img>
@@ -307,14 +310,21 @@
         <ion-row class="backpack-row">
           <ion-col size="12">
             <div class="stats-box equipment-box h-100 backpack">
-              <div class="backpack-items">
-                <div class="box-title">Backpack</div>
-                <div>Sword</div>
-                <div>Shield</div>
-                <div>Arrows</div>
+              <div class="box-title"><b>Backpack</b></div>
+              <div class="backpack-items-list">
+                <div *ngFor="let itemId of character.equipments.backPack; let i = index" class="backpack-item">
+                  <div class="img-backpackItem ">
+                    <div class="remove-trinket-btn btn-effect" (click)="onRemoveBackpack(i)">
+                      <ion-icon name="close"></ion-icon>
+                    </div>
+                    <ion-img [src]="getImgFromId(itemId, 
+                    '')">
+                    </ion-img>
+                  </div>
+                </div>
               </div>
               <div class="add-icon">
-                <ion-fab-button size="small">
+                <ion-fab-button size="small" (click)="onSelectEquipment('equipment', '', 'backpack')">
                   <ion-icon name="add"></ion-icon>
                 </ion-fab-button>
               </div>

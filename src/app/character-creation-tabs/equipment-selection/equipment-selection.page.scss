@@ -39,6 +39,14 @@ ion-col {
     }
 }
 
+.off-hand-shadow {
+    background-color: var(--ion-color-medium);
+    border-radius: 12px;
+    ion-img {
+        filter: grayscale(1) !important; 
+    }
+}
+
 .box-title {
     grid-column: 2;
     grid-row: 1;
@@ -68,7 +76,7 @@ ion-col {
     grid-column: 1/4;
     grid-row: 3;
     text-align: center;
-    background-color: var(--ion-color-medium-tint);
+    background-color: var(--ion-color-medium);
     border-radius: 4px;
 }
 .trinkets-list {
@@ -104,9 +112,18 @@ ion-col {
     display: flex;
     flex-direction: column;
 }
-
-.backpack-items {
+.backpack-items-list {
+    display: flex;
     flex-grow: 1;
+}
+.backpack-item {
+    margin: 4px;
+}
+.img-backpackItem {
+    width: 80px;
+    ion-img {
+        width: 80px;
+    }
 }
 
 .add-icon {

@@ -20,7 +20,7 @@ export interface Item {
 export interface ItemSelection {
     currentlyEquipped: Item,
     bodyProperty: string,
-    hand?: undefined | 'main-hand' | 'off-hand',
+    hand?: undefined | 'main-hand' | 'off-hand' | 'backpack',
     isStartingItem: boolean,
     onSelectedItem: Item
   }

@@ -41,7 +41,9 @@ export class ItemsListPage implements OnInit {
         }
         if (params && params.bodyProperty) {
           this.bodyPropertyFilter = [];
-          if(params.hand) {
+          if(params.hand === 'backpack') {
+            this.bodyPropertyFilter.push('equipment');
+          } else if(params.hand) {
             this.bodyPropertyFilter.push('weapon');
             this.bodyPropertyFilter.push('shield');
           } else {
