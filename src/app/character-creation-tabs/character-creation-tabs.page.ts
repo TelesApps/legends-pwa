@@ -14,7 +14,7 @@ export class CharacterCreationTabsPage implements OnInit {
 
   character: Character;
   constructor(public modalController: ModalController, private router: Router, public creation: CharacterCreationService) {
-    this.creation.setCharacterStats();
+    //this.creation.setCharacterStats();
    }
 
   ngOnInit() {

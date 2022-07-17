@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Character } from 'src/app/interfaces/character.interface';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
+import { CalculationsService } from 'src/app/services/calculations.service';
 import { CharacterCreationService } from 'src/app/services/character-creation.service';
 
 @Component({
@@ -13,7 +14,12 @@ import { CharacterCreationService } from 'src/app/services/character-creation.se
 export class EquipmentSelectionPage implements OnInit {
 
   character: Character
-  constructor(public creation: CharacterCreationService, public dataService: AirtableDataService, private router: Router) { }
+  constructor(
+    public creation: CharacterCreationService, 
+    public dataService: AirtableDataService, 
+    private router: Router, 
+    private calculation: CalculationsService
+    ) { }
 
   ngOnInit() {
     console.log('item selection: ', this.creation.itemSelection);
@@ -50,6 +56,7 @@ export class EquipmentSelectionPage implements OnInit {
   }
 
   onEquipmentSelected(selectedId: string) {
+    this.calculation.calculateEffectsFromStrings(this.creation.itemSelection.onSelectedItem.effects);
     if (this.creation.itemSelection.hand === 'main-hand') {
       this.character.equipments.mainHandId = selectedId;
       if (this.isTwoHands(selectedId)) {

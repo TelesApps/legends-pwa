@@ -1,5 +1,5 @@
 export interface StatusEffect {
-    id?: number;
+    id?: string;
     stat: Stat;
     value: number;
     duration?: number;
@@ -7,6 +7,7 @@ export interface StatusEffect {
 }
 
 export enum Stat {
-    Health, Stamina, Power, RangeAttack, MeleeAttack, Defence, Strength, Agility, Accuracy, Perception, Mental, Movement,
+    Health, Stamina, Power, RangeAttack, MeleeAttack, DamageDelt, Defence, Strength, Agility, Accuracy, Perception, Mental, Movement,
+    Crit, Armor, DamageResistance,
     stealth, lockPicking, quickHands, persuasion, intimidation, engineering, tracking, scoutScavange, mining, herbalism, carryCapacity
 }

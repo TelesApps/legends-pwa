@@ -26,6 +26,7 @@ import { SelectCharacterPageModule } from './select-character/select-character.m
 import { InformPlayerComponent } from './modals/inform-player/inform-player.component';
 import { ModalsModule } from './modals/modals.module';
 import { CharacterCreationService } from './services/character-creation.service';
+import { CalculationsService } from './services/calculations.service';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -53,7 +54,12 @@ firebase.initializeApp(environment.firebaseConfig);
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     })],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, CharacterCreationService, AirtableDataService],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    CharacterCreationService,
+    AirtableDataService,
+    CalculationsService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

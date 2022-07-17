@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { Character, CreateNewCharacter } from '../interfaces/character.interface';
 import { Item, ItemSelection } from '../interfaces/item.interface';
+import { AirtableDataService } from './airtable-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,11 @@ export class CharacterCreationService {
   itemSelection: ItemSelection
   characterSubj: ReplaySubject<Character> = new ReplaySubject<Character>(1);
   statSubscription: Subscription
-  constructor() {
+  constructor(private airtable: AirtableDataService) {
+    this.calculateCharacterStats();
+    this.initItemSelection();
     const character = CreateNewCharacter();
     this.characterSubj.next(character);
-    this.setCharacterStats();
-    this.initItemSelection();
   }
 
   initItemSelection() {
@@ -32,11 +33,28 @@ export class CharacterCreationService {
     }
   }
 
-  setCharacterStats() {
+  public updateCreationCharacter(character: Character) {
+    this.characterSubj.next(character);
+  }
+
+  private calculateCharacterStats() {
     // Set character's calculated stat based on user selection
     this.statSubscription = this.characterSubj.subscribe((character) => {
       character.primaryStats.maxHealth = character.primaryStats.maxStamina + (character.primaryStats.core_strength * 10) / 2;
+      if(this.airtable.allItems && this.airtable.allItems.length > 0) {
+        this.calculateEquipmentModifiers(character);
+      }
     })
+  }
+
+  calculateEquipmentModifiers(character: Character) {
+    const headItem: Item = this.airtable.getItemById(character.equipments.headId);
+    const mainHandItem: Item = this.airtable.getItemById(character.equipments.mainHandId);
+    const offHandItem: Item = this.airtable.getItemById(character.equipments.offHandId);
+    const chestItem: Item = this.airtable.getItemById(character.equipments.chestId);
+    const handsItem: Item = this.airtable.getItemById(character.equipments.handsId);
+    const legsItem: Item = this.airtable.getItemById(character.equipments.legsId);
+    const feetItem: Item = this.airtable.getItemById(character.equipments.feetId);
   }
 
   saveNewCharacterToCloud() {
