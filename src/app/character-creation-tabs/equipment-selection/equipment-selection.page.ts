@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { Character } from 'src/app/interfaces/character.interface';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
@@ -15,23 +16,19 @@ export class EquipmentSelectionPage implements OnInit {
 
   character: Character
   constructor(
-    public creation: CharacterCreationService, 
-    public dataService: AirtableDataService, 
-    private router: Router, 
-    private calculation: CalculationsService
-    ) { }
+    public creation: CharacterCreationService,
+    public dataService: AirtableDataService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     console.log('item selection: ', this.creation.itemSelection);
-    this.creation.characterSubj.subscribe((character) => {
+    this.creation.characterSubj.pipe(first()).subscribe((character) => {
       this.character = character;
       if (this.creation.itemSelection.onSelectedItem) {
         this.onEquipmentSelected(this.creation.itemSelection.onSelectedItem.airtable_id);
       }
     });
-    setTimeout(() => {
-      console.log('character', this.character);
-    }, 1000);
   }
 
   onSelectEquipment(bodyProperty: string, currentId: string, hand?: 'main-hand' | 'off-hand' | 'backpack') {
@@ -56,13 +53,12 @@ export class EquipmentSelectionPage implements OnInit {
   }
 
   onEquipmentSelected(selectedId: string) {
-    this.calculation.calculateEffectsFromStrings(this.creation.itemSelection.onSelectedItem.effects);
     if (this.creation.itemSelection.hand === 'main-hand') {
       this.character.equipments.mainHandId = selectedId;
       if (this.isTwoHands(selectedId)) {
         this.character.equipments.offHandId = selectedId;
       } else {
-        if(this.isTwoHands(this.character.equipments.offHandId)) {
+        if (this.character.equipments.offHandId && this.isTwoHands(this.character.equipments.offHandId)) {
           this.character.equipments.offHandId = '';
         }
       }
@@ -91,12 +87,36 @@ export class EquipmentSelectionPage implements OnInit {
       }
 
     }
+    this.creation.characterSubj.next(this.character);
+
     this.creation.initItemSelection();
   }
 
-  isTwoHands(id: string){
-    const item = this.dataService.getItemById(id);
-    if(item && item.tags) {
+  onRemoveEquipment(bodyPart: 'head' | 'main-hand' | 'off-hand' | 'chest' | 'hands' | 'legs' | 'feet', equipmentId: string) {
+    const item = this.dataService.getItemById(equipmentId);
+    // give character cost of item back
+
+    if (bodyPart === 'head') this.character.equipments.headId = '';
+    if (bodyPart === 'main-hand') {
+      this.character.equipments.mainHandId = ''
+      if (this.isTwoHands('', item)) this.character.equipments.offHandId = '';
+    };
+    if (bodyPart === 'off-hand') {
+      this.character.equipments.offHandId = ''
+      if (this.isTwoHands('', item)) this.character.equipments.mainHandId = '';
+    };
+    if (bodyPart === 'chest') this.character.equipments.chestId = '';
+    if (bodyPart === 'hands') this.character.equipments.handsId = '';
+    if (bodyPart === 'legs') this.character.equipments.legsId = '';
+    if (bodyPart === 'feet') this.character.equipments.feetId = '';
+    this.creation.characterSubj.next(this.character);
+  }
+
+  isTwoHands(id: string, item?: Item) {
+    if (!item) {
+      item = this.dataService.getItemById(id);
+    }
+    if (item && item.tags) {
       return item.tags.find(t => t == '2 Hands' || t == '2 hands' || t == '2Hands' || t == '2hands' || t == '2 Hand' || t == '2 hand');
     } else {
       return '';
@@ -105,6 +125,7 @@ export class EquipmentSelectionPage implements OnInit {
 
   onRemoveTrinket(index: number) {
     this.character.equipments.trinketsId.splice(index, 1);
+    this.creation.characterSubj.next(this.character);
   }
   onRemoveBackpack(index: number) {
     this.character.equipments.backPack.splice(index, 1);
