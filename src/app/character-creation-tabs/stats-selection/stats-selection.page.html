@@ -15,7 +15,7 @@
                     </ion-col>
                     <ion-col style="display: flex; align-items: center;" size="3">
                         <ion-thumbnail class="portrait">
-                            <img src="*" />
+                            <img src="" />
                         </ion-thumbnail>
                     </ion-col>
                 </ion-row>
@@ -65,23 +65,23 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Ranged Attack: {{ character.primaryStats.core_ranged }}
+                                Ranged Attack: {{ character.primaryStats.core_ranged | number: '1.0-1' }}
                             </span>
-                            <span class="ion-text-end">Crit: 5%</span>
+                            <span class="ion-text-end">Crit: {{ character.primaryStats.core_critChance | percent: '1.1-2' }}</span>
                         </div>
                         <!-- Melee Attack -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Melee Attack: {{ character.primaryStats.core_melee }}
+                                Melee Attack: {{ character.primaryStats.core_melee | number: '1.0-1'  }}
                             </span>
-                            <span class="ion-text-end">Crit: 5%</span>
+                            <span class="ion-text-end">Crit: {{ character.primaryStats.core_critChance | percent: '1.1-2' }}</span>
                         </div>
                         <!-- Defence -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Defence: {{ character.primaryStats.core_defense }}
+                                Defence: {{ character.primaryStats.core_defense | number: '1.0-1'  }}
                             </span>
                         </div>
                         <!-- Strength -->
@@ -163,7 +163,7 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Movement: {{ character.primaryStats.core_movement }}
+                                Movement: {{ character.primaryStats.core_movement | number: '1.0-1'  }}
                             </span>
                         </div>
                     </ion-col>

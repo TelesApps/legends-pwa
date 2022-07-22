@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { first, map, take } from 'rxjs/operators';
-import { Character } from '../interfaces/character.interface';
+import { Character, CreateNewCharacter } from '../interfaces/character.interface';
 import { Item } from '../interfaces/item.interface';
 import { Player } from '../interfaces/player.interface';
-import { StatusEffect } from '../interfaces/status-effect.interface';
+import { Stat, StatusEffect } from '../interfaces/status-effect.interface';
 import { AirtableDataService } from './airtable-data.service';
 import { AuthService } from './auth.service';
 import { CalculationsService } from './calculations.service';
@@ -51,14 +51,23 @@ export class CharactersService {
   // Character Creation Service is also calling this to make this calculation, hence the Character input value
   calculateCharacterStats(character: Character) {
     // Set character's calculated stat based on user selection
-    // THE MATH FOR EACH CALCULATION IS DEFINED HERE BUT IS BASED ON THE CHARACTER SPREADSHEET 
-      character.primaryStats.maxHealth = character.primaryStats.maxStamina + (character.primaryStats.core_strength * 10) / 2;
+    // THE MATH FOR EACH CALCULATION IS DEFINED HERE BUT IS BASED ON THE CHARACTER SPREADSHEET (see readme file)
+    // First calculate Core Stats
+    character.primaryStats.maxHealth = character.primaryStats.maxStamina + (character.primaryStats.core_strength * 10) / 2;
+    character.primaryStats.core_ranged = (character.primaryStats.core_accuracy * 0.75) + (character.primaryStats.core_perception * 0.25);
+    character.primaryStats.core_melee = (character.primaryStats.core_strength * 0.6) + (character.primaryStats.core_agility * 0.4);
+    character.primaryStats.core_defense = (character.primaryStats.core_strength * 0.4) + (character.primaryStats.core_agility * 0.6);
+    character.primaryStats.core_movement = (6 + character.primaryStats.core_agility) / 2;
+    // Calculate weapon modifiers
+    if (this.airtable.allItems && this.airtable.allItems.length > 0) {
+      this.calculateEquipmentModifiers(character);
+    } else {
+      console.error('Items not available from Airtable');
+      this.airtable.loadItems();
+    }
+    // Add weapon modifiers to stats
+    console.log('character in creation : ', character);
 
-      if(this.airtable.allItems && this.airtable.allItems.length > 0) {
-        this.calculateEquipmentModifiers(character);
-      }
-      console.log('character in creation : ', character);
-    
   }
 
   calculateEquipmentModifiers(character: Character) {
@@ -154,6 +163,48 @@ export class CharactersService {
     }
     character.primaryStats.maxArmor = totalArmor;
 
+  }
+
+  addEquipmentModifiersToStats(character: Character) {
+    let maxArmor;
+    let armor;
+    let dmgResistance;
+    let maxHealth;
+    let health;
+    let maxStamina;
+    let stamina;
+    let maxPower;
+    let power;
+    let rangedAttack;
+    let rangedDmgModifier;
+    let meleeAttack;
+    let meleeDmgModifier;
+    let defense;
+    let strength;
+    let agility;
+    let accuracy = character.primaryStats.core_accuracy;
+    let perception;
+    let mental;
+    let movement;
+    let critChance;
+    let stealth;
+    let lockPicking;
+    let quickHands;
+    let persuasion;
+    let intimidation;
+    let engineering;
+    let tracking;
+    let scoutScavange;
+    let mining;
+    let herbalism;
+    let alchemy;
+    let carryCapacity;
+
+    character.equipmentModifier.forEach(modifier => {
+      if (modifier.stat === Stat.Accuracy) accuracy += modifier.value;
+    });
+
+    character.primaryStats.accuracy = accuracy;
   }
 
   isTwoHands(id: string, item?: Item) {
