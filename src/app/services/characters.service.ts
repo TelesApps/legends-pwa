@@ -66,6 +66,12 @@ export class CharactersService {
       this.airtable.loadItems();
     }
     // Add weapon modifiers to stats
+    this.addModifiersToStats(character, character.equipmentModifier);
+    // #TODO Add additional Modifiers calculation from Skills and Traits Here
+
+    // Recalculate Melee Attack, Ranged Attack and Defence which may have been effected by Skills and Traits
+
+
     console.log('character in creation : ', character);
 
   }
@@ -93,10 +99,13 @@ export class CharactersService {
     }
     if (character.equipments.mainHandId) {
       const mainHandItem: Item = this.airtable.getItemById(character.equipments.mainHandId);
+      let isRanged = false;
+      if (mainHandItem.tags && mainHandItem.tags.find(t => t === 'Range' || t === 'range'))
+        isRanged = true;
       totalArmor += mainHandItem.armor;
       if (mainHandItem.effects && mainHandItem.effects.length > 0) {
         const effects: StatusEffect[] =
-          this.calculations.calculateEffectsFromStrings(mainHandItem.effects, 'main_hand-' + character.equipments.mainHandId);
+          this.calculations.calculateEffectsFromStrings(mainHandItem.effects, 'main_hand-' + character.equipments.mainHandId, isRanged);
         character.equipmentModifier = character.equipmentModifier.concat(effects);
       }
     }
@@ -104,8 +113,11 @@ export class CharactersService {
       const offHandItem: Item = this.airtable.getItemById(character.equipments.offHandId);
       totalArmor += offHandItem.armor;
       if (offHandItem.effects && offHandItem.effects.length > 0) {
+        let isRanged = false;
+        if (offHandItem.tags && offHandItem.tags.find(t => t === 'Range' || t === 'range'))
+          isRanged = true;
         const effects: StatusEffect[] =
-          this.calculations.calculateEffectsFromStrings(offHandItem.effects, 'off_hand-' + character.equipments.offHandId);
+          this.calculations.calculateEffectsFromStrings(offHandItem.effects, 'off_hand-' + character.equipments.offHandId, isRanged);
         // #TODO Add logic here to determine if effects can be full value because of an ability or trait
         if (offHandItem.body_property.toLowerCase() === 'weapon') {
           effects.forEach(effect => { effect.value = effect.value / 2; });
@@ -162,49 +174,120 @@ export class CharactersService {
       });
     }
     character.primaryStats.maxArmor = totalArmor;
-
+    return character;
   }
 
-  addEquipmentModifiersToStats(character: Character) {
-    let maxArmor;
-    let armor;
-    let dmgResistance;
-    let maxHealth;
-    let health;
-    let maxStamina;
-    let stamina;
-    let maxPower;
-    let power;
-    let rangedAttack;
-    let rangedDmgModifier;
-    let meleeAttack;
-    let meleeDmgModifier;
-    let defense;
-    let strength;
-    let agility;
+  addModifiersToStats(character: Character, modifiers: Array<StatusEffect>) {
+    // 1- Creates a value from the core stat.
+    // 2- Adds all of the modifiers to that value.
+    // 3- Assigns all of that value to the proper stat, not the core;
+    // Health Stamina and Power are ommited from here since they change per turn
+    let maxArmor = character.primaryStats.maxArmor;
+    let armor = character.primaryStats.armor;
+    let dmgResistance = character.primaryStats.dmgResistance;
+    // let health = character.primaryStats.health;
+    let maxStamina = character.primaryStats.maxStamina;
+    // let stamina = character.primaryStats.stamina;
+    let maxPower = character.primaryStats.maxPower;
+    //let power = character.primaryStats.power;
+    let rangedDmgModifier = character.primaryStats.rangedDmgModifier;
+    let meleeDmgModifier = character.primaryStats.meleeDmgModifier;
+    let strength = character.primaryStats.core_strength;
+    let agility = character.primaryStats.core_agility;
     let accuracy = character.primaryStats.core_accuracy;
-    let perception;
-    let mental;
-    let movement;
-    let critChance;
-    let stealth;
-    let lockPicking;
-    let quickHands;
-    let persuasion;
-    let intimidation;
-    let engineering;
-    let tracking;
-    let scoutScavange;
-    let mining;
-    let herbalism;
-    let alchemy;
-    let carryCapacity;
+    let perception = character.primaryStats.core_perception;
+    let mental = character.primaryStats.core_mental;
+    let critChance = character.primaryStats.core_critChance;
+    let stealth = character.secondaryStats.core_stealth;
+    let lockPicking = character.secondaryStats.core_lockPicking;
+    let quickHands = character.secondaryStats.core_quickHands;
+    let persuasion = character.secondaryStats.core_persuasion;
+    let intimidation = character.secondaryStats.core_intimidation;
+    let engineering = character.secondaryStats.core_engineering;
+    let tracking = character.secondaryStats.core_tracking;
+    let scoutScavange = character.secondaryStats.core_scoutScavange;
+    let mining = character.secondaryStats.core_mining;
+    let herbalism = character.secondaryStats.core_herbalism;
+    let alchemy = character.secondaryStats.core_alchemy;
+    let carryCapacity = character.secondaryStats.core_carryCapacity;
 
-    character.equipmentModifier.forEach(modifier => {
+    let maxHealthBonus = 0;
+    let rangedAttackBonus = 0;
+    let meleeAttackBonus = 0;
+    let defenseBonus = 0;
+    let movementBonus = 0;
+
+    modifiers.forEach(modifier => {
       if (modifier.stat === Stat.Accuracy) accuracy += modifier.value;
-    });
+      if (modifier.stat === Stat.MaxArmor) maxArmor += modifier.value;
+      if (modifier.stat === Stat.Armor) armor += modifier.value;
+      if (modifier.stat === Stat.DamageResistance) dmgResistance += modifier.value;
+      if (modifier.stat === Stat.MaxStamina) maxStamina += modifier.value;
+      if (modifier.stat === Stat.MaxPower) maxPower += modifier.value;
+      if (modifier.stat === Stat.RangeDmdDelt) rangedDmgModifier += modifier.value;
+      if (modifier.stat === Stat.MeleeDmgDelt) meleeDmgModifier += modifier.value;
+      if (modifier.stat === Stat.Strength) strength += modifier.value;
+      if (modifier.stat === Stat.Agility) agility += modifier.value;
+      if (modifier.stat === Stat.Perception) perception += modifier.value;
+      if (modifier.stat === Stat.Mental) mental += modifier.value;
+      if (modifier.stat === Stat.Crit) critChance += modifier.value;
+      if (modifier.stat === Stat.stealth) stealth += modifier.value;
+      if (modifier.stat === Stat.lockPicking) lockPicking += modifier.value;
+      if (modifier.stat === Stat.quickHands) quickHands += modifier.value;
+      if (modifier.stat === Stat.persuasion) persuasion += modifier.value;
+      if (modifier.stat === Stat.intimidation) intimidation += modifier.value;
+      if (modifier.stat === Stat.engineering) engineering += modifier.value;
+      if (modifier.stat === Stat.tracking) tracking += modifier.value;
+      if (modifier.stat === Stat.scoutScavange) scoutScavange += modifier.value;
+      if (modifier.stat === Stat.mining) mining += modifier.value;
+      if (modifier.stat === Stat.herbalism) herbalism += modifier.value;
+      if (modifier.stat === Stat.alchemy) alchemy += modifier.value;
+      if (modifier.stat === Stat.carryCapacity) carryCapacity += modifier.value;
 
+      if (modifier.stat === Stat.MaxHealth) maxHealthBonus += modifier.value;
+      if (modifier.stat === Stat.RangeAttack) rangedAttackBonus += modifier.value;
+      if (modifier.stat === Stat.MeleeAttack) meleeAttackBonus += modifier.value;
+      if (modifier.stat === Stat.Defence) defenseBonus += modifier.value;
+      if (modifier.stat === Stat.Movement) movementBonus += modifier.value;
+    });
     character.primaryStats.accuracy = accuracy;
+    character.primaryStats.maxArmor = maxArmor;
+    character.primaryStats.armor = armor;
+    character.primaryStats.dmgResistance = dmgResistance;
+    character.primaryStats.maxStamina = maxStamina;
+    character.primaryStats.maxPower = maxPower;
+    character.primaryStats.rangedDmgModifier = rangedDmgModifier;
+    character.primaryStats.meleeDmgModifier = meleeDmgModifier;
+    character.primaryStats.strength = strength;
+    character.primaryStats.agility = agility;
+    character.primaryStats.perception = perception;
+    character.primaryStats.mental = mental;
+    character.primaryStats.critChance = critChance;
+    character.secondaryStats.stealth = stealth;
+    character.secondaryStats.lockPicking = lockPicking;
+    character.secondaryStats.quickHands = quickHands;
+    character.secondaryStats.persuasion = persuasion;
+    character.secondaryStats.intimidation = intimidation;
+    character.secondaryStats.engineering = engineering;
+    character.secondaryStats.tracking = tracking;
+    character.secondaryStats.scoutScavange = scoutScavange;
+    character.secondaryStats.mining = mining;
+    character.secondaryStats.herbalism = herbalism;
+    character.secondaryStats.alchemy = alchemy;
+    character.secondaryStats.carryCapacity = carryCapacity;
+    // Stats bellow are dependent on certain stats above;
+    // #TODO add the logic bellow to all the applicable stats ie: stealth, intimidation etc
+    character.primaryStats.maxHealth =
+      (character.primaryStats.maxStamina + (character.primaryStats.strength * 10) / 2) + maxHealthBonus;
+    character.primaryStats.rangedAttack =
+      (character.primaryStats.accuracy * 0.75) + (character.primaryStats.perception * 0.25) + rangedAttackBonus;
+    character.primaryStats.meleeAttack =
+      (character.primaryStats.strength * 0.6) + (character.primaryStats.agility * 0.4) + meleeAttackBonus;
+    character.primaryStats.defense =
+      (character.primaryStats.strength * 0.4) + (character.primaryStats.agility * 0.6) + defenseBonus;
+    character.primaryStats.movement = ((6 + character.primaryStats.agility) / 2) + movementBonus;
+
+    return character;
   }
 
   isTwoHands(id: string, item?: Item) {

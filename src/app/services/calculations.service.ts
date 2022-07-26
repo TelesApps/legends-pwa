@@ -9,7 +9,7 @@ export class CalculationsService {
 
   constructor() { }
 
-  calculateEffectsFromStrings(effects: string[], id?: string) {
+  calculateEffectsFromStrings(effects: string[], id?: string, isRanged?: boolean) {
     const statusEffects: StatusEffect[] = [];
     effects.forEach(effect => {
       const valuestringArray = effect.match(/-?\d+/g);
@@ -22,8 +22,8 @@ export class CalculationsService {
         valueString = (Number.parseFloat(valueString) / 100).toPrecision(1);
       }
       const statusStringArray = effect.match(/[a-zA-Z]+/g)
-      let statusString; 
-      if(statusStringArray && statusStringArray.length > 0) {
+      let statusString;
+      if (statusStringArray && statusStringArray.length > 0) {
         statusString = statusStringArray[0].toLowerCase();
       }
       let status: Stat;
@@ -34,7 +34,10 @@ export class CalculationsService {
       if (statusString === 'a' || statusString === 'attack') status = Stat.MeleeAttack;
       if (statusString === 'ma' || statusString === 'melee') status = Stat.MeleeAttack;
       if (statusString === 'counter') status = Stat.Counter;
-      if (statusString === 'dmg' || statusString === 'damage') status = Stat.DamageDelt;
+      if (statusString === 'dmg' || statusString === 'damage') {
+        if (isRanged) status = Stat.RangeDmdDelt
+        else status = Stat.MeleeDmgDelt;
+      }
       if (statusString === 'd' || statusString === 'defence') status = Stat.Defence;
       if (statusString === 'str' || statusString === 'strength') status = Stat.Strength;
       if (statusString === 'ag' || statusString === 'agility') status = Stat.Agility;
@@ -47,7 +50,7 @@ export class CalculationsService {
       if (statusString === 'armor' || statusString === 'armore') status = Stat.Armor;
       if (statusString === 'res' || statusString === 'resistance') status = Stat.DamageResistance;
       if (statusString === 'stealth') status = Stat.stealth;
-      if(!status) return
+      if (!status) return
       const statEffect: StatusEffect = {
         id: id,
         stat: status,

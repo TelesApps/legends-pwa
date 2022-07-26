@@ -42,6 +42,7 @@ export class CharacterCreationService {
     // Set character's calculated stat based on user selection
     this.statSubscription = this.characterSubj.subscribe((character) => {
       this.characterSer.calculateCharacterStats(character);
+      //this.characterSer.addModifiersToStats(character, character.equipmentModifier);
       console.log('character in creation : ', character);
     })
   }

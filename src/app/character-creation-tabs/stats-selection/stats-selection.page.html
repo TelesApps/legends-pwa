@@ -8,10 +8,10 @@
                             <ion-label position="floating">Name</ion-label>
                             <ion-input type="text" placeholder="Awesome Input"></ion-input>
                         </ion-item>
-                        <ion-item>
+                        <!-- <ion-item>
                             <ion-label position="floating">Bios</ion-label>
                             <ion-input type="text" placeholder="Awesome Input"></ion-input>
-                        </ion-item>
+                        </ion-item> -->
                     </ion-col>
                     <ion-col style="display: flex; align-items: center;" size="3">
                         <ion-thumbnail class="portrait">
@@ -28,20 +28,22 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Health: {{ character.primaryStats.maxHealth }}
+                                <span>Health: {{ character.primaryStats.maxHealth }}</span>
                             </span>
                         </div>
                         <!-- Stamina -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Stamina: {{ character.primaryStats.maxStamina }}
+                                <span>Stamina: {{ character.primaryStats.maxStamina }}</span>
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('Stam', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Stam', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('Stam', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Stam', 1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -50,10 +52,11 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Power: {{ character.primaryStats.maxPower }}
+                                <span>Power: {{ character.primaryStats.maxPower }}</span>
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('P', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('P', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
                                 <ion-button (click)="onStatChange('P', 1)" size="small" color="secondary" shape="round">
@@ -65,36 +68,89 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Ranged Attack: {{ character.primaryStats.core_ranged | number: '1.0-1' }}
+                                <span>Ranged Attack: {{ character.primaryStats.core_ranged | number: '1.0-1' }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged < 0,
+                                    'green-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.rangedAttack - character.primaryStats.core_ranged >= 0">
+                                        +</span>{{ character.primaryStats.rangedAttack -
+                                    character.primaryStats.core_ranged | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged < 0,
+                                    'green-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged > 0 }">{{
+                                    character.primaryStats.rangedAttack | number: '1.0-0' }}</span>)
                             </span>
-                            <span class="ion-text-end">Crit: {{ character.primaryStats.core_critChance | percent: '1.1-2' }}</span>
+                            <span class="ion-text-end">
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>Dmg:
+                                {{ character.primaryStats.rangedDmgModifier | number: '1.0-1'}}
+                            </span>
                         </div>
                         <!-- Melee Attack -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Melee Attack: {{ character.primaryStats.core_melee | number: '1.0-1'  }}
+                                <span>Melee Attack: {{ character.primaryStats.core_melee | number: '1.0-1' }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee < 0,
+                                    'green-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.meleeAttack - character.primaryStats.core_melee >= 0">
+                                        +</span>{{ character.primaryStats.meleeAttack -
+                                    character.primaryStats.core_melee | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee < 0,
+                                    'green-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee > 0 }">{{
+                                    character.primaryStats.meleeAttack | number: '1.0-0' }}</span>)
                             </span>
-                            <span class="ion-text-end">Crit: {{ character.primaryStats.core_critChance | percent: '1.1-2' }}</span>
+                            <span class="ion-text-end">
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>Dmg:
+                                {{ character.primaryStats.meleeDmgModifier | number: '1.0-1'
+                                }}
+                            </span>
                         </div>
                         <!-- Defence -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Defence: {{ character.primaryStats.core_defense | number: '1.0-1'  }}
+                                <span>Defence: {{ character.primaryStats.core_defense | number: '1.0-1' }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.defense - character.primaryStats.core_defense < 0,
+                                    'green-txt': character.primaryStats.defense - character.primaryStats.core_defense > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.defense - character.primaryStats.core_defense >= 0">
+                                        +</span>{{ character.primaryStats.defense -
+                                    character.primaryStats.core_defense | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.defense - character.primaryStats.core_defense < 0,
+                                    'green-txt': character.primaryStats.defense - character.primaryStats.core_defense > 0 }">{{
+                                    character.primaryStats.defense | number: '1.0-0' }}</span>)
+                            </span>
+                            <span class="ion-text-end">
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>Armor:
+                                {{ character.primaryStats.maxArmor | number: '1.0-1' }}
                             </span>
                         </div>
                         <!-- Strength -->
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Strength: {{ character.primaryStats.core_strength }}
+                                <span>Strength: {{ character.primaryStats.core_strength }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.strength - character.primaryStats.core_strength < 0,
+                                    'green-txt': character.primaryStats.strength - character.primaryStats.core_strength > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.strength - character.primaryStats.core_strength >= 0">
+                                        +</span>{{ character.primaryStats.strength -
+                                    character.primaryStats.core_strength | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.strength - character.primaryStats.core_strength < 0,
+                                    'green-txt': character.primaryStats.strength - character.primaryStats.core_strength > 0 }">{{
+                                    character.primaryStats.strength | number: '1.0-0' }}</span>)
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('Str', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Str', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('Str', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Str', 1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -103,13 +159,25 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Agility: {{ character.primaryStats.core_agility }}
+                                <span>Agility: {{ character.primaryStats.core_agility }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.agility - character.primaryStats.core_agility < 0,
+                                    'green-txt': character.primaryStats.agility - character.primaryStats.core_agility > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.agility - character.primaryStats.core_agility >= 0">
+                                        +</span>{{ character.primaryStats.agility -
+                                    character.primaryStats.core_agility | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.agility - character.primaryStats.core_agility < 0,
+                                    'green-txt': character.primaryStats.agility - character.primaryStats.core_agility > 0 }">{{
+                                    character.primaryStats.agility | number: '1.0-0' }}</span>)
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('Ag', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Ag', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('Ag', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Ag', 1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -118,13 +186,25 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Accuracy: {{ character.primaryStats.core_accuracy }}
+                                <span>Accuracy: {{ character.primaryStats.core_accuracy }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy < 0,
+                                    'green-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.accuracy - character.primaryStats.core_accuracy >= 0">
+                                        +</span>{{ character.primaryStats.accuracy -
+                                    character.primaryStats.core_accuracy | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy < 0,
+                                    'green-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy > 0 }">{{
+                                    character.primaryStats.accuracy | number: '1.0-0' }}</span>)
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('Acc', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Acc', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('Acc', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Acc', 1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -133,13 +213,25 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Perception: {{ character.primaryStats.core_perception }}
+                                <span>Perception: {{ character.primaryStats.core_perception }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.perception - character.primaryStats.core_perception < 0,
+                                    'green-txt': character.primaryStats.perception - character.primaryStats.core_perception > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.perception - character.primaryStats.core_perception >= 0">
+                                        +</span>{{ character.primaryStats.perception -
+                                    character.primaryStats.core_perception | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.perception - character.primaryStats.core_perception < 0,
+                                    'green-txt': character.primaryStats.perception - character.primaryStats.core_perception > 0 }">{{
+                                    character.primaryStats.perception | number: '1.0-0' }}</span>)
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('Per', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Per', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
-                                <ion-button (click)="onStatChange('Per', 1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('Per', 1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon slot="icon-only" name="add"></ion-icon>
                                 </ion-button>
                             </span>
@@ -148,10 +240,21 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Mental: {{ character.primaryStats.core_mental }}
+                                <span>Mental: {{ character.primaryStats.core_mental }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.mental - character.primaryStats.core_mental < 0,
+                                    'green-txt': character.primaryStats.mental - character.primaryStats.core_mental > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.mental - character.primaryStats.core_mental >= 0">
+                                        +</span>{{ character.primaryStats.mental -
+                                    character.primaryStats.core_mental | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.mental - character.primaryStats.core_mental < 0,
+                                    'green-txt': character.primaryStats.mental - character.primaryStats.core_mental > 0 }">{{
+                                    character.primaryStats.mental | number: '1.0-0' }}</span>)
                             </span>
                             <span>
-                                <ion-button (click)="onStatChange('M', -1)" size="small" color="secondary" shape="round">
+                                <ion-button (click)="onStatChange('M', -1)" size="small" color="secondary"
+                                    shape="round">
                                     <ion-icon name="remove-outline"></ion-icon>
                                 </ion-button>
                                 <ion-button (click)="onStatChange('M', 1)" size="small" color="secondary" shape="round">
@@ -163,7 +266,35 @@
                         <div class="stats-box">
                             <span>
                                 <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
-                                Movement: {{ character.primaryStats.core_movement | number: '1.0-1'  }}
+                                <span>Movement: {{ character.primaryStats.core_movement | number: '1.0-1' }} </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.movement - character.primaryStats.core_movement < 0,
+                                    'green-txt': character.primaryStats.movement - character.primaryStats.core_movement > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.movement - character.primaryStats.core_movement >= 0">
+                                        +</span>{{ character.primaryStats.movement -
+                                    character.primaryStats.core_movement | number: '1.0-1' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.movement - character.primaryStats.core_movement < 0,
+                                    'green-txt': character.primaryStats.movement - character.primaryStats.core_movement > 0 }">{{
+                                    character.primaryStats.movement | number: '1.0-0' }}</span>)
+                            </span>
+                        </div>
+                        <!-- Crit -->
+                        <div class="stats-box">
+                            <span>
+                                <ion-icon class="info" name="information-circle-outline" color="primary"></ion-icon>
+                                <span>Crit Chance: {{ character.primaryStats.core_critChance | percent: '1.0-2' }}
+                                </span>
+                                <span class="small-text"
+                                    [ngClass]="{'red-txt': character.primaryStats.critChance - character.primaryStats.core_critChance < 0,
+                                    'green-txt': character.primaryStats.critChance - character.primaryStats.core_critChance > 0 }">
+                                    <span
+                                        *ngIf="character.primaryStats.critChance - character.primaryStats.core_critChance >= 0">
+                                        +</span>{{ character.primaryStats.critChance -
+                                    character.primaryStats.core_critChance | number: '1.0-2' }}</span>(<span
+                                    [ngClass]="{'red-txt': character.primaryStats.critChance - character.primaryStats.core_critChance < 0,
+                                    'green-txt': character.primaryStats.critChance - character.primaryStats.core_critChance > 0 }">{{
+                                    character.primaryStats.critChance | percent: '1.0-2' }}</span>)
                             </span>
                         </div>
                     </ion-col>
