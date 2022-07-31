@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Subscription } from 'rxjs';
+import { Ability } from '../interfaces/ability.interface';
 import { Character, CreateNewCharacter } from '../interfaces/character.interface';
 import { Item, ItemSelection } from '../interfaces/item.interface';
 import { AirtableDataService } from './airtable-data.service';
@@ -14,10 +15,13 @@ export class CharacterCreationService {
   goldPoints = 280;
   abilityPoints = 30;
   skillsPoints = 30;
-  itemSelection: ItemSelection
+  // AbilitiesTitle is used for the Prerequisite system
+  characterSelectedAbilities: Array<Ability> = [];
+  itemSelection: ItemSelection;
+  abilitySelection: Ability;
   characterSubj: ReplaySubject<Character> = new ReplaySubject<Character>(1);
-  statSubscription: Subscription
-  constructor(private airtable: AirtableDataService, private characterSer: CharactersService) {
+  statSubscription: Subscription;
+  constructor(private characterSer: CharactersService, private airtable: AirtableDataService) {
     this.calculateCharacterStats();
     this.initItemSelection();
     const character = CreateNewCharacter();
@@ -42,7 +46,6 @@ export class CharacterCreationService {
     // Set character's calculated stat based on user selection
     this.statSubscription = this.characterSubj.subscribe((character) => {
       this.characterSer.calculateCharacterStats(character);
-      //this.characterSer.addModifiersToStats(character, character.equipmentModifier);
       console.log('character in creation : ', character);
     })
   }

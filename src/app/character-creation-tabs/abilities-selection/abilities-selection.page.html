@@ -16,45 +16,56 @@
     <ion-row>
       <ion-col class="stats-box" size="12">
         <div class="box-title">Foundations</div>
-        <div class="foundations-list">
-          <!-- ngFor the selected items here -->
-          <div class="stats-box foundation-tags">
-            basic anatomy
-          </div>
+        <div
+          *ngIf="creation.characterSelectedAbilities && creation.characterSelectedAbilities.length > 0 else noSkills">
+          <ion-accordion-group class="foundations-list">
+            <span *ngFor="let ability of creation.characterSelectedAbilities" class="foundation-tags">
+              <ion-accordion class="stats-box" *ngIf="ability.tags[0].toLowerCase() === 'foundation'"
+                [value]="ability.airtable_id">
+                <ion-item slot="header" color="light">
+                  <ion-label>{{ ability.title }}</ion-label>
+                </ion-item>
+                <div class="ion-padding" slot="content">
+                  <div><b>{{ ability.title }}:</b></div>
+                  {{ ability.description }}
+                </div>
+              </ion-accordion>
+            </span>
+          </ion-accordion-group>
         </div>
+        <ng-template #noSkills>
+          <div>No Foundational Skills Selected</div>
+        </ng-template>
       </ion-col>
     </ion-row>
     <ion-row style="width: 106%; margin-left: -3%;">
       <ion-col size="12">
         <ion-accordion-group>
           <ion-reorder-group disabled="true">
-            <!-- ngFor the selected Skills here -->
-            <ion-item>
+            <ion-text *ngIf="creation.characterSelectedAbilities && creation.characterSelectedAbilities.length == 0"
+              color="primary" class="ion-text-center">
+              <h4>Click the add button to start adding abilities</h4>
+            </ion-text>
+            <ion-item *ngFor="let ability of creation.characterSelectedAbilities">
               <ion-reorder slot="start"></ion-reorder>
-                  <ion-accordion class="ability-item" value="colors">
-                    <ion-item slot="header">
-                      <div class="flex-between ability-header">
-                        <div>Fireball</div>
-                        <div>-1TU</div>
-                        <div>-1 Stam. -3P.</div>
-                      </div>
-                    </ion-item>
-                    <ion-list class="ability-details" slot="content">
-                      <hr>
-                      <div class="ability-details-title">
-                        <b>Tags: Templar, Fire</b>
-                        <b>Prereq: Air Manipulation, Ionic Transmutation</b>
-                        <b>Cost: -1 Stam. -3P. -1TU</b>
-                      </div>
-                      <div>
-                        <p>
-                          Roll 6 dice plus your total M. Enemy rolls Ag -75% to deduct Dmg from your roll. 
-                          If it Hits every unit imediatly adjacent to target suffers 25% of the Dmg afflicted. 
-                          (Can be used to counter energy based attacks if your Action is still available this turn)
-                        </p>
-                      </div>
-                    </ion-list>
-                  </ion-accordion>
+              <ion-accordion *ngIf="ability.tags[0].toLowerCase() !== 'foundation'" class="ability-item" value="colors">
+                <ion-item slot="header">
+                  <div class="flex-between ability-header">
+                    <div>{{ ability.title }}</div>
+                    <div>{{ ability.turn_units_req }}</div>
+                    <div>{{ ability.execution_cost }}</div>
+                  </div>
+                </ion-item>
+                <ion-list class="ability-details" slot="content">
+                  <hr>
+                  <div class="ability-details-title">
+                    <b>Tags: {{ ability.tags }}</b>
+                    <b>Prereq: {{ ability.prereq }}</b>
+                    <b>Cost: {{ ability.execution_cost }}</b>
+                  </div>
+                  <div><p>{{ ability.effect }}</p></div>
+                </ion-list>
+              </ion-accordion>
             </ion-item>
           </ion-reorder-group>
         </ion-accordion-group>

@@ -70,8 +70,8 @@ export class AirtableDataService {
   }
 
   loadAbilities() {
-    //const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
-    this.http.get(`https://api.airtable.com/v0/appbI9FWav2qCfbIj/AbilityList/`, this.options).subscribe((data: AirTableData) => {
+    const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
+    this.http.get(`https://api.airtable.com/v0/appbI9FWav2qCfbIj/AbilityList/` + sortByTitleAsc, this.options).subscribe((data: AirTableData) => {
       console.log('res from get abilities', data);
       const allAbilities: Ability[] = [];
       data.records.forEach(record => {

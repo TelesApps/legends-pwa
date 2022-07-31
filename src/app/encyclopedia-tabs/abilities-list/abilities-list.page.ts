@@ -1,7 +1,10 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, ContentChild, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonAccordionGroup, IonContent } from '@ionic/angular';
 import { Ability } from 'src/app/interfaces/ability.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
+import { CharacterCreationService } from 'src/app/services/character-creation.service';
 
 @Component({
   selector: 'app-abilities-list',
@@ -15,7 +18,16 @@ export class AbilitiesListPage implements OnInit {
   isLoading = true;
   searchInput: string;
   tagFilterTxt: string[];
-  constructor(public airtable: AirtableDataService) { }
+  isSelectMode: boolean = false;
+  remainingAP: number = 0;
+  backUrl: string = '/character-creation-tabs/abilities-selection'
+  @ViewChild(IonContent, { static: false }) content: IonContent;
+  @ViewChild('accordionGroup', { static: true }) accordionGroup: IonAccordionGroup;
+  constructor(
+    public airtable: AirtableDataService,
+    private route: ActivatedRoute,
+    public creation: CharacterCreationService,
+    private router: Router) { }
 
   ngOnInit() {
     console.log('abilities init');
@@ -24,6 +36,14 @@ export class AbilitiesListPage implements OnInit {
       this.filteredAbilities = abilities;
       this.isLoading = false;
       console.log('all abilities', abilities);
+      this.route.queryParams.subscribe((params) => {
+        console.log(params)
+        if (params.isSelectMode)
+          this.isSelectMode = true;
+        if (params && params.breadcrumb) {
+          this.backUrl = params.breadcrumb;
+        }
+      })
     })
     if (this.filteredAbilities.length < 1)
       this.airtable.loadAbilities();
@@ -87,4 +107,39 @@ export class AbilitiesListPage implements OnInit {
     // }
   }
 
+  onGoToPrereq(prereq: string) {
+    if (this.accordionGroup.value === prereq) {
+      this.accordionGroup.value = undefined;
+    } else {
+      this.accordionGroup.value = prereq;
+      var scrollToElement = document.getElementById(prereq);
+      if (scrollToElement)
+        this.content.scrollToPoint(0, scrollToElement.offsetTop - 120, 1000);
+    }
+
+  }
+
+  isPrereqMet(ability: Ability) {
+    let prereqMet = true;
+    if (ability.prereq) {
+      ability.prereq.forEach(requiredTitle => {
+        const title = this.hasAbility(requiredTitle);
+        if (!title)
+          prereqMet = false
+      });
+    }
+    return prereqMet;
+  }
+
+  hasAbility(title: string) {
+    return this.creation.characterSelectedAbilities.find(t => t.title === title);
+  }
+
+  onAbilitySelected(ability: Ability) {
+    this.creation.abilitySelection = ability;
+    this.router.navigate([this.backUrl]);
+    console.log('ability selected: ', ability)
+  }
 }
+
+

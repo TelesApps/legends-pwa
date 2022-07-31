@@ -24,6 +24,9 @@ ion-item {
     .item-details-title {
         display: flex;
         flex-direction: column;
+        a:hover {
+            cursor: pointer;
+        }
     }
     ion-img {
         max-width: 180px;
@@ -53,4 +56,11 @@ ion-item {
     ion-spinner {
         transform: scale(2);
     }
+}
+
+.color-red {
+    color: var(--ion-color-danger);
+}
+.color-blue {
+    color: var(--ion-color-primary);
 }

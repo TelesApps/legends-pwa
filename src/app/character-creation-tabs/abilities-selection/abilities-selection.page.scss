@@ -11,14 +11,15 @@
 
 .foundation-tags {
     font-size: 9pt;
-    padding: 8px;
-    margin: 1px;
+    padding: 2px;
+    margin: 4px;
+    //flex-grow: 1;
+    width: clamp(170px, 32%, 600px);
 }
 
 .ability-header {
     width: 100vw;
 }
-
 
 ion-item {
     --border-style: none;
@@ -34,8 +35,7 @@ ion-item {
     padding: 12px;
 
     .ability-details-title {
-        display: flex; 
+        display: flex;
         flex-direction: column;
     }
 }
-

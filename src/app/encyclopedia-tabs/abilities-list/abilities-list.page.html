@@ -1,12 +1,14 @@
-<ion-content>
+<ion-content [scrollEvents]="true">
   <ion-text color="primary" class="ion-text-center">
-    <h1>Abilities</h1>
+    <h1 *ngIf="!isSelectMode">Abilities</h1>
+    <h1 *ngIf="isSelectMode">Select An Ability <span style="font-size: 12pt;">(remaining AP: {{ creation.abilityPoints
+        }})</span></h1>
   </ion-text>
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text" (ionChange)="onFilterChange($event)"
-          [debounce]="250"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text"
+          (ionChange)="onFilterChange($event)" [debounce]="250"></ion-searchbar>
       </ion-col>
       <ion-col size="6">
         <div class="clear-filter">
@@ -14,7 +16,8 @@
         </div>
         <ion-item>
           <ion-label position="floating">Tags</ion-label>
-          <ion-select #tagFilter [(ngModel)]="tagFilterTxt" placeholder="Filter By Tags" multiple="true" (ionChange)="onFilterChange($event)">
+          <ion-select #tagFilter [(ngModel)]="tagFilterTxt" placeholder="Filter By Tags" multiple="true"
+            (ionChange)="onFilterChange($event)">
             <ion-select-option value="foundation">Foundation</ion-select-option>
             <ion-select-option value="warrior">Warrior</ion-select-option>
             <ion-select-option value="templar">Templar</ion-select-option>
@@ -35,9 +38,9 @@
         <div *ngIf="isLoading" class="loading-icon">
           <ion-spinner name="bubbles"></ion-spinner>
         </div>
-        <ion-accordion-group>
-          <ion-accordion *ngFor="let ability of filteredAbilities" class="legends-item"
-            [value]="ability.title">
+        <ion-accordion-group #accordionGroup>
+          <ion-accordion [id]="ability.title.toLowerCase()" *ngFor="let ability of filteredAbilities"
+            class="legends-item" [value]="ability.title.toLowerCase()">
             <ion-item slot="header">
               <div class="flex-between item-header">
                 <div class="flex-between" style="align-items:center">
@@ -46,24 +49,44 @@
                   </ion-thumbnail>
                   <div class="title-txt">{{ ability.title }}</div>
                 </div>
-                <div><span *ngIf="ability.tags[0] === 'Foundation'"><b>({{ ability.tags }}) </b></span>{{ ability.points_req }} AP</div>
+                <div><span *ngIf="ability.tags[0] === 'Foundation'"><b>({{ ability.tags }}) </b></span>{{
+                  ability.points_req }} AP</div>
               </div>
             </ion-item>
             <ion-list class="item-details" slot="content">
               <hr>
-              <div class="item-details-title">
-                <span *ngIf="ability.prereq"><b>Prerequisites:</b><a>{{ ability.prereq }}</a></span>
-                <span><b>Tags: </b>{{ ability.tags }}</span>
-                <span *ngIf="ability.execution_cost"><b>Cost: </b>{{ ability.execution_cost }}</span>
-                <span *ngIf="ability.turn_units_req"><b>Requires: </b>{{ ability.turn_units_req }}</span>
+              <div class="flex-between wrap-reverse">
+                <div>
+                  <div class="item-details-title">
+                    <span *ngIf="ability.prereq"><b>Prerequisites: </b>
+                      <span *ngFor="let req of ability.prereq">
+                        <a (click)="onGoToPrereq(req.toLowerCase())"
+                          [ngClass]="hasAbility(req)?'color-blue':'color-red'">{{ req }}</a>,
+                      </span>
+                    </span>
+                    <span><b>Tags: </b>{{ ability.tags }}</span>
+                    <span *ngIf="ability.execution_cost"><b>Cost: </b>{{ ability.execution_cost }}</span>
+                    <span *ngIf="ability.turn_units_req"><b>Requires: </b>{{ ability.turn_units_req }}</span>
+                  </div>
+                  <div>
+                    <p>{{ ability.effect }}</p>
+                    <p>{{ ability.description }}</p>
+                  </div>
+                </div>
+                <div style="width: 120px;">
+                  <ion-img *ngIf="ability.image && ability.image[0]" [src]="ability.image[0].url"></ion-img>
+                </div>
               </div>
-              <div>
-                <p>{{ ability.effect }}</p>
-                <p>{{ ability.description }}</p>
+              <div class="ion-text-center" *ngIf="isSelectMode">
+                <ion-text color="danger">
+                  <span *ngIf="creation.abilityPoints < ability.points_req">Not Enough Ability Points</span>
+                  <span *ngIf="!isPrereqMet(ability)">You do not have the prerequisite abilities</span>
+                </ion-text>
+                <ion-button [disabled]="!isPrereqMet(ability) || creation.abilityPoints < ability.points_req"
+                  (click)="onAbilitySelected(ability)" expand="block" shape="round">
+                  Select Item
+                </ion-button>
               </div>
-              <!-- <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
-                Select Item
-              </ion-button> -->
             </ion-list>
           </ion-accordion>
         </ion-accordion-group>
