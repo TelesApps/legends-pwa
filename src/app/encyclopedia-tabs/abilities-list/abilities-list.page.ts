@@ -108,7 +108,7 @@ export class AbilitiesListPage implements OnInit {
   }
 
   onGoToPrereq(prereq: string) {
-    if (this.searchInput || this.tagFilterTxt.length > 0) {
+    if (this.searchInput || this.tagFilterTxt && this.tagFilterTxt.length > 0) {
       this.searchInput = '';
       this.tagFilterTxt = [];
       this.onFilterChange();
