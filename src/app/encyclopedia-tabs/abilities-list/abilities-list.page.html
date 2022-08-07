@@ -12,7 +12,7 @@
       </ion-col>
       <ion-col size="6">
         <div class="clear-filter">
-          <ion-icon *ngIf="tagFilter.value" slot="start" name="close" (click)="tagFilter.value = ''"></ion-icon>
+          <ion-icon *ngIf="tagFilterTxt && tagFilterTxt.length > 0" slot="start" name="close" (click)="tagFilter.value = ''"></ion-icon>
         </div>
         <ion-item>
           <ion-label position="floating">Tags</ion-label>
@@ -82,7 +82,7 @@
                   <span *ngIf="creation.abilityPoints < ability.points_req">Not Enough Ability Points</span>
                   <span *ngIf="!isPrereqMet(ability)">You do not have the prerequisite abilities</span>
                 </ion-text>
-                <ion-button [disabled]="!isPrereqMet(ability) || creation.abilityPoints < ability.points_req"
+                <ion-button *ngIf="!hasAbility(ability.title)" [disabled]="!isPrereqMet(ability) || creation.abilityPoints < ability.points_req"
                   (click)="onAbilitySelected(ability)" expand="block" shape="round">
                   Select Item
                 </ion-button>

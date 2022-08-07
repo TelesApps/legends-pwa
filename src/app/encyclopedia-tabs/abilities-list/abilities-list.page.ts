@@ -49,8 +49,8 @@ export class AbilitiesListPage implements OnInit {
       this.airtable.loadAbilities();
   }
 
-  onFilterChange(event) {
-    console.log(event.detail.value);
+  onFilterChange(event?) {
+    //console.log(event.detail.value);
     this.filteredAbilities = this.allAbilities
     if (this.searchInput) {
       let userWord1 = this.searchInput;
@@ -108,13 +108,23 @@ export class AbilitiesListPage implements OnInit {
   }
 
   onGoToPrereq(prereq: string) {
-    if (this.accordionGroup.value === prereq) {
-      this.accordionGroup.value = undefined;
+    if (this.searchInput || this.tagFilterTxt.length > 0) {
+      this.searchInput = '';
+      this.tagFilterTxt = [];
+      this.onFilterChange();
+      setTimeout(() => {
+        this.onGoToPrereq(prereq);
+      }, 100);
     } else {
-      this.accordionGroup.value = prereq;
-      var scrollToElement = document.getElementById(prereq);
-      if (scrollToElement)
-        this.content.scrollToPoint(0, scrollToElement.offsetTop - 120, 1000);
+      if (this.accordionGroup.value === prereq) {
+        this.accordionGroup.value = undefined;
+      } else {
+        this.accordionGroup.value = prereq;
+        var scrollToElement = document.getElementById(prereq);
+        if (scrollToElement)
+          this.content.scrollToPoint(0, scrollToElement.offsetTop - 120, 1000);
+      }
+
     }
 
   }
@@ -139,6 +149,7 @@ export class AbilitiesListPage implements OnInit {
     this.creation.abilitySelection = ability;
     this.router.navigate([this.backUrl]);
     console.log('ability selected: ', ability)
+    this.accordionGroup.value = undefined;
   }
 }
 

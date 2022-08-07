@@ -1,5 +1,6 @@
-import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, ChangeDetectorRef, Component, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonAccordionGroup } from '@ionic/angular';
 import { isEmpty } from 'rxjs/operators';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
@@ -20,6 +21,7 @@ export class ItemsListPage implements OnInit {
   bodyPropertyFilter: string[];
   isLoading = true;
   backUrl: string = '/character-creation-tabs/equipment-selection'
+  @ViewChild('accordionGroup', { static: true }) accordionGroup: IonAccordionGroup;
 
   constructor(
     public airtable: AirtableDataService,
@@ -122,6 +124,7 @@ export class ItemsListPage implements OnInit {
   onItemSelected(item: Item) {
     this.creation.itemSelection.onSelectedItem = item;
     this.router.navigate([this.backUrl]);
+    this.accordionGroup.value = undefined;
     // use character-creation service to tell them the item selected;
 
   }
