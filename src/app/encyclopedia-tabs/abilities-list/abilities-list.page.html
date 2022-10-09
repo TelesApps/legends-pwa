@@ -49,7 +49,7 @@
                   </ion-thumbnail>
                   <div class="title-txt">{{ ability.title }}</div>
                 </div>
-                <div><span *ngIf="ability.tags[0] === 'Foundation'"><b>({{ ability.tags }}) </b></span>{{
+                <div><span *ngIf="ability.image && ability.tags[0] === 'Foundation'"><b>({{ ability.tags }}) </b></span>{{
                   ability.points_req }} AP</div>
               </div>
             </ion-item>

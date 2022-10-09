@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IonAccordionGroup } from '@ionic/angular';
 import { SkillTraits } from 'src/app/interfaces/skills-traits.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
+import { CharacterCreationService } from 'src/app/services/character-creation.service';
 
 @Component({
   selector: 'app-skills-traits-list',
@@ -14,7 +17,15 @@ export class SkillsTraitsListPage implements OnInit {
   allSkills = [];
   searchInput: string;
   skillTagFilter: string[];
-  constructor(public airtable: AirtableDataService) { }
+  isSelectMode: boolean = false;
+  backUrl: string = '/character-creation-tabs/skills-selection'
+  backQuerySegmentSelection: string;
+  @ViewChild('accordionGroup', { static: true }) accordionGroup: IonAccordionGroup;
+  constructor(
+    public airtable: AirtableDataService,
+    public creation: CharacterCreationService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.airtable.$skillsTraits.subscribe((skillsTraits) => {
@@ -26,6 +37,18 @@ export class SkillsTraitsListPage implements OnInit {
     console.log('length', this.filterredSkills.length)
     if (this.filterredSkills.length < 1)
       this.airtable.loadSkillsAndTraits();
+    this.route.queryParams.subscribe((params) => {
+      console.log(params)
+      if (params.isSelectMode)
+        this.isSelectMode = true;
+      if (params.segmentSelection) {
+        console.log('params.segmentSelection', params.segmentSelection);
+        this.backQuerySegmentSelection = params.segmentSelection;
+      }
+      if (params && params.breadcrumb) {
+        this.backUrl = params.breadcrumb;
+      }
+    })
   }
 
   onFilterChange(event) {
@@ -71,6 +94,13 @@ export class SkillsTraitsListPage implements OnInit {
       console.log('typefilter:', newTagFilter);
     }
     this.isLoading = false;
+  }
+
+  onSkillSelected(skill: SkillTraits) {
+    this.creation.skillTraitsSelection = skill;
+    this.router.navigate([this.backUrl], {queryParams: {selection: this.backQuerySegmentSelection}});
+    console.log('Skill&Traits selected: ', skill)
+    this.accordionGroup.value = undefined;
   }
 
 }

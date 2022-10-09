@@ -29,7 +29,7 @@
         <div *ngIf="isLoading" class="loading-icon">
           <ion-spinner name="bubbles"></ion-spinner>
         </div>
-        <ion-accordion-group>
+        <ion-accordion-group #accordionGroup>
           <ion-accordion *ngFor="let skillTraits of filterredSkills" class="legends-item" [value]="skillTraits.title">
             <ion-item slot="header">
               <div class="flex-between item-header">
@@ -50,9 +50,9 @@
               <div>
                 <p>{{ skillTraits.effects }}</p>
               </div>
-              <!-- <ion-button *ngIf="isSelectMode" (click)="onItemSelected()" expand="block" shape="round">
+              <ion-button *ngIf="isSelectMode" (click)="onSkillSelected(skillTraits)" expand="block" shape="round">
                 Select Item
-              </ion-button> -->
+              </ion-button>
             </ion-list>
           </ion-accordion>
         </ion-accordion-group>

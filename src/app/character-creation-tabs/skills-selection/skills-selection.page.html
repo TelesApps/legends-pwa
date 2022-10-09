@@ -6,7 +6,7 @@
     <ion-segment-button value="traits">
       <ion-label>Traits</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="abilities">
+    <ion-segment-button value="skills">
       <ion-label>Skills</ion-label>
     </ion-segment-button>
   </ion-segment>
@@ -95,7 +95,7 @@
         <ion-text color="primary">
           <h2>Traits</h2>
         </ion-text>
-        <ion-fab-button size="small">
+        <ion-fab-button size="small" (click)="onOpenSkills('traits')">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-col>
@@ -128,7 +128,7 @@
     </ion-row>
 
     <!-- Skills TAB -->
-    <ion-row *ngSwitchCase="'abilities'">
+    <ion-row *ngSwitchCase="'skills'">
       <ion-col class="flex-between" size="12">
         <ion-button size="small">
           arrange
@@ -136,7 +136,7 @@
         <ion-text color="primary">
           <h2>Skills</h2>
         </ion-text>
-        <ion-fab-button size="small">
+        <ion-fab-button size="small" (click)="onOpenSkills('skills')">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-col>

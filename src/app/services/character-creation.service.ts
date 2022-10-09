@@ -3,6 +3,7 @@ import { ReplaySubject, Subscription } from 'rxjs';
 import { Ability } from '../interfaces/ability.interface';
 import { Character, CreateNewCharacter } from '../interfaces/character.interface';
 import { Item, ItemSelection } from '../interfaces/item.interface';
+import { SkillTraits } from '../interfaces/skills-traits.interface';
 import { AirtableDataService } from './airtable-data.service';
 import { CharactersService } from './characters.service';
 
@@ -19,6 +20,7 @@ export class CharacterCreationService {
   characterSelectedAbilities: Array<Ability> = [];
   itemSelection: ItemSelection;
   abilitySelection: Ability;
+  skillTraitsSelection: SkillTraits;
   characterSubj: ReplaySubject<Character> = new ReplaySubject<Character>(1);
   statSubscription: Subscription;
   constructor(private characterSer: CharactersService, private airtable: AirtableDataService) {
