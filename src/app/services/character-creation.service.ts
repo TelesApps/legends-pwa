@@ -18,6 +18,10 @@ export class CharacterCreationService {
   skillsPoints = 30;
   // AbilitiesTitle is used for the Prerequisite system
   characterSelectedAbilities: Array<Ability> = [];
+  // characterSelectedSkills and Trais is used to seperate the two and do a ngForLoop to display their respective panles;
+  characterSelectedSkills: Array<SkillTraits> = [];
+  characterSelectedTraits: Array<SkillTraits> = [];
+
   itemSelection: ItemSelection;
   abilitySelection: Ability;
   skillTraitsSelection: SkillTraits;

@@ -52,6 +52,8 @@ export class SkillsTraitsListPage implements OnInit {
   }
 
   onFilterChange(event) {
+    // #TODO
+    // ADD Logic to filter by Trait or by Skill
     this.isLoading = true;
     console.log(event.detail.value);
     this.filterredSkills = this.allSkills
