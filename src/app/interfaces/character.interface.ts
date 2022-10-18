@@ -51,6 +51,8 @@ interface PrimaryStats {
 }
 
 interface SecondaryStats {
+    core_stress: number,
+    stress: number,
     core_stealth: number;
     stealth: number;
     core_lockPicking: number;
@@ -65,14 +67,22 @@ interface SecondaryStats {
     engineering: number;
     core_tracking: number;
     tracking: number;
-    core_scoutScavange: number;
-    scoutScavange: number;
     core_mining: number;
     mining: number;
+    core_smithing: number;
+    smithing: number;
+    core_phiralSmithing: number;
+    phiralSmithing: number;
     core_herbalism: number;
     herbalism: number;
     core_alchemy: number;
     alchemy: number;
+    core_cooking: number;
+    cooking: number;
+    core_musician: number;
+    musician: number;
+    core_artist: number;
+    artist: number;
     core_carryCapacity: number;
     carryCapacity: number;
 }
@@ -131,6 +141,8 @@ export function CreateNewCharacter() {
             critChance: 6,
         },
         secondaryStats: {
+            core_stress: 0.05,
+            stress: 0.05,
             core_stealth: 6,
             stealth: 6,
             core_lockPicking: 6,
@@ -145,14 +157,22 @@ export function CreateNewCharacter() {
             engineering: 6,
             core_tracking: 6,
             tracking: 6,
-            core_scoutScavange: 6,
-            scoutScavange: 6,
             core_mining: 6,
             mining: 6,
+            core_smithing: 6,
+            smithing: 6,
+            core_phiralSmithing: 6,
+            phiralSmithing: 6,
             core_herbalism: 6,
             herbalism: 6,
             core_alchemy: 6,
             alchemy: 6,
+            core_cooking: 6,
+            cooking: 6,
+            core_musician: 6,
+            musician: 6,
+            core_artist: 6,
+            artist: 6,
             core_carryCapacity: 6,
             carryCapacity: 6,
         },

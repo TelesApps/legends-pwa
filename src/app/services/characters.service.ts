@@ -198,6 +198,7 @@ export class CharactersService {
     let perception = character.primaryStats.core_perception;
     let mental = character.primaryStats.core_mental;
     let critChance = character.primaryStats.core_critChance;
+    let stress = character.secondaryStats.core_stress;
     let stealth = character.secondaryStats.core_stealth;
     let lockPicking = character.secondaryStats.core_lockPicking;
     let quickHands = character.secondaryStats.core_quickHands;
@@ -205,10 +206,14 @@ export class CharactersService {
     let intimidation = character.secondaryStats.core_intimidation;
     let engineering = character.secondaryStats.core_engineering;
     let tracking = character.secondaryStats.core_tracking;
-    let scoutScavange = character.secondaryStats.core_scoutScavange;
     let mining = character.secondaryStats.core_mining;
+    let smithing = character.secondaryStats.core_smithing;
+    let phiralSmithing = character.secondaryStats.phiralSmithing;
     let herbalism = character.secondaryStats.core_herbalism;
     let alchemy = character.secondaryStats.core_alchemy;
+    let cooking = character.secondaryStats.core_cooking;
+    let musician = character.secondaryStats.core_musician;
+    let artist = character.secondaryStats.core_artist;
     let carryCapacity = character.secondaryStats.core_carryCapacity;
 
     let maxHealthBonus = 0;
@@ -231,6 +236,7 @@ export class CharactersService {
       if (modifier.stat === Stat.Perception) perception += modifier.value;
       if (modifier.stat === Stat.Mental) mental += modifier.value;
       if (modifier.stat === Stat.Crit) critChance += modifier.value;
+      if (modifier.stat === Stat.stress) stress += modifier.value;
       if (modifier.stat === Stat.stealth) stealth += modifier.value;
       if (modifier.stat === Stat.lockPicking) lockPicking += modifier.value;
       if (modifier.stat === Stat.quickHands) quickHands += modifier.value;
@@ -238,10 +244,14 @@ export class CharactersService {
       if (modifier.stat === Stat.intimidation) intimidation += modifier.value;
       if (modifier.stat === Stat.engineering) engineering += modifier.value;
       if (modifier.stat === Stat.tracking) tracking += modifier.value;
-      if (modifier.stat === Stat.scoutScavange) scoutScavange += modifier.value;
       if (modifier.stat === Stat.mining) mining += modifier.value;
+      if (modifier.stat === Stat.smithing) smithing += modifier.value;
+      if (modifier.stat === Stat.phiralSmith) phiralSmithing += modifier.value;
       if (modifier.stat === Stat.herbalism) herbalism += modifier.value;
       if (modifier.stat === Stat.alchemy) alchemy += modifier.value;
+      if (modifier.stat === Stat.cooking) cooking += modifier.value;
+      if (modifier.stat === Stat.musician) musician += modifier.value;
+      if (modifier.stat === Stat.artist) artist += modifier.value;
       if (modifier.stat === Stat.carryCapacity) carryCapacity += modifier.value;
 
       if (modifier.stat === Stat.MaxHealth) maxHealthBonus += modifier.value;
@@ -263,6 +273,7 @@ export class CharactersService {
     character.primaryStats.perception = perception;
     character.primaryStats.mental = mental;
     character.primaryStats.critChance = critChance;
+    character.secondaryStats.stress = stress;
     character.secondaryStats.stealth = stealth;
     character.secondaryStats.lockPicking = lockPicking;
     character.secondaryStats.quickHands = quickHands;
@@ -270,10 +281,14 @@ export class CharactersService {
     character.secondaryStats.intimidation = intimidation;
     character.secondaryStats.engineering = engineering;
     character.secondaryStats.tracking = tracking;
-    character.secondaryStats.scoutScavange = scoutScavange;
     character.secondaryStats.mining = mining;
+    character.secondaryStats.smithing = smithing;
+    character.secondaryStats.phiralSmithing - phiralSmithing;
     character.secondaryStats.herbalism = herbalism;
     character.secondaryStats.alchemy = alchemy;
+    character.secondaryStats.cooking = cooking;
+    character.secondaryStats.musician = musician;
+    character.secondaryStats.artist = artist;
     character.secondaryStats.carryCapacity = carryCapacity;
     // Stats bellow are dependent on certain stats above;
     // #TODO add the logic bellow to all the applicable stats ie: stealth, intimidation etc

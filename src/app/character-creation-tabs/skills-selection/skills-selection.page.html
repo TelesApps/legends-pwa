@@ -17,34 +17,83 @@
       <ion-col size="12">
         <div class="stats-box">
           <ion-text class="ion-text-center" color="primary">
-            <h5>Skills Stats</h5>
+            <h5>Secondary Stats</h5>
           </ion-text>
           <div class="stats-items-list" style="display: flex; flex-wrap: wrap;">
-            <!-- ngfor here -->
+            <div class="stat-item" style="display: flex;">
+              <b>Stress Lvl</b>
+              <div></div>
+              <span>{{ character.secondaryStats.stress | percent }}</span>
+            </div>
             <div class="stat-item" style="display: flex;">
               <b>Stealth</b>
               <div></div>
-              <span>6</span>
+              <span>{{ character.secondaryStats.stealth }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Lock Picking</b>
               <div></div>
-              <span>6</span>
+              <span>{{ character.secondaryStats.lockPicking }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
-              <b>Sly Hands</b>
+              <b>Quick Hands</b>
               <div></div>
-              <span>6</span>
+              <span>{{ character.secondaryStats.quickHands }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
-              <b>Charisma</b>
+              <b>Persuasion</b>
               <div></div>
-              <span>6</span>
+              <span>{{ character.secondaryStats.persuasion }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
+              <b>Intimidation</b>
+              <div></div>
+              <span>{{ character.secondaryStats.intimidation }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Engineering</b>
+              <div></div>
+              <span>{{ character.secondaryStats.engineering }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Tracking</b>
+              <div></div>
+              <span>{{ character.secondaryStats.tracking }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Mining</b>
+              <div></div>
+              <span>{{ character.secondaryStats.mining }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Smithing</b>
+              <div></div>
+              <span>{{ character.secondaryStats.smithing }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Phiral Smithing</b>
+              <div></div>
+              <span>{{ character.secondaryStats.phiralSmithing }}</span>
+            </div><div class="stat-item" style="display: flex;">
               <b>Herbalism</b>
               <div></div>
-              <span>6</span>
+              <span>{{ character.secondaryStats.herbalism }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Alchemy</b>
+              <div></div>
+              <span>{{ character.secondaryStats.alchemy }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Cooking</b>
+              <div></div>
+              <span>{{ character.secondaryStats.cooking }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Musician</b>
+              <div></div>
+              <span>{{ character.secondaryStats.musician }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Artist</b>
+              <div></div>
+              <span>{{ character.secondaryStats.artist }}</span>
+            </div><div class="stat-item" style="display: flex;">
+              <b>Carry Capacity</b>
+              <div></div>
+              <span>{{ character.secondaryStats.carryCapacity }}</span>
             </div>
           </div>
         </div>
@@ -59,7 +108,7 @@
             <div class="stat-item" style="display: flex;">
               <b>Health</b>
               <div></div>
-              <span>150</span>
+              <span>{{ character.primaryStats.maxHealth }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Stamina</b>
