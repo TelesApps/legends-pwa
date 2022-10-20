@@ -105,4 +105,26 @@ export class SkillsTraitsListPage implements OnInit {
     this.accordionGroup.value = undefined;
   }
 
+  hasEnoughPoints(cost: number) {
+    return cost <= this.creation.skillsPoints;
+  }
+
+  isPrereqMet(skill: SkillTraits) {
+    let prereqMet = true;
+    if (skill.prereq) {
+      skill.prereq.forEach(requiredTitle => {
+        const title = this.hasSkill(requiredTitle);
+        if (!title)
+          prereqMet = false
+      });
+    }
+    return prereqMet;
+  }
+  hasSkill(title: string) {
+    let selected;
+    selected = this.creation.characterSelectedSkills.find(t => t.title === title);
+    selected = this.creation.characterSelectedTraits.find(t => t.title === title);
+    return selected
+  }
+
 }

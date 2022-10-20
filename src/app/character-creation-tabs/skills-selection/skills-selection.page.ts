@@ -34,10 +34,11 @@ export class SkillsSelectionPage implements OnInit {
           this.creation.skillsPoints -= this.creation.skillTraitsSelection.cost;
           console.log('Skill selected: ', this.creation.skillTraitsSelection);
           this.character.skillsId.push(this.creation.skillTraitsSelection.airtable_id);
-          // #TODO
-          // Add logic here to add this selected skillTrait to either the this.creation.characterSelectedSkills
-          // or the this.creation.characterSelectedTraits Array.
-          // In Airtable Create a column for "Type" where we define if its a trait or Skill.
+          if(this.creation.skillTraitsSelection.type === 'trait') {
+            this.creation.characterSelectedTraits.push(this.creation.skillTraitsSelection);
+          } else {
+            this.creation.characterSelectedSkills.push(this.creation.skillTraitsSelection);
+          }
 
           this.creation.skillTraitsSelection = undefined;
           this.creation.characterSubj.next(this.character);

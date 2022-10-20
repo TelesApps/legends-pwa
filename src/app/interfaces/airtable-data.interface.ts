@@ -30,6 +30,7 @@ export interface Fields {
     prereq?:                string[];
     turn_units_req?:        string;
     body_property:          string;
+    type?:                  string;
 }
 
 export enum DmgType {

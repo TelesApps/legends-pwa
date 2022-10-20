@@ -113,22 +113,62 @@
             <div class="stat-item" style="display: flex;">
               <b>Stamina</b>
               <div></div>
-              <span>50</span>
+              <span>{{ character.primaryStats.maxStamina }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Power</b>
               <div></div>
-              <span>50</span>
+              <span>{{ character.primaryStats.maxPower }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
-              <b>Attack</b>
+              <b>Ranged Attack</b>
               <div></div>
-              <span>50</span>
+              <span>{{ character.primaryStats.rangedAttack }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
-              <b>Defence</b>
+              <b>Melee Attack</b>
               <div></div>
-              <span>50</span>
+              <span>{{ character.primaryStats.meleeAttack }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Defense</b>
+              <div></div>
+              <span>{{ character.primaryStats.defense }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Strength</b>
+              <div></div>
+              <span>{{ character.primaryStats.strength }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Agility</b>
+              <div></div>
+              <span>{{ character.primaryStats.agility }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Accuracy</b>
+              <div></div>
+              <span>{{ character.primaryStats.accuracy }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Perception</b>
+              <div></div>
+              <span>{{ character.primaryStats.perception }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Mental</b>
+              <div></div>
+              <span>{{ character.primaryStats.mental }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Movement</b>
+              <div></div>
+              <span>{{ character.primaryStats.movement }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Crit Chance</b>
+              <div></div>
+              <span>{{ character.primaryStats.critChance | percent }}</span>
             </div>
           </div>
         </div>
@@ -137,41 +177,33 @@
 
     <!-- TRAITS TAB -->
     <ion-row *ngSwitchCase="'traits'">
-      <ion-col class="flex-between" size="12">
-        <ion-button size="small">
-          arrange
-        </ion-button>
-        <ion-text color="primary">
+      <ion-col size="12">
+        <ion-text class="ion-text-center" color="primary">
           <h2>Traits</h2>
         </ion-text>
-        <ion-fab-button size="small" (click)="onOpenSkills('traits')">
+        <ion-fab-button class="add-button" size="small" (click)="onOpenSkills('traits')">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-col>
       <ion-col size="12">
         <ion-accordion-group>
-          <ion-reorder-group disabled="true">
             <!-- ngFor the selected Traits here -->
-            <ion-item>
-              <ion-reorder slot="start"></ion-reorder>
+            <ion-item *ngFor="let trait of creation.characterSelectedTraits">
               <ion-accordion class="selected-item" value="colors">
                 <ion-item slot="header">
                   <div class="flex-between selected-header">
-                    <div>Hard Worker</div>
-                    <div>12 AP</div>
+                    <div>{{ trait.title }}</div>
+                    <div>{{ trait.cost }}</div>
                   </div>
                 </ion-item>
                 <ion-list class="selected-details" slot="content">
                   <hr>
                   <p>
-                    Roll 6 dice plus your total M. Enemy rolls Ag -75% to deduct Dmg from your roll.
-                    If it Hits every unit imediatly adjacent to target suffers 25% of the Dmg afflicted.
-                    (Can be used to counter energy based attacks if your Action is still available this turn)
+                    {{ trait.description }}
                   </p>
                 </ion-list>
               </ion-accordion>
             </ion-item>
-          </ion-reorder-group>
         </ion-accordion-group>
       </ion-col>
     </ion-row>

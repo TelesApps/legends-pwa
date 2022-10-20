@@ -80,7 +80,7 @@
               <div class="ion-text-center" *ngIf="isSelectMode">
                 <ion-text color="danger">
                   <span *ngIf="creation.abilityPoints < ability.points_req">Not Enough Ability Points</span>
-                  <span *ngIf="!isPrereqMet(ability)">You do not have the prerequisite abilities</span>
+                  <span *ngIf="!isPrereqMet(ability)"> You do not have the prerequisite abilities</span>
                 </ion-text>
                 <ion-button *ngIf="!hasAbility(ability.title)" [disabled]="!isPrereqMet(ability) || creation.abilityPoints < ability.points_req"
                   (click)="onAbilitySelected(ability)" expand="block" shape="round">

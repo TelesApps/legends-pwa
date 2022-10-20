@@ -5,8 +5,8 @@
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text" (ionChange)="onFilterChange($event)"
-          [debounce]="250"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="searchInput" placeholder="Search" inputmode="text" type="text"
+          (ionChange)="onFilterChange($event)" [debounce]="250"></ion-searchbar>
       </ion-col>
       <ion-col size="6">
         <div class="clear-filter">
@@ -14,14 +14,15 @@
         </div>
         <ion-item class="filter-select">
           <ion-label position="floating">Tags</ion-label>
-          <ion-select #typeFilter [(ngModel)]="skillTagFilter" placeholder="Filter By Tags" multiple="true" (ionChange)="onFilterChange($event)">
+          <ion-select #typeFilter [(ngModel)]="skillTagFilter" placeholder="Filter By Tags" multiple="true"
+            (ionChange)="onFilterChange($event)">
             <ion-select-option value="attack">Attack</ion-select-option>
             <ion-select-option value="defence">Defence</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
       <ion-col size="6">
-        
+
       </ion-col>
     </ion-row>
     <ion-row>
@@ -50,7 +51,13 @@
               <div>
                 <p>{{ skillTraits.effects }}</p>
               </div>
-              <ion-button *ngIf="isSelectMode" (click)="onSkillSelected(skillTraits)" expand="block" shape="round">
+              <ion-text color="danger">
+                <span *ngIf="creation.skillPoints < skillTraits.cost">Not Enough Skill Points</span>
+                <span *ngIf="!isPrereqMet(skillTraits)">You do not have the prerequisite Skills</span>
+              </ion-text>
+              <ion-button *ngIf="isSelectMode"
+                [disabled]="!hasEnoughPoints(skillTraits.cost) || !isPrereqMet(skillTraits)"
+                (click)="onSkillSelected(skillTraits)" expand="block" shape="round">
                 Select Item
               </ion-button>
             </ion-list>
