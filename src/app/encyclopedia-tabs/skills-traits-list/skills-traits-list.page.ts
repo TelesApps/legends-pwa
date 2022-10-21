@@ -123,6 +123,7 @@ export class SkillsTraitsListPage implements OnInit {
   hasSkill(title: string) {
     let selected;
     selected = this.creation.characterSelectedSkills.find(t => t.title === title);
+    if(selected) return selected;
     selected = this.creation.characterSelectedTraits.find(t => t.title === title);
     return selected
   }

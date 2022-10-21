@@ -104,7 +104,6 @@
             <h5>Primary Stats</h5>
           </ion-text>
           <div class="stats-items-list" style="display: flex; flex-wrap: wrap;">
-            <!-- ngfor here -->
             <div class="stat-item" style="display: flex;">
               <b>Health</b>
               <div></div>
@@ -178,19 +177,24 @@
     <!-- TRAITS TAB -->
     <ion-row *ngSwitchCase="'traits'">
       <ion-col size="12">
+        <div style="float: right; width: 0px; position: relative; left: -50px;">
+          <ion-fab-button size="small" (click)="onOpenSkills('traits')">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </div>
         <ion-text class="ion-text-center" color="primary">
           <h2>Traits</h2>
         </ion-text>
-        <ion-fab-button class="add-button" size="small" (click)="onOpenSkills('traits')">
-          <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
       </ion-col>
       <ion-col size="12">
         <ion-accordion-group>
             <!-- ngFor the selected Traits here -->
             <ion-item *ngFor="let trait of creation.characterSelectedTraits">
-              <ion-accordion class="selected-item" value="colors">
+              <ion-accordion class="selected-item" [value]="trait.airtable_id">
                 <ion-item slot="header">
+                  <ion-icon *ngIf="!isDependencyExist(trait)" name="close"
+                    (click)="onRemoveSkill(trait.airtable_id, trait.type)"></ion-icon>
+                  <ion-icon *ngIf="isDependencyExist(trait)" name="lock-closed"></ion-icon>
                   <div class="flex-between selected-header">
                     <div>{{ trait.title }}</div>
                     <div>{{ trait.cost }}</div>
@@ -210,41 +214,38 @@
 
     <!-- Skills TAB -->
     <ion-row *ngSwitchCase="'skills'">
-      <ion-col class="flex-between" size="12">
-        <ion-button size="small">
-          arrange
-        </ion-button>
-        <ion-text color="primary">
+      <ion-col size="12">
+        <div style="float: right; width: 0px; position: relative; left: -50px;">
+          <ion-fab-button size="small" (click)="onOpenSkills('skills')">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </div>
+        <ion-text class="ion-text-center" color="primary">
           <h2>Skills</h2>
         </ion-text>
-        <ion-fab-button size="small" (click)="onOpenSkills('skills')">
-          <ion-icon name="add"></ion-icon>
-        </ion-fab-button>
       </ion-col>
       <ion-col size="12">
         <ion-accordion-group>
-          <ion-reorder-group disabled="true">
             <!-- ngFor the selected Traits here -->
-            <ion-item>
-              <ion-reorder slot="start"></ion-reorder>
-              <ion-accordion class="selected-item" value="colors">
+            <ion-item *ngFor="let skill of creation.characterSelectedSkills">
+              <ion-accordion class="selected-item" [value]="skill.airtable_id">
                 <ion-item slot="header">
+                  <ion-icon *ngIf="!isDependencyExist(skill)" name="close"
+                    (click)="onRemoveSkill(skill.airtable_id, skill.type)"></ion-icon>
+                  <ion-icon *ngIf="isDependencyExist(skill)" name="lock-closed"></ion-icon>
                   <div class="flex-between selected-header">
-                    <div>Swordsmanshop</div>
-                    <div>20 AP</div>
+                    <div>{{ skill.title }}</div>
+                    <div>{{ skill.cost }}</div>
                   </div>
                 </ion-item>
                 <ion-list class="selected-details" slot="content">
                   <hr>
                   <p>
-                    Roll 6 dice plus your total M. Enemy rolls Ag -75% to deduct Dmg from your roll.
-                    If it Hits every unit imediatly adjacent to target suffers 25% of the Dmg afflicted.
-                    (Can be used to counter energy based attacks if your Action is still available this turn)
+                    {{ skill.description }}
                   </p>
                 </ion-list>
               </ion-accordion>
             </ion-item>
-          </ion-reorder-group>
         </ion-accordion-group>
       </ion-col>
     </ion-row>

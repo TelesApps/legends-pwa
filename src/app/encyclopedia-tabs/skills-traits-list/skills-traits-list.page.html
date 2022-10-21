@@ -51,15 +51,17 @@
               <div>
                 <p>{{ skillTraits.effects }}</p>
               </div>
-              <ion-text color="danger">
-                <span *ngIf="creation.skillPoints < skillTraits.cost">Not Enough Skill Points</span>
-                <span *ngIf="!isPrereqMet(skillTraits)">You do not have the prerequisite Skills</span>
-              </ion-text>
-              <ion-button *ngIf="isSelectMode"
-                [disabled]="!hasEnoughPoints(skillTraits.cost) || !isPrereqMet(skillTraits)"
-                (click)="onSkillSelected(skillTraits)" expand="block" shape="round">
-                Select Item
-              </ion-button>
+              <div *ngIf="isSelectMode" class="ion-text-center">
+                <ion-text color="danger">
+                  <span *ngIf="!hasEnoughPoints(skillTraits.cost)">Not Enough Skill Points</span>
+                  <span *ngIf="!isPrereqMet(skillTraits)">You do not have the prerequisite Skills</span>
+                </ion-text>
+                <ion-button *ngIf="!hasSkill(skillTraits.title)"
+                  [disabled]="!hasEnoughPoints(skillTraits.cost) || !isPrereqMet(skillTraits)"
+                  (click)="onSkillSelected(skillTraits)" expand="block" shape="round">
+                  Select Item
+                </ion-button>
+              </div>
             </ion-list>
           </ion-accordion>
         </ion-accordion-group>
