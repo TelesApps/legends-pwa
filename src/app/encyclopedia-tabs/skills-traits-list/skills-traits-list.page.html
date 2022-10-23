@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content [scrollEvents]="true">
   <ion-text color="primary" class="ion-text-center">
     <h1>Skills and Traits</h1>
   </ion-text>
@@ -31,7 +31,7 @@
           <ion-spinner name="bubbles"></ion-spinner>
         </div>
         <ion-accordion-group #accordionGroup>
-          <ion-accordion *ngFor="let skillTraits of filterredSkills" class="legends-item" [value]="skillTraits.title">
+          <ion-accordion *ngFor="let skillTraits of filterredSkills" class="legends-item" [value]="skillTraits.title.toLowerCase()">
             <ion-item slot="header">
               <div class="flex-between item-header">
                 <div class="flex-between" style="align-items:center">
@@ -46,6 +46,12 @@
             <ion-list class="item-details" slot="content">
               <hr>
               <div class="item-details-title">
+                <span *ngIf="skillTraits.prereq"><b>Prerequisites: </b>
+                  <span *ngFor="let req of skillTraits.prereq">
+                    <a (click)="onGoToPrereq(req.toLowerCase())" [ngClass]="hasSkill(req)?'color-blue':'color-red'">{{
+                      req }}</a>,
+                  </span>
+                </span>
                 <b>{{ skillTraits.tags }}</b>
               </div>
               <div>
