@@ -13,11 +13,11 @@
           <ion-icon *ngIf="typeFilter.value" slot="start" name="close" (click)="typeFilter.value = ''"></ion-icon>
         </div>
         <ion-item class="filter-select">
-          <ion-label position="floating">Tags</ion-label>
-          <ion-select #typeFilter [(ngModel)]="skillTagFilter" placeholder="Filter By Tags" multiple="true"
+          <ion-label position="floating">Type</ion-label>
+          <ion-select #typeFilter [(ngModel)]="skillTypeFilter" placeholder="Filter By Traits or Skills" multiple="true"
             (ionChange)="onFilterChange($event)">
-            <ion-select-option value="attack">Attack</ion-select-option>
-            <ion-select-option value="defence">Defence</ion-select-option>
+            <ion-select-option value="trait">Traits</ion-select-option>
+            <ion-select-option value="skill">Skills</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>

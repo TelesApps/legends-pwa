@@ -16,7 +16,7 @@ export class SkillsTraitsListPage implements OnInit {
   filterredSkills: Array<SkillTraits> = [];
   allSkills = [];
   searchInput: string;
-  skillTagFilter: string[];
+  skillTypeFilter: string[];
   isSelectMode: boolean = false;
   backUrl: string = '/character-creation-tabs/skills-selection'
   backQuerySegmentSelection: string;
@@ -29,22 +29,33 @@ export class SkillsTraitsListPage implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    console.log('init called');
     this.airtable.$skillsTraits.subscribe((skillsTraits) => {
       console.log('skills inside subscribe');
       this.allSkills = skillsTraits;
       this.filterredSkills = skillsTraits;
       this.isLoading = false;
+      if (this.skillTypeFilter && this.skillTypeFilter.length > 0) {
+        this.onFilterChange();
+      }
     })
     console.log('length', this.filterredSkills.length)
     if (this.filterredSkills.length < 1)
       this.airtable.loadSkillsAndTraits();
     this.route.queryParams.subscribe((params) => {
+      this.skillTypeFilter = [];
       console.log(params)
       if (params.isSelectMode)
         this.isSelectMode = true;
       if (params.segmentSelection) {
         console.log('params.segmentSelection', params.segmentSelection);
         this.backQuerySegmentSelection = params.segmentSelection;
+        if(params.segmentSelection === 'traits') {
+          this.skillTypeFilter.push('trait');
+        } else if (params.segmentSelection === 'skills') {
+          this.skillTypeFilter.push('skill');
+        }
+        this.onFilterChange();
       }
       if (params && params.breadcrumb) {
         this.backUrl = params.breadcrumb;
@@ -52,11 +63,8 @@ export class SkillsTraitsListPage implements OnInit {
     })
   }
 
-  onFilterChange(event) {
-    // #TODO
-    // ADD Logic to filter by Trait or by Skill
+  onFilterChange(event?) {
     this.isLoading = true;
-    console.log(event.detail.value);
     this.filterredSkills = this.allSkills
     if (this.searchInput) {
       let userWord1 = this.searchInput;
@@ -76,25 +84,23 @@ export class SkillsTraitsListPage implements OnInit {
         }
       });
     }
-    // FILTER ITEM TAGS
-    const newTagFilter: Array<SkillTraits> = [];
-    if (this.skillTagFilter) {
-      this.skillTagFilter.forEach(tagTxt => {
-        console.log(tagTxt);
+    // FILTER ITEM TYPES
+    const newTypeFilter: Array<SkillTraits> = [];
+    if (this.skillTypeFilter) {
+      this.skillTypeFilter.forEach(typeTxt => {
+        console.log('typeTxt', typeTxt);
         this.filterredSkills.forEach(skill => {
-          if (skill.tags) {
-            skill.tags.forEach(tag => {
-              if (tag && tag.toLowerCase().includes(tagTxt.toLowerCase())) {
-                newTagFilter.push(skill);
-              }
-            });
+          if (skill.type) {
+            if (skill.type.toLowerCase().includes(typeTxt.toLowerCase())) {
+              newTypeFilter.push(skill);
+            }
           }
         });
       });
-      if (newTagFilter.length > 0) {
-        this.filterredSkills = newTagFilter;
+      if (newTypeFilter.length > 0) {
+        this.filterredSkills = newTypeFilter;
       }
-      console.log('typefilter:', newTagFilter);
+      console.log('typefilter:', newTypeFilter);
     }
     this.isLoading = false;
   }
@@ -130,9 +136,9 @@ export class SkillsTraitsListPage implements OnInit {
   }
 
   onGoToPrereq(prereq: string) {
-    if (this.searchInput || this.skillTagFilter && this.skillTagFilter.length > 0) {
+    if (this.searchInput || this.skillTypeFilter && this.skillTypeFilter.length > 0) {
       this.searchInput = '';
-      this.skillTagFilter = [];
+      this.skillTypeFilter = [];
       // this.onFilterChange();
       setTimeout(() => {
         this.onGoToPrereq(prereq);
