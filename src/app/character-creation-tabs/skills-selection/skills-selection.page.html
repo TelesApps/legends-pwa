@@ -19,81 +19,96 @@
           <ion-text class="ion-text-center" color="primary">
             <h5>Secondary Stats</h5>
           </ion-text>
-          <div class="stats-items-list" style="display: flex; flex-wrap: wrap;">
+          <div class="stats-items-list">
+            <div class="stat-item" style="display: flex;">
+              <b>Stress Tolerance</b>
+              <div></div>
+              <span>{{ character.secondaryStats.stress_tolerance | percent }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
+              <b>Stealth</b>
+              <div></div>
+              <span>{{ character.secondaryStats.stealth | number: '1.0-1' }}</span>
+            </div>
             <div class="stat-item" style="display: flex;">
               <b>Stress Lvl</b>
               <div></div>
               <span>{{ character.secondaryStats.stress | percent }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
-              <b>Stealth</b>
-              <div></div>
-              <span>{{ character.secondaryStats.stealth }}</span>
-            </div>
-            <div class="stat-item" style="display: flex;">
               <b>Lock Picking</b>
               <div></div>
-              <span>{{ character.secondaryStats.lockPicking }}</span>
+              <span>{{ character.secondaryStats.lockPicking | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Quick Hands</b>
               <div></div>
-              <span>{{ character.secondaryStats.quickHands }}</span>
+              <span>{{ character.secondaryStats.quickHands | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Persuasion</b>
               <div></div>
-              <span>{{ character.secondaryStats.persuasion }}</span>
+              <span>{{ character.secondaryStats.persuasion | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Intimidation</b>
               <div></div>
-              <span>{{ character.secondaryStats.intimidation }}</span>
+              <span>{{ character.secondaryStats.intimidation | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Engineering</b>
               <div></div>
-              <span>{{ character.secondaryStats.engineering }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.engineering | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Tracking</b>
               <div></div>
-              <span>{{ character.secondaryStats.tracking }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.tracking | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Mining</b>
               <div></div>
-              <span>{{ character.secondaryStats.mining }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.mining | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Smithing</b>
               <div></div>
-              <span>{{ character.secondaryStats.smithing }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.smithing | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Phiral Smithing</b>
               <div></div>
-              <span>{{ character.secondaryStats.phiralSmithing }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.phiralSmithing | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Herbalism</b>
               <div></div>
-              <span>{{ character.secondaryStats.herbalism }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.herbalism | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Alchemy</b>
               <div></div>
-              <span>{{ character.secondaryStats.alchemy }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.alchemy | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Cooking</b>
               <div></div>
-              <span>{{ character.secondaryStats.cooking }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.cooking | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Musician</b>
               <div></div>
-              <span>{{ character.secondaryStats.musician }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.musician | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Artist</b>
               <div></div>
-              <span>{{ character.secondaryStats.artist }}</span>
-            </div><div class="stat-item" style="display: flex;">
+              <span>{{ character.secondaryStats.artist | number: '1.0-1' }}</span>
+            </div>
+            <div class="stat-item" style="display: flex;">
               <b>Carry Capacity</b>
               <div></div>
-              <span>{{ character.secondaryStats.carryCapacity }}</span>
+              <span>{{ character.secondaryStats.carryCapacity | number: '1.0-1' }}</span>
             </div>
           </div>
         </div>
@@ -107,62 +122,62 @@
             <div class="stat-item" style="display: flex;">
               <b>Health</b>
               <div></div>
-              <span>{{ character.primaryStats.maxHealth }}</span>
+              <span>{{ character.primaryStats.maxHealth | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Stamina</b>
               <div></div>
-              <span>{{ character.primaryStats.maxStamina }}</span>
+              <span>{{ character.primaryStats.maxStamina | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Power</b>
               <div></div>
-              <span>{{ character.primaryStats.maxPower }}</span>
+              <span>{{ character.primaryStats.maxPower | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Ranged Attack</b>
               <div></div>
-              <span>{{ character.primaryStats.rangedAttack }}</span>
+              <span>{{ character.primaryStats.rangedAttack | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Melee Attack</b>
               <div></div>
-              <span>{{ character.primaryStats.meleeAttack }}</span>
+              <span>{{ character.primaryStats.meleeAttack | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Defense</b>
               <div></div>
-              <span>{{ character.primaryStats.defense }}</span>
+              <span>{{ character.primaryStats.defense | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Strength</b>
               <div></div>
-              <span>{{ character.primaryStats.strength }}</span>
+              <span>{{ character.primaryStats.strength | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Agility</b>
               <div></div>
-              <span>{{ character.primaryStats.agility }}</span>
+              <span>{{ character.primaryStats.agility | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Accuracy</b>
               <div></div>
-              <span>{{ character.primaryStats.accuracy }}</span>
+              <span>{{ character.primaryStats.accuracy | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Perception</b>
               <div></div>
-              <span>{{ character.primaryStats.perception }}</span>
+              <span>{{ character.primaryStats.perception | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Mental</b>
               <div></div>
-              <span>{{ character.primaryStats.mental }}</span>
+              <span>{{ character.primaryStats.mental | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Movement</b>
               <div></div>
-              <span>{{ character.primaryStats.movement }}</span>
+              <span>{{ character.primaryStats.movement | number: '1.0-1' }}</span>
             </div>
             <div class="stat-item" style="display: flex;">
               <b>Crit Chance</b>
@@ -188,26 +203,26 @@
       </ion-col>
       <ion-col size="12">
         <ion-accordion-group>
-            <!-- ngFor the selected Traits here -->
-            <ion-item *ngFor="let trait of creation.characterSelectedTraits">
-              <ion-accordion class="selected-item" [value]="trait.airtable_id">
-                <ion-item slot="header">
-                  <ion-icon *ngIf="!isDependencyExist(trait)" name="close"
-                    (click)="onRemoveSkill(trait.airtable_id, trait.type)"></ion-icon>
-                  <ion-icon *ngIf="isDependencyExist(trait)" name="lock-closed"></ion-icon>
-                  <div class="flex-between selected-header">
-                    <div>{{ trait.title }}</div>
-                    <div>{{ trait.cost }}</div>
-                  </div>
-                </ion-item>
-                <ion-list class="selected-details" slot="content">
-                  <hr>
-                  <p>
-                    {{ trait.description }}
-                  </p>
-                </ion-list>
-              </ion-accordion>
-            </ion-item>
+          <!-- ngFor the selected Traits here -->
+          <ion-item *ngFor="let trait of creation.characterSelectedTraits">
+            <ion-accordion class="selected-item" [value]="trait.airtable_id">
+              <ion-item slot="header">
+                <ion-icon *ngIf="!isDependencyExist(trait)" name="close"
+                  (click)="onRemoveSkill(trait.airtable_id, trait.type)"></ion-icon>
+                <ion-icon *ngIf="isDependencyExist(trait)" name="lock-closed"></ion-icon>
+                <div class="flex-between selected-header">
+                  <div>{{ trait.title }}</div>
+                  <div>{{ trait.cost }}</div>
+                </div>
+              </ion-item>
+              <ion-list class="selected-details" slot="content">
+                <hr>
+                <p>
+                  {{ trait.description }}
+                </p>
+              </ion-list>
+            </ion-accordion>
+          </ion-item>
         </ion-accordion-group>
       </ion-col>
     </ion-row>
@@ -226,26 +241,26 @@
       </ion-col>
       <ion-col size="12">
         <ion-accordion-group>
-            <!-- ngFor the selected Traits here -->
-            <ion-item *ngFor="let skill of creation.characterSelectedSkills">
-              <ion-accordion class="selected-item" [value]="skill.airtable_id">
-                <ion-item slot="header">
-                  <ion-icon *ngIf="!isDependencyExist(skill)" name="close"
-                    (click)="onRemoveSkill(skill.airtable_id, skill.type)"></ion-icon>
-                  <ion-icon *ngIf="isDependencyExist(skill)" name="lock-closed"></ion-icon>
-                  <div class="flex-between selected-header">
-                    <div>{{ skill.title }}</div>
-                    <div>{{ skill.cost }}</div>
-                  </div>
-                </ion-item>
-                <ion-list class="selected-details" slot="content">
-                  <hr>
-                  <p>
-                    {{ skill.description }}
-                  </p>
-                </ion-list>
-              </ion-accordion>
-            </ion-item>
+          <!-- ngFor the selected Traits here -->
+          <ion-item *ngFor="let skill of creation.characterSelectedSkills">
+            <ion-accordion class="selected-item" [value]="skill.airtable_id">
+              <ion-item slot="header">
+                <ion-icon *ngIf="!isDependencyExist(skill)" name="close"
+                  (click)="onRemoveSkill(skill.airtable_id, skill.type)"></ion-icon>
+                <ion-icon *ngIf="isDependencyExist(skill)" name="lock-closed"></ion-icon>
+                <div class="flex-between selected-header">
+                  <div>{{ skill.title }}</div>
+                  <div>{{ skill.cost }}</div>
+                </div>
+              </ion-item>
+              <ion-list class="selected-details" slot="content">
+                <hr>
+                <p>
+                  {{ skill.description }}
+                </p>
+              </ion-list>
+            </ion-accordion>
+          </ion-item>
         </ion-accordion-group>
       </ion-col>
     </ion-row>

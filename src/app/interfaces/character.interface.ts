@@ -10,10 +10,10 @@ export interface Character {
     secondaryStats: SecondaryStats;
     equipments: Equipments;
     equipmentModifier: Array<StatusEffect>;
+    skillTraitsModifiers: Array<StatusEffect>;
     statusEffects: Array<StatusEffect>;
     abilitiesId: Array<string>;
-    skillsId: Array<string>;
-    traitsId: Array<string>;
+    skillsTraitsId: Array<string>;
 }
 
 interface PrimaryStats {
@@ -51,8 +51,11 @@ interface PrimaryStats {
 }
 
 interface SecondaryStats {
-    core_stress: number,
+    max_stress: number,
+    min_stress: number
     stress: number,
+    core_stressTolerance: number,
+    stress_tolerance: number,
     core_stealth: number;
     stealth: number;
     core_lockPicking: number;
@@ -141,8 +144,11 @@ export function CreateNewCharacter() {
             critChance: 6,
         },
         secondaryStats: {
-            core_stress: 0.05,
-            stress: 0.05,
+            max_stress: 1,
+            min_stress: 0,
+            stress: .08,
+            core_stressTolerance: .35,
+            stress_tolerance: .35,
             core_stealth: 6,
             stealth: 6,
             core_lockPicking: 6,
@@ -189,10 +195,10 @@ export function CreateNewCharacter() {
             goldCoins: 0,
         },
         equipmentModifier: [],
+        skillTraitsModifiers: [],
         statusEffects: [],
         abilitiesId: [],
-        skillsId: [],
-        traitsId: [],
+        skillsTraitsId: [],
     }
     return character;
 }

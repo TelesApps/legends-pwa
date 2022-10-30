@@ -6,7 +6,7 @@ ion-grid {
     min-width: 46%;
     margin: 6px;
     div {
-        border-bottom: 1px dashed var(--ion-color-dark) !important;;
+        border-bottom: 1px dashed var(--ion-color-dark) !important;
         flex-grow: 1;
         margin-bottom: 2px;
     }
@@ -35,7 +35,7 @@ ion-item {
     padding: 12px;
 
     .selected-details-title {
-        display: flex; 
+        display: flex;
         flex-direction: column;
     }
 }
@@ -44,4 +44,9 @@ ion-item {
     float: right;
     position: relative;
     top: -55px;
+}
+
+.stats-items-list {
+    display: flex;
+    flex-wrap: wrap;
 }

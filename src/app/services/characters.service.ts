@@ -62,12 +62,19 @@ export class CharactersService {
     if (this.airtable.allItems && this.airtable.allItems.length > 0) {
       this.calculateEquipmentModifiers(character);
     } else {
-      console.error('Items not available from Airtable');
+      console.error('Items not yet available from Airtable, loading now');
       this.airtable.loadItems();
     }
     // Add weapon modifiers to stats
     this.addModifiersToStats(character, character.equipmentModifier);
-    // #TODO Add additional Modifiers calculation from Skills and Traits Here
+    if (this.airtable.skillsTraits && this.airtable.skillsTraits.length > 0) {
+      this.calculateSkillTraitsModifiers(character);
+      // Add Skill modifiers to stats
+      this.addModifiersToStats(character, character.skillTraitsModifiers);
+    } else {
+      console.error('Skills and Traits not yet available from Airtable, loading now');
+      this.airtable.loadSkillsAndTraits();
+    }
 
     // Recalculate Melee Attack, Ranged Attack and Defence which may have been effected by Skills and Traits
 
@@ -118,7 +125,7 @@ export class CharactersService {
           isRanged = true;
         const effects: StatusEffect[] =
           this.calculations.calculateEffectsFromStrings(offHandItem.effects, 'off_hand-' + character.equipments.offHandId, isRanged);
-        // #TODO Add logic here to determine if effects can be full value because of an ability or trait
+        // #TODO Add logic here to determine if effects can be full value because of an ability or trait OR add this logic somewhere else
         if (offHandItem.body_property.toLowerCase() === 'weapon') {
           effects.forEach(effect => { effect.value = effect.value / 2; });
         }
@@ -177,11 +184,26 @@ export class CharactersService {
     return character;
   }
 
+  calculateSkillTraitsModifiers(character: Character) {
+    // #TODO Add additional IF logic for skills and traits prerequisites from airtable maybe add a column in airtable 
+    console.log('calculateSkillTraitsModifiers called')
+    character.skillsTraitsId.forEach(id => {
+      const skillTrait = this.airtable.getSkillTraitById(id)
+      console.log('skillTrait', skillTrait);
+      const effects: StatusEffect[] = this.calculations.calculateEffectsFromStrings(skillTrait.effects, skillTrait.airtable_id);
+      console.log('effects', effects);
+      character.skillTraitsModifiers = character.skillTraitsModifiers.concat(effects);
+      console.log('character.skillTraitsModifiers', character.skillTraitsModifiers);
+    });
+
+  }
+
   addModifiersToStats(character: Character, modifiers: Array<StatusEffect>) {
+    console.log('addModifiersToStats called', modifiers);
     // 1- Creates a value from the core stat.
     // 2- Adds all of the modifiers to that value.
     // 3- Assigns all of that value to the proper stat, not the core;
-    // Health Stamina and Power are ommited from here since they change per turn
+    // Health Stamina Power and Stress are ommited from here since they can change per turn
     let maxArmor = character.primaryStats.maxArmor;
     let armor = character.primaryStats.armor;
     let dmgResistance = character.primaryStats.dmgResistance;
@@ -198,7 +220,9 @@ export class CharactersService {
     let perception = character.primaryStats.core_perception;
     let mental = character.primaryStats.core_mental;
     let critChance = character.primaryStats.core_critChance;
-    let stress = character.secondaryStats.core_stress;
+    let maxStress = character.secondaryStats.max_stress;
+    let minStress = character.secondaryStats.min_stress;
+    let stressTolerance = character.secondaryStats.core_stressTolerance;
     let stealth = character.secondaryStats.core_stealth;
     let lockPicking = character.secondaryStats.core_lockPicking;
     let quickHands = character.secondaryStats.core_quickHands;
@@ -221,6 +245,8 @@ export class CharactersService {
     let meleeAttackBonus = 0;
     let defenseBonus = 0;
     let movementBonus = 0;
+    let maxStressBonus = 0;
+    let minStressPenalty = 0;
 
     modifiers.forEach(modifier => {
       if (modifier.stat === Stat.Accuracy) accuracy += modifier.value;
@@ -236,7 +262,7 @@ export class CharactersService {
       if (modifier.stat === Stat.Perception) perception += modifier.value;
       if (modifier.stat === Stat.Mental) mental += modifier.value;
       if (modifier.stat === Stat.Crit) critChance += modifier.value;
-      if (modifier.stat === Stat.stress) stress += modifier.value;
+      if (modifier.stat === Stat.stressTolerance) stressTolerance += modifier.value;
       if (modifier.stat === Stat.stealth) stealth += modifier.value;
       if (modifier.stat === Stat.lockPicking) lockPicking += modifier.value;
       if (modifier.stat === Stat.quickHands) quickHands += modifier.value;
@@ -259,6 +285,8 @@ export class CharactersService {
       if (modifier.stat === Stat.MeleeAttack) meleeAttackBonus += modifier.value;
       if (modifier.stat === Stat.Defence) defenseBonus += modifier.value;
       if (modifier.stat === Stat.Movement) movementBonus += modifier.value;
+      if (modifier.stat === Stat.maxStress) maxStressBonus += modifier.value;
+      if (modifier.stat === Stat.minStress) minStressPenalty += modifier.value;
     });
     character.primaryStats.accuracy = accuracy;
     character.primaryStats.maxArmor = maxArmor;
@@ -273,25 +301,19 @@ export class CharactersService {
     character.primaryStats.perception = perception;
     character.primaryStats.mental = mental;
     character.primaryStats.critChance = critChance;
-    character.secondaryStats.stress = stress;
-    character.secondaryStats.stealth = stealth;
+    character.secondaryStats.max_stress = maxStress;
+    character.secondaryStats.min_stress = minStress;
+    character.secondaryStats.stress_tolerance = stressTolerance;
     character.secondaryStats.lockPicking = lockPicking;
-    character.secondaryStats.quickHands = quickHands;
-    character.secondaryStats.persuasion = persuasion;
-    character.secondaryStats.intimidation = intimidation;
     character.secondaryStats.engineering = engineering;
-    character.secondaryStats.tracking = tracking;
-    character.secondaryStats.mining = mining;
-    character.secondaryStats.smithing = smithing;
-    character.secondaryStats.phiralSmithing - phiralSmithing;
     character.secondaryStats.herbalism = herbalism;
-    character.secondaryStats.alchemy = alchemy;
-    character.secondaryStats.cooking = cooking;
     character.secondaryStats.musician = musician;
     character.secondaryStats.artist = artist;
-    character.secondaryStats.carryCapacity = carryCapacity;
-    // Stats bellow are dependent on certain stats above;
-    // #TODO add the logic bellow to all the applicable stats ie: stealth, intimidation etc
+    //Stats bellow are dependent on certain stats above;
+    if (character.secondaryStats.stress > character.secondaryStats.max_stress)
+      character.secondaryStats.stress = character.secondaryStats.max_stress;
+    if (character.secondaryStats.stress < character.secondaryStats.min_stress)
+      character.secondaryStats.stress = character.secondaryStats.min_stress;
     character.primaryStats.maxHealth =
       (character.primaryStats.maxStamina + (character.primaryStats.strength * 10) / 2) + maxHealthBonus;
     character.primaryStats.rangedAttack =
@@ -300,7 +322,22 @@ export class CharactersService {
       (character.primaryStats.strength * 0.6) + (character.primaryStats.agility * 0.4) + meleeAttackBonus;
     character.primaryStats.defense =
       (character.primaryStats.strength * 0.4) + (character.primaryStats.agility * 0.6) + defenseBonus;
-    character.primaryStats.movement = ((6 + character.primaryStats.agility) / 2) + movementBonus;
+    const mentalWithStrees = character.primaryStats.mental - (character.primaryStats.mental *
+      (character.secondaryStats.stress - character.secondaryStats.stress_tolerance));
+    if (mentalWithStrees < character.primaryStats.mental)
+      character.primaryStats.mental = mentalWithStrees;
+    character.primaryStats.movement = ((character.primaryStats.core_movement + character.primaryStats.agility) / 2) + movementBonus;
+    character.secondaryStats.stealth = (character.secondaryStats.core_stealth + character.primaryStats.agility) / 2;
+    character.secondaryStats.quickHands = (character.secondaryStats.core_quickHands + character.primaryStats.agility) / 2;
+    character.secondaryStats.persuasion = (character.secondaryStats.core_persuasion + character.primaryStats.perception) / 2;
+    character.secondaryStats.intimidation = (character.secondaryStats.core_intimidation + character.primaryStats.strength) / 2;
+    character.secondaryStats.tracking = (character.secondaryStats.core_tracking + character.primaryStats.perception) / 2;
+    character.secondaryStats.mining = (character.secondaryStats.core_mining + character.primaryStats.strength) / 2;
+    character.secondaryStats.smithing = (character.secondaryStats.core_smithing + character.primaryStats.strength) / 2;
+    character.secondaryStats.phiralSmithing = (character.secondaryStats.core_phiralSmithing + character.primaryStats.mental) / 2;
+    character.secondaryStats.alchemy = (character.secondaryStats.core_alchemy + character.secondaryStats.herbalism) / 2;
+    character.secondaryStats.cooking = (character.secondaryStats.core_cooking + character.secondaryStats.herbalism) / 2;
+    character.secondaryStats.carryCapacity = (character.secondaryStats.core_carryCapacity + character.primaryStats.strength) * 10;
 
     return character;
   }

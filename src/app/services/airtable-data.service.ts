@@ -96,4 +96,19 @@ export class AirtableDataService {
       return undefined
     }
   }
+
+  getSkillTraitById(id: string): SkillTraits {
+    if(id) {
+      const skillTrait = this.skillsTraits.find(s => s.airtable_id === id);
+      if(skillTrait) return skillTrait
+      else {
+        console.error('Skill or trait not found');
+        return undefined;
+      }
+    }
+    else {
+      console.error('id is invalid', id);
+      return undefined
+    }
+  }
 }

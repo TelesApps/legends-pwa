@@ -108,7 +108,6 @@ export class SkillsTraitsListPage implements OnInit {
   onSkillSelected(skill: SkillTraits) {
     this.creation.skillTraitsSelection = skill;
     this.router.navigate([this.backUrl], { queryParams: { selection: this.backQuerySegmentSelection } });
-    console.log('Skill&Traits selected: ', skill)
     this.accordionGroup.value = undefined;
   }
 

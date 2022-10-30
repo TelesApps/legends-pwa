@@ -34,7 +34,7 @@ export class SkillsSelectionPage implements OnInit {
         if (this.creation.skillTraitsSelection) {
           this.creation.skillsPoints -= this.creation.skillTraitsSelection.cost;
           console.log('Skill selected: ', this.creation.skillTraitsSelection);
-          this.character.skillsId.push(this.creation.skillTraitsSelection.airtable_id);
+          this.character.skillsTraitsId.push(this.creation.skillTraitsSelection.airtable_id);
           if (this.creation.skillTraitsSelection.type === 'trait') {
             this.creation.characterSelectedTraits.push(this.creation.skillTraitsSelection);
           } else {
@@ -82,8 +82,8 @@ export class SkillsSelectionPage implements OnInit {
       }
     }
     // remove from character's skills ID list
-    const idIndex = this.character.skillsId.findIndex(a => a === id);
-    if (idIndex != -1) this.character.skillsId.splice(idIndex, 1);
+    const idIndex = this.character.skillsTraitsId.findIndex(a => a === id);
+    if (idIndex != -1) this.character.skillsTraitsId.splice(idIndex, 1);
 
     this.creation.characterSubj.next(this.character);
 
