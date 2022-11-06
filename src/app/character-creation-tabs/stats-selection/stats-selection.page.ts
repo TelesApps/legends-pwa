@@ -22,14 +22,14 @@ export class StatsSelectionPage implements OnInit {
     let newStat;
     switch (stat) {
       case 'Stam':
-        newStat = this.getNewStatNumber(this.character.primaryStats.maxStamina, value, initialStats.primaryStats.maxStamina, 5);
+        newStat = this.getNewStatNumber(this.character.primaryStats.core_maxStamina, value, initialStats.primaryStats.core_maxStamina, 5);
         if (newStat)
-          this.character.primaryStats.maxStamina = newStat;
+          this.character.primaryStats.core_maxStamina = newStat;
         break;
       case 'P':
-        newStat = this.getNewStatNumber(this.character.primaryStats.maxPower, value, initialStats.primaryStats.maxPower, 5);
+        newStat = this.getNewStatNumber(this.character.primaryStats.core_maxPower, value, initialStats.primaryStats.core_maxPower, 5);
         if (newStat)
-          this.character.primaryStats.maxPower = newStat;
+          this.character.primaryStats.core_maxPower = newStat;
         break;
       case 'Str':
         newStat = this.getNewStatNumber(this.character.primaryStats.core_strength, value, initialStats.primaryStats.core_strength, 1);

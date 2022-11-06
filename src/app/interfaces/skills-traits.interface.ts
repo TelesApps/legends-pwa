@@ -10,4 +10,5 @@ export interface SkillTraits {
     description?: string;
     prereq: string[];
     image?: Image[];
+    conditions?: string[];
 }

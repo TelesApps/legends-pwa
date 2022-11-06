@@ -50,6 +50,7 @@ export class CharactersService {
 
   // Character Creation Service is also calling this to make this calculation, hence the Character input value
   calculateCharacterStats(character: Character) {
+    console.log()
     // Set character's calculated stat based on user selection
     // THE MATH FOR EACH CALCULATION IS DEFINED HERE BUT IS BASED ON THE CHARACTER SPREADSHEET (see readme file)
     // First calculate Core Stats
@@ -185,7 +186,8 @@ export class CharactersService {
   }
 
   calculateSkillTraitsModifiers(character: Character) {
-    // #TODO Add additional IF logic for skills and traits prerequisites from airtable maybe add a column in airtable 
+    character.skillTraitsModifiers = [];
+    // #TODO Add additional IF logic for skills and traits based on the conditions column in airtable.
     console.log('calculateSkillTraitsModifiers called')
     character.skillsTraitsId.forEach(id => {
       const skillTrait = this.airtable.getSkillTraitById(id)
@@ -204,13 +206,13 @@ export class CharactersService {
     // 2- Adds all of the modifiers to that value.
     // 3- Assigns all of that value to the proper stat, not the core;
     // Health Stamina Power and Stress are ommited from here since they can change per turn
-    let maxArmor = character.primaryStats.maxArmor;
+    let maxArmor = character.primaryStats.core_maxArmor;
     let armor = character.primaryStats.armor;
     let dmgResistance = character.primaryStats.dmgResistance;
     // let health = character.primaryStats.health;
-    let maxStamina = character.primaryStats.maxStamina;
+    let maxStamina = character.primaryStats.core_maxStamina;
     // let stamina = character.primaryStats.stamina;
-    let maxPower = character.primaryStats.maxPower;
+    let maxPower = character.primaryStats.core_maxPower;
     //let power = character.primaryStats.power;
     let rangedDmgModifier = character.primaryStats.rangedDmgModifier;
     let meleeDmgModifier = character.primaryStats.meleeDmgModifier;
@@ -314,8 +316,9 @@ export class CharactersService {
       character.secondaryStats.stress = character.secondaryStats.max_stress;
     if (character.secondaryStats.stress < character.secondaryStats.min_stress)
       character.secondaryStats.stress = character.secondaryStats.min_stress;
-    character.primaryStats.maxHealth =
+    character.primaryStats.core_maxHealth =
       (character.primaryStats.maxStamina + (character.primaryStats.strength * 10) / 2) + maxHealthBonus;
+    character.primaryStats.maxHealth = character.primaryStats.core_maxHealth;      
     character.primaryStats.rangedAttack =
       (character.primaryStats.accuracy * 0.75) + (character.primaryStats.perception * 0.25) + rangedAttackBonus;
     character.primaryStats.meleeAttack =

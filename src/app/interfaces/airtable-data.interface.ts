@@ -31,6 +31,7 @@ export interface Fields {
     turn_units_req?:        string;
     body_property:          string;
     type?:                  string;
+    conditions?:            string[];
 }
 
 export enum DmgType {

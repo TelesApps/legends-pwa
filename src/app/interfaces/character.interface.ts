@@ -17,13 +17,17 @@ export interface Character {
 }
 
 interface PrimaryStats {
+    core_maxArmor: number;
     maxArmor: number;
     armor: number;
     dmgResistance: number;
+    core_maxHealth: number;
     maxHealth: number;
     health: number;
+    core_maxStamina: number;
     maxStamina: number;
     stamina: number;
+    core_maxPower: number;
     maxPower: number;
     power: number;
     core_ranged: number;
@@ -111,13 +115,17 @@ export function CreateNewCharacter() {
         bios: '',
         portraitUrl: '',
         primaryStats: {
+            core_maxArmor: 0,
             maxArmor: 0,
             armor: 0,
             dmgResistance: 0,
+            core_maxHealth: 40,
             maxHealth: 40,
             health: 40,
+            core_maxStamina: 60,
             maxStamina: 60,
             stamina: 60,
+            core_maxPower: 60,
             maxPower: 60,
             power: 60,
             core_ranged: 6,
