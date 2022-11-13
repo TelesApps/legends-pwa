@@ -69,9 +69,9 @@ export class CharactersService {
     // Add weapon modifiers to stats
     this.addModifiersToStats(character, character.equipmentModifier);
     if (this.airtable.skillsTraits && this.airtable.skillsTraits.length > 0) {
-      this.calculateSkillTraitsModifiers(character);
-      // Add Skill modifiers to stats
-      this.addModifiersToStats(character, character.skillTraitsModifiers);
+      // this.calculateSkillTraitsModifiers(character);
+      // // Add Skill modifiers to stats
+      // this.addModifiersToStats(character, character.skillTraitsModifiers);
     } else {
       console.error('Skills and Traits not yet available from Airtable, loading now');
       this.airtable.loadSkillsAndTraits();
@@ -181,7 +181,8 @@ export class CharactersService {
         index++;
       });
     }
-    character.primaryStats.maxArmor = totalArmor;
+    console.log('totalArmor: ', totalArmor);
+    character.primaryStats.core_maxArmor = totalArmor;
     return character;
   }
 
@@ -192,12 +193,38 @@ export class CharactersService {
     character.skillsTraitsId.forEach(id => {
       const skillTrait = this.airtable.getSkillTraitById(id)
       console.log('skillTrait', skillTrait);
-      const effects: StatusEffect[] = this.calculations.calculateEffectsFromStrings(skillTrait.effects, skillTrait.airtable_id);
-      console.log('effects', effects);
-      character.skillTraitsModifiers = character.skillTraitsModifiers.concat(effects);
-      console.log('character.skillTraitsModifiers', character.skillTraitsModifiers);
+      if (skillTrait.conditions) {
+        if (this.isConditionsMet(character, skillTrait.conditions)) {
+          const effects: StatusEffect[] = this.calculations.calculateEffectsFromStrings(skillTrait.effects, skillTrait.airtable_id);
+          character.skillTraitsModifiers = character.skillTraitsModifiers.concat(effects);
+        }
+      } else {
+        const effects: StatusEffect[] = this.calculations.calculateEffectsFromStrings(skillTrait.effects, skillTrait.airtable_id);
+        character.skillTraitsModifiers = character.skillTraitsModifiers.concat(effects);
+      }
     });
 
+  }
+
+  isConditionsMet(character: Character, conditions: string[]) {
+    let isMet = true;
+    conditions.forEach(condition => {
+      const fields = condition.split('=');
+      console.log('fields', fields)
+      const ifStatement = fields[0];
+      const ifValue = fields[1];
+      if (ifStatement === 'equipped-tags') {
+        if (this.hasItemTag(character.equipments.mainHandId, ifValue) || this.hasItemTag(character.equipments.offHandId, ifValue)) {
+          isMet = true;
+        } else {
+          isMet = false;
+          console.log('Conditions not met. Returning', isMet);
+          return isMet;
+        }
+      }
+    });
+    console.log('All conditions met Returning', isMet);
+    return isMet;
   }
 
   addModifiersToStats(character: Character, modifiers: Array<StatusEffect>) {
@@ -318,7 +345,7 @@ export class CharactersService {
       character.secondaryStats.stress = character.secondaryStats.min_stress;
     character.primaryStats.core_maxHealth =
       (character.primaryStats.maxStamina + (character.primaryStats.strength * 10) / 2) + maxHealthBonus;
-    character.primaryStats.maxHealth = character.primaryStats.core_maxHealth;      
+    character.primaryStats.maxHealth = character.primaryStats.core_maxHealth;
     character.primaryStats.rangedAttack =
       (character.primaryStats.accuracy * 0.75) + (character.primaryStats.perception * 0.25) + rangedAttackBonus;
     character.primaryStats.meleeAttack =
@@ -355,4 +382,16 @@ export class CharactersService {
       return '';
     }
   }
+
+  hasItemTag(id: string, tag: string, item?: Item) {
+    if (!item) {
+      item = this.airtable.getItemById(id);
+    }
+    if (item && item.tags) {
+      return item.tags.find(t => t == tag);
+    } else {
+      return '';
+    }
+  }
+
 }

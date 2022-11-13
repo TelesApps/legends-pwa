@@ -49,7 +49,7 @@ export class CalculationsService {
       if (statusString === 'm' || statusString === 'mental') status = Stat.Mental;
       if (statusString === 'mov' || statusString === 'movement') status = Stat.Movement;
       if (statusString === 'crit') status = Stat.Crit;
-      if (statusString === 'armor' || statusString === 'armore') status = Stat.Armor;
+      if (statusString === 'armor' || statusString === 'armore') status = Stat.MaxArmor;
       if (statusString === 'res' || statusString === 'resistance') status = Stat.DamageResistance;
 
       if (statusString === 'maxStr' || statusString === 'maxstress') status = Stat.maxStress;
@@ -83,4 +83,5 @@ export class CalculationsService {
     });
     return statusEffects;
   }
+
 }
