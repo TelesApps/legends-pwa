@@ -8,6 +8,32 @@ import { Stat, StatusEffect } from '../interfaces/status-effect.interface';
 export class CalculationsService {
 
   constructor() { }
+  // THE MATH FOR EACH CALCULATION IS DEFINED HERE BUT IS BASED ON THE CHARACTER SPREADSHEET (see readme file)
+  calcMaxHealth(character: Character, isFromCore = true) {
+    const value = isFromCore ? character.primaryStats.core_maxStamina + (character.primaryStats.core_strength * 10) / 2 :
+      character.primaryStats.maxStamina + (character.primaryStats.strength * 10) / 2;
+    return value;
+  }
+  calcRangeAttack(character: Character, isFromCore = true) {
+    const value = isFromCore ? (character.primaryStats.core_accuracy * 0.75) + (character.primaryStats.core_perception * 0.25) :
+      (character.primaryStats.accuracy * 0.75) + (character.primaryStats.perception * 0.25);
+    return value;
+  }
+  calcMeleeAttack(character: Character, isFromCore = true) {
+    const value = isFromCore ? (character.primaryStats.core_strength * 0.6) + (character.primaryStats.core_agility * 0.4) :
+      (character.primaryStats.strength * 0.6) + (character.primaryStats.agility * 0.4);
+    return value;
+  }
+  calcDefense(character: Character, isFromCore = true) {
+    const value = isFromCore ? (character.primaryStats.core_strength * 0.4) + (character.primaryStats.core_agility * 0.6) :
+      (character.primaryStats.strength * 0.4) + (character.primaryStats.agility * 0.6);
+    return value;
+  }
+  calcMovement(character: Character, isFromCore = true) {
+    const value = isFromCore ? (6 + character.primaryStats.core_agility) / 2 : (6 + character.primaryStats.agility) / 2;
+    return value;
+  }
+
 
   calculateEffectsFromStrings(effects: string[], id?: string, isRanged?: boolean) {
     const statusEffects: StatusEffect[] = [];
@@ -83,5 +109,6 @@ export class CalculationsService {
     });
     return statusEffects;
   }
+
 
 }

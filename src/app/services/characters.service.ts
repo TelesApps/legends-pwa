@@ -54,11 +54,12 @@ export class CharactersService {
     // Set character's calculated stat based on user selection
     // THE MATH FOR EACH CALCULATION IS DEFINED HERE BUT IS BASED ON THE CHARACTER SPREADSHEET (see readme file)
     // First calculate Core Stats
-    character.primaryStats.maxHealth = character.primaryStats.maxStamina + (character.primaryStats.core_strength * 10) / 2;
-    character.primaryStats.core_ranged = (character.primaryStats.core_accuracy * 0.75) + (character.primaryStats.core_perception * 0.25);
-    character.primaryStats.core_melee = (character.primaryStats.core_strength * 0.6) + (character.primaryStats.core_agility * 0.4);
-    character.primaryStats.core_defense = (character.primaryStats.core_strength * 0.4) + (character.primaryStats.core_agility * 0.6);
-    character.primaryStats.core_movement = (6 + character.primaryStats.core_agility) / 2;
+    character.primaryStats.core_maxHealth = this.calculations.calcMaxHealth(character);
+    character.primaryStats.maxHealth = character.primaryStats.core_maxHealth;
+    character.primaryStats.core_ranged = this.calculations.calcRangeAttack(character);
+    character.primaryStats.core_melee = this.calculations.calcMeleeAttack(character);
+    character.primaryStats.core_defense = this.calculations.calcDefense(character);
+    character.primaryStats.core_movement = this.calculations.calcMovement(character);
     // Calculate weapon modifiers
     if (this.airtable.allItems && this.airtable.allItems.length > 0) {
       this.calculateEquipmentModifiers(character);
@@ -69,9 +70,9 @@ export class CharactersService {
     // Add weapon modifiers to stats
     this.addModifiersToStats(character, character.equipmentModifier);
     if (this.airtable.skillsTraits && this.airtable.skillsTraits.length > 0) {
-      // this.calculateSkillTraitsModifiers(character);
-      // // Add Skill modifiers to stats
-      // this.addModifiersToStats(character, character.skillTraitsModifiers);
+      this.calculateSkillTraitsModifiers(character);
+      // Add Skill modifiers to stats
+      this.addModifiersToStats(character, character.skillTraitsModifiers, false, true);
     } else {
       console.error('Skills and Traits not yet available from Airtable, loading now');
       this.airtable.loadSkillsAndTraits();
@@ -227,55 +228,55 @@ export class CharactersService {
     return isMet;
   }
 
-  addModifiersToStats(character: Character, modifiers: Array<StatusEffect>) {
+  /// calcFromCurrent means the calculated stats such as MeleeAttack, RangedAttack, MaxHeatlh etc will not be calculated
+  /// by the usual algorithm, but will simply be added from the current stat.
+  addModifiersToStats(character: Character, modifiers: Array<StatusEffect>, isFromCore = true, calcFromCurrent = false) {
     console.log('addModifiersToStats called', modifiers);
-    // 1- Creates a value from the core stat.
+    // 1- Creates a value from the core stat if isFromCore = true, else does not use core.
     // 2- Adds all of the modifiers to that value.
     // 3- Assigns all of that value to the proper stat, not the core;
-    // Health Stamina Power and Stress are ommited from here since they can change per turn
-    let maxArmor = character.primaryStats.core_maxArmor;
+    let health = character.primaryStats.health;
+    let maxStamina = isFromCore ? character.primaryStats.core_maxStamina : character.primaryStats.maxStamina;
+    let stamina = character.primaryStats.stamina;
+    let maxPower = isFromCore ? character.primaryStats.core_maxPower : character.primaryStats.maxPower;
+    let power = character.primaryStats.power;
+    let maxArmor = isFromCore ? character.primaryStats.core_maxArmor : character.primaryStats.maxArmor;
     let armor = character.primaryStats.armor;
-    let dmgResistance = character.primaryStats.dmgResistance;
-    // let health = character.primaryStats.health;
-    let maxStamina = character.primaryStats.core_maxStamina;
-    // let stamina = character.primaryStats.stamina;
-    let maxPower = character.primaryStats.core_maxPower;
-    //let power = character.primaryStats.power;
     let rangedDmgModifier = character.primaryStats.rangedDmgModifier;
     let meleeDmgModifier = character.primaryStats.meleeDmgModifier;
-    let strength = character.primaryStats.core_strength;
-    let agility = character.primaryStats.core_agility;
-    let accuracy = character.primaryStats.core_accuracy;
-    let perception = character.primaryStats.core_perception;
-    let mental = character.primaryStats.core_mental;
-    let critChance = character.primaryStats.core_critChance;
+    let strength = isFromCore ? character.primaryStats.core_strength : character.primaryStats.strength;
+    let agility = isFromCore ? character.primaryStats.core_agility : character.primaryStats.agility;
+    let accuracy = isFromCore ? character.primaryStats.core_accuracy : character.primaryStats.accuracy;
+    let perception = isFromCore ? character.primaryStats.core_perception : character.primaryStats.perception;
+    let mental = isFromCore ? character.primaryStats.core_mental : character.primaryStats.mental;
+    let critChance = isFromCore ? character.primaryStats.core_critChance : character.primaryStats.critChance;
+    let dmgResistance = character.primaryStats.dmgResistance;
     let maxStress = character.secondaryStats.max_stress;
     let minStress = character.secondaryStats.min_stress;
-    let stressTolerance = character.secondaryStats.core_stressTolerance;
-    let stealth = character.secondaryStats.core_stealth;
-    let lockPicking = character.secondaryStats.core_lockPicking;
-    let quickHands = character.secondaryStats.core_quickHands;
-    let persuasion = character.secondaryStats.core_persuasion;
-    let intimidation = character.secondaryStats.core_intimidation;
-    let engineering = character.secondaryStats.core_engineering;
-    let tracking = character.secondaryStats.core_tracking;
-    let mining = character.secondaryStats.core_mining;
-    let smithing = character.secondaryStats.core_smithing;
-    let phiralSmithing = character.secondaryStats.phiralSmithing;
-    let herbalism = character.secondaryStats.core_herbalism;
-    let alchemy = character.secondaryStats.core_alchemy;
-    let cooking = character.secondaryStats.core_cooking;
-    let musician = character.secondaryStats.core_musician;
-    let artist = character.secondaryStats.core_artist;
-    let carryCapacity = character.secondaryStats.core_carryCapacity;
+    let stressTolerance = isFromCore ? character.secondaryStats.core_stressTolerance : character.secondaryStats.stress_tolerance;
+    let stealth = isFromCore ? character.secondaryStats.core_stealth : character.secondaryStats.stealth;
+    let lockPicking = isFromCore ? character.secondaryStats.core_lockPicking : character.secondaryStats.lockPicking;
+    let quickHands = isFromCore ? character.secondaryStats.core_quickHands : character.secondaryStats.quickHands;
+    let persuasion = isFromCore ? character.secondaryStats.core_persuasion : character.secondaryStats.persuasion;
+    let intimidation = isFromCore ? character.secondaryStats.core_intimidation : character.secondaryStats.intimidation;
+    let engineering = isFromCore ? character.secondaryStats.core_engineering : character.secondaryStats.engineering;
+    let tracking = isFromCore ? character.secondaryStats.core_tracking : character.secondaryStats.tracking;
+    let mining = isFromCore ? character.secondaryStats.core_mining : character.secondaryStats.mining;
+    let smithing = isFromCore ? character.secondaryStats.core_smithing : character.secondaryStats.smithing;
+    let phiralSmithing = isFromCore ? character.secondaryStats.core_phiralSmithing : character.secondaryStats.phiralSmithing;
+    let herbalism = isFromCore ? character.secondaryStats.core_herbalism : character.secondaryStats.herbalism;
+    let alchemy = isFromCore ? character.secondaryStats.core_alchemy : character.secondaryStats.alchemy;
+    let cooking = isFromCore ? character.secondaryStats.core_cooking : character.secondaryStats.cooking;
+    let musician = isFromCore ? character.secondaryStats.core_musician : character.secondaryStats.musician;
+    let artist = isFromCore ? character.secondaryStats.core_artist : character.secondaryStats.artist;
+    let carryCapacity = isFromCore ? character.secondaryStats.core_carryCapacity : character.secondaryStats.carryCapacity;
 
-    let maxHealthBonus = 0;
-    let rangedAttackBonus = 0;
-    let meleeAttackBonus = 0;
-    let defenseBonus = 0;
-    let movementBonus = 0;
-    let maxStressBonus = 0;
-    let minStressPenalty = 0;
+    let maxHealth = calcFromCurrent ? character.primaryStats.maxHealth : this.calculations.calcMaxHealth(character, isFromCore);
+    let rangedAttack = calcFromCurrent ? character.primaryStats.rangedAttack : this.calculations.calcRangeAttack(character, isFromCore);
+    let meleeAttack = calcFromCurrent ? character.primaryStats.meleeAttack : this.calculations.calcMeleeAttack(character, isFromCore);
+    console.log('meleeAttack', meleeAttack)
+    let defense = calcFromCurrent ? character.primaryStats.defense : this.calculations.calcDefense(character, isFromCore);
+    let movement = calcFromCurrent ? character.primaryStats.movement : this.calculations.calcMovement(character, isFromCore);
 
     modifiers.forEach(modifier => {
       if (modifier.stat === Stat.Accuracy) accuracy += modifier.value;
@@ -309,13 +310,13 @@ export class CharactersService {
       if (modifier.stat === Stat.artist) artist += modifier.value;
       if (modifier.stat === Stat.carryCapacity) carryCapacity += modifier.value;
 
-      if (modifier.stat === Stat.MaxHealth) maxHealthBonus += modifier.value;
-      if (modifier.stat === Stat.RangeAttack) rangedAttackBonus += modifier.value;
-      if (modifier.stat === Stat.MeleeAttack) meleeAttackBonus += modifier.value;
-      if (modifier.stat === Stat.Defence) defenseBonus += modifier.value;
-      if (modifier.stat === Stat.Movement) movementBonus += modifier.value;
-      if (modifier.stat === Stat.maxStress) maxStressBonus += modifier.value;
-      if (modifier.stat === Stat.minStress) minStressPenalty += modifier.value;
+      if (modifier.stat === Stat.MaxHealth) maxHealth += modifier.value;
+      if (modifier.stat === Stat.RangeAttack) rangedAttack += modifier.value;
+      if (modifier.stat === Stat.MeleeAttack) meleeAttack += modifier.value;
+      if (modifier.stat === Stat.Defence) defense += modifier.value;
+      if (modifier.stat === Stat.Movement) movement += modifier.value;
+      if (modifier.stat === Stat.maxStress) maxStress += modifier.value;
+      if (modifier.stat === Stat.minStress) minStress += modifier.value;
     });
     character.primaryStats.accuracy = accuracy;
     character.primaryStats.maxArmor = maxArmor;
@@ -338,25 +339,24 @@ export class CharactersService {
     character.secondaryStats.herbalism = herbalism;
     character.secondaryStats.musician = musician;
     character.secondaryStats.artist = artist;
-    //Stats bellow are dependent on certain stats above;
+
     if (character.secondaryStats.stress > character.secondaryStats.max_stress)
       character.secondaryStats.stress = character.secondaryStats.max_stress;
     if (character.secondaryStats.stress < character.secondaryStats.min_stress)
       character.secondaryStats.stress = character.secondaryStats.min_stress;
-    character.primaryStats.core_maxHealth =
-      (character.primaryStats.maxStamina + (character.primaryStats.strength * 10) / 2) + maxHealthBonus;
-    character.primaryStats.maxHealth = character.primaryStats.core_maxHealth;
-    character.primaryStats.rangedAttack =
-      (character.primaryStats.accuracy * 0.75) + (character.primaryStats.perception * 0.25) + rangedAttackBonus;
-    character.primaryStats.meleeAttack =
-      (character.primaryStats.strength * 0.6) + (character.primaryStats.agility * 0.4) + meleeAttackBonus;
-    character.primaryStats.defense =
-      (character.primaryStats.strength * 0.4) + (character.primaryStats.agility * 0.6) + defenseBonus;
+
+    character.primaryStats.maxHealth = maxHealth;
+    character.primaryStats.rangedAttack = rangedAttack;
+    character.primaryStats.meleeAttack = meleeAttack;
+    character.primaryStats.defense = defense;
+    character.primaryStats.movement = movement;
+
     const mentalWithStrees = character.primaryStats.mental - (character.primaryStats.mental *
       (character.secondaryStats.stress - character.secondaryStats.stress_tolerance));
     if (mentalWithStrees < character.primaryStats.mental)
       character.primaryStats.mental = mentalWithStrees;
-    character.primaryStats.movement = ((character.primaryStats.core_movement + character.primaryStats.agility) / 2) + movementBonus;
+
+    // #TODO Move all of these bellow to the Calculation service
     character.secondaryStats.stealth = (character.secondaryStats.core_stealth + character.primaryStats.agility) / 2;
     character.secondaryStats.quickHands = (character.secondaryStats.core_quickHands + character.primaryStats.agility) / 2;
     character.secondaryStats.persuasion = (character.secondaryStats.core_persuasion + character.primaryStats.perception) / 2;
