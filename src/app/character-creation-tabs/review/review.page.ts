@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReviewPage implements OnInit {
 
+  portraits: Array<any> = ['first', 'second']
   constructor() { }
 
   ngOnInit() {

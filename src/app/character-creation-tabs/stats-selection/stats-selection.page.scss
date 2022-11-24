@@ -9,11 +9,6 @@ ion-card {
     --ion-background-color: var(--ion-color-light) !important;
 }
 
-ion-thumbnail.portrait {
-    transform: scale(1.6);
-    margin-left: 12px;
-}
-
 ion-item {
     // ion-label {
     //     font-size: 11pt;
@@ -33,7 +28,7 @@ ion-item {
     border-radius: 6px;
     padding: 6px;
     margin: 2px;
-    height: 33px;
+    height: 37px;
     font-size: 14pt;
     ion-button {
         margin-left: 24px;
