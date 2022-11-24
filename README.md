@@ -1,56 +1,51 @@
 # legends-pwa
-MaxHealth	Stamina + (Strength * 10) / 2	
-CurrentHealth	MaxHealth	
-Armor	0	
-Stamina	40	Upgradable
-Power	30	Upgradable
-RangeWeaponModifier	0	
-		
-CoreMeleeAttack	Strength + Agility / 2	
-CoreRangedAttack	(Accuracy * .75) + (Peseption * .25) / 2	
-Weapon Range	Determined by weapon	
-MeleeWeaponSkillModifier	Determined by skill with this weapon	
-RangeWeaponSkillModifier	Determined by skill with this weapon	
-Attack	(WeaponAttack + WeaponSkill + CoreMelee)	
-Defence	(WeaponDefence + WeaponSkill + CoreMelee)	
-Strength	5	Upgradable
-Agility	6	Upgradable
-Accuracy	6	Upgradable
-Perception	6	Upgradable
-Mental	6	Upgradable
-Movement	6 + Ag. / 2	
-		
-CritChance	5%	
-Turn Units	2	
-InterTurn Units	1	
-		
-Primary Stats	Default Calculation	Shorthand
-Health	Stamina + (Strength * 10) / 2	H
-Stamina	60	Stam
-Power	40	P
-Melee Attack	(CoreMelee + WeaponAttack + WeaponSkill)	A (MA)
-Ranged Attack	(CoreRangedAttack + RangeWeapon + RangeWeaponSkillModifier)	A (RA)
-Defence	(WeaponDefence + WeaponSkill + CoreMelee)	D
-Strength	6	Str
-Agility	6	Ag
-Accuracy	6	Acc
-Perception	6	Perc
-Mental	6	M
-Movement	6 + Ag. / 2	Mov
-		
-CritChance	5%	CritChance
-Turn Units	2	Turn Units
-InterTurn Units	1	InterTurn Units
-		
-Secondary Stats		
-Stealth	6 + Ag / 2	
-Lock Picking	6	
-Quick-Hands (pick-pocketing)	6 + ag / 2	
-Persuasion	6	
-Intimidation	6 + Strength / 2	
-Engineering (disarm traps)	6	
-Tracking	Perception	
-Scout n Scavange	6 + Perception / 2	
-Mining	6 + Strength / 2	
-Herbalism	6	
-Carry Capacity	Strength * 10	
+MaxHealth	Stamina + (Strength * 10) / 2
+CurrentHealth	MaxHealth
+Armor	0
+MaxStamina	
+Stamina	400
+MaxPower	
+Power	300
+RangeWeaponModifier	0
+RangedAttack	(((Accuracy * .75) + (Peception * .25)) / 2) + RangeWeapon + RangeWeaponSkillModifier
+Weapon Range	Determined by weapon
+StanceMeleeBonus	0.5
+StanceDefenceBonus	0.5
+CoreMelee	Strength + Agility / 2
+MeleeWeaponSkillModifier	Determined by skill with this weapon
+RangeWeaponSkillModifier	Determined by skill with this weapon
+MeleeAttack	(WeaponMelee + WeaponSkill + CoreMelee) * StanceMeleeBonus
+Defense	CoreMelee * StanceDefenceBonus
+Strength	6
+Agility	6
+Accuracy	6
+Perception	6
+Mental	M = M - (M * (stress - 0.5))
+Movement	6 + agility + strength / 3
+CritChance	0.05
+Turn Units	2
+Damage Resistance 	0
+Counter	0
+	
+Secondary Stats	
+Max Stress	1
+Min Stress	0
+Stress	0.05
+Stress Tolerance	0.35
+Stealth	6 + Agility / 2
+Lock Picking	6
+Quick Hands	6 + Agility / 2
+Persuasion	6 + Perception / 2
+Intimidation	6 + Strength / 2
+Engineering	6
+Tracking (Scout&Scavange)	6 + Perception / 2
+Mining	6 + Strength / 2
+Smithing	6 + Strength / 2
+Phiral Smithing	6 + Mental / 2
+Herbalism	6
+Alchemy	6 + Hebalism / 2
+Cooking	6 + Hebalism / 2
+Musician	6
+Artist	6
+Carry Capacity	Strength * 10
+

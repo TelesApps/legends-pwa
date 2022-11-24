@@ -30,7 +30,8 @@ export class CalculationsService {
     return value;
   }
   calcMovement(character: Character, isFromCore = true) {
-    const value = isFromCore ? (6 + character.primaryStats.core_agility) / 2 : (6 + character.primaryStats.agility) / 2;
+    const value = isFromCore ? (6 + character.primaryStats.core_agility + character.primaryStats.core_strength) / 3 :
+      (6 + character.primaryStats.agility + + character.primaryStats.strength) / 3;
     return value;
   }
 
