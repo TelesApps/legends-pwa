@@ -37,6 +37,7 @@ export class CalculationsService {
 
   calculateEffectsFromStrings(effects: string[], id?: string, isRanged?: boolean) {
     const statusEffects: StatusEffect[] = [];
+    let isMultipleOf = false;
     effects.forEach(effect => {
       const valuestringArray = effect.match(/-?\d+/g);
       let valueString;
@@ -45,6 +46,7 @@ export class CalculationsService {
       if (effect.includes('%')) {
         console.log('String is a percentage');
         valueString = (Number.parseFloat(valueString) / 100).toPrecision(1);
+        isMultipleOf = true;
       }
       const statusStringArray = effect.match(/[a-zA-Z]+/g)
       let statusString;
@@ -103,6 +105,7 @@ export class CalculationsService {
         id: id,
         stat: status,
         value: Number.parseFloat(valueString),
+        application: isMultipleOf ? 'multiple_of' : 'add'
       }
       statusEffects.push(statEffect);
       // console.log('Effects', { valueString, statusString });

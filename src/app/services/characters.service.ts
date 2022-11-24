@@ -216,15 +216,30 @@ export class CharactersService {
       const ifValue = fields[1];
       if (ifStatement === 'equipped-tags') {
         if (this.hasItemTag(character.equipments.mainHandId, ifValue) || this.hasItemTag(character.equipments.offHandId, ifValue)) {
+          console.log('conditions met');
           isMet = true;
         } else {
-          isMet = false;
-          console.log('Conditions not met. Returning', isMet);
-          return isMet;
+          return isMet = false;
         }
       }
+      if (ifStatement === 'equipped-bodyProp') {
+        if (this.hasBodyProp(character.equipments.mainHandId, ifValue)) isMet = true;
+        else return isMet = false;
+        if (this.hasBodyProp(character.equipments.offHandId, ifValue)) isMet = true;
+        else return isMet = false;
+        if (this.hasBodyProp(character.equipments.headId, ifValue)) isMet = true;
+        else return isMet = false;
+        if (this.hasBodyProp(character.equipments.chestId, ifValue)) isMet = true;
+        else return isMet = false;
+        if (this.hasBodyProp(character.equipments.handsId, ifValue)) isMet = true;
+        else return isMet = false;
+        if (this.hasBodyProp(character.equipments.legsId, ifValue)) isMet = true;
+        else return isMet = false;
+        if (this.hasBodyProp(character.equipments.feetId, ifValue)) isMet = true;
+        else return isMet = false;
+      }
     });
-    console.log('All conditions met Returning', isMet);
+    console.log('isAllConditionsMet', isMet);
     return isMet;
   }
 
@@ -279,44 +294,155 @@ export class CharactersService {
     let movement = calcFromCurrent ? character.primaryStats.movement : this.calculations.calcMovement(character, isFromCore);
 
     modifiers.forEach(modifier => {
-      if (modifier.stat === Stat.Accuracy) accuracy += modifier.value;
-      if (modifier.stat === Stat.MaxArmor) maxArmor += modifier.value;
-      if (modifier.stat === Stat.Armor) armor += modifier.value;
-      if (modifier.stat === Stat.DamageResistance) dmgResistance += modifier.value;
-      if (modifier.stat === Stat.MaxStamina) maxStamina += modifier.value;
-      if (modifier.stat === Stat.MaxPower) maxPower += modifier.value;
-      if (modifier.stat === Stat.RangeDmdDelt) rangedDmgModifier += modifier.value;
-      if (modifier.stat === Stat.MeleeDmgDelt) meleeDmgModifier += modifier.value;
-      if (modifier.stat === Stat.Strength) strength += modifier.value;
-      if (modifier.stat === Stat.Agility) agility += modifier.value;
-      if (modifier.stat === Stat.Perception) perception += modifier.value;
-      if (modifier.stat === Stat.Mental) mental += modifier.value;
-      if (modifier.stat === Stat.Crit) critChance += modifier.value;
-      if (modifier.stat === Stat.stressTolerance) stressTolerance += modifier.value;
-      if (modifier.stat === Stat.stealth) stealth += modifier.value;
-      if (modifier.stat === Stat.lockPicking) lockPicking += modifier.value;
-      if (modifier.stat === Stat.quickHands) quickHands += modifier.value;
-      if (modifier.stat === Stat.persuasion) persuasion += modifier.value;
-      if (modifier.stat === Stat.intimidation) intimidation += modifier.value;
-      if (modifier.stat === Stat.engineering) engineering += modifier.value;
-      if (modifier.stat === Stat.tracking) tracking += modifier.value;
-      if (modifier.stat === Stat.mining) mining += modifier.value;
-      if (modifier.stat === Stat.smithing) smithing += modifier.value;
-      if (modifier.stat === Stat.phiralSmith) phiralSmithing += modifier.value;
-      if (modifier.stat === Stat.herbalism) herbalism += modifier.value;
-      if (modifier.stat === Stat.alchemy) alchemy += modifier.value;
-      if (modifier.stat === Stat.cooking) cooking += modifier.value;
-      if (modifier.stat === Stat.musician) musician += modifier.value;
-      if (modifier.stat === Stat.artist) artist += modifier.value;
-      if (modifier.stat === Stat.carryCapacity) carryCapacity += modifier.value;
+      if (modifier.stat === Stat.Accuracy) {
+        if (modifier.application === 'multiple_of') accuracy = accuracy + (accuracy * modifier.value);
+        else accuracy += modifier.value;
+      }
+      if (modifier.stat === Stat.MaxArmor) {
+        if (modifier.application === 'multiple_of') maxArmor = maxArmor + (maxArmor * modifier.value);
+        else maxArmor += modifier.value;
+      }
+      if (modifier.stat === Stat.Armor) {
+        if (modifier.application === 'multiple_of') armor = armor + (armor * modifier.value);
+        else armor += modifier.value;
+      }
+      if (modifier.stat === Stat.DamageResistance) {
+        if (modifier.application === 'multiple_of') dmgResistance = dmgResistance + (dmgResistance * modifier.value);
+        else dmgResistance += modifier.value;
+      }
+      if (modifier.stat === Stat.MaxStamina) {
+        if (modifier.application === 'multiple_of') maxStamina = maxStamina + (maxStamina * modifier.value);
+        else maxStamina += modifier.value;
+      }
+      if (modifier.stat === Stat.MaxPower) {
+        if (modifier.application === 'multiple_of') maxPower = maxPower + (maxPower * modifier.value);
+        else maxPower += modifier.value;
+      }
+      if (modifier.stat === Stat.RangeDmdDelt) {
+        if (modifier.application === 'multiple_of') rangedDmgModifier = rangedDmgModifier + (rangedDmgModifier * modifier.value);
+        else rangedDmgModifier += modifier.value;
+      }
+      if (modifier.stat === Stat.MeleeDmgDelt) {
+        if (modifier.application === 'multiple_of') meleeDmgModifier = meleeDmgModifier + (meleeDmgModifier * modifier.value);
+        else meleeDmgModifier += modifier.value;
+      }
+      if (modifier.stat === Stat.Strength) {
+        if (modifier.application === 'multiple_of') strength = strength + (strength * modifier.value);
+        else strength += modifier.value;
+      }
+      if (modifier.stat === Stat.Agility) {
+        if (modifier.application === 'multiple_of') agility = agility + (agility * modifier.value);
+        else agility += modifier.value;
+      }
+      if (modifier.stat === Stat.Perception) {
+        if (modifier.application === 'multiple_of') perception = perception + (perception * modifier.value);
+        else perception += modifier.value;
+      }
+      if (modifier.stat === Stat.Mental) {
+        if (modifier.application === 'multiple_of') mental = mental + (mental * modifier.value);
+        else mental += modifier.value;
+      }
+      if (modifier.stat === Stat.Crit) {
+        if (modifier.application === 'multiple_of') critChance = critChance + (critChance * modifier.value);
+        else critChance += modifier.value;
+      }
+      if (modifier.stat === Stat.stressTolerance) {
+        if (modifier.application === 'multiple_of') stressTolerance = stressTolerance + (stressTolerance * modifier.value);
+        else stressTolerance += modifier.value;
+      }
+      if (modifier.stat === Stat.stealth) {
+        if (modifier.application === 'multiple_of') stealth = stealth + (stealth * modifier.value);
+        else stealth += modifier.value;
+      }
+      if (modifier.stat === Stat.lockPicking) {
+        if (modifier.application === 'multiple_of') lockPicking = lockPicking + (lockPicking * modifier.value);
+        else lockPicking += modifier.value;
+      }
+      if (modifier.stat === Stat.quickHands) {
+        if (modifier.application === 'multiple_of') quickHands = quickHands + (quickHands * modifier.value);
+        else quickHands += modifier.value;
+      }
+      if (modifier.stat === Stat.persuasion) {
+        if (modifier.application === 'multiple_of') persuasion = persuasion + (persuasion * modifier.value);
+        else persuasion += modifier.value;
+      }
+      if (modifier.stat === Stat.intimidation) {
+        if (modifier.application === 'multiple_of') intimidation = intimidation + (intimidation * modifier.value);
+        else intimidation += modifier.value;
+      }
+      if (modifier.stat === Stat.engineering) {
+        if (modifier.application === 'multiple_of') engineering = engineering + (engineering * modifier.value);
+        else engineering += modifier.value;
+      }
+      if (modifier.stat === Stat.tracking) {
+        if (modifier.application === 'multiple_of') tracking = tracking + (tracking * modifier.value);
+        else tracking += modifier.value;
+      }
+      if (modifier.stat === Stat.mining) {
+        if (modifier.application === 'multiple_of') mining = mining + (mining * modifier.value);
+        else mining += modifier.value;
+      }
+      if (modifier.stat === Stat.smithing) {
+        if (modifier.application === 'multiple_of') smithing = smithing + (smithing * modifier.value);
+        else smithing += modifier.value;
+      }
+      if (modifier.stat === Stat.phiralSmith) {
+        if (modifier.application === 'multiple_of') phiralSmithing = phiralSmithing + (phiralSmithing * modifier.value);
+        else phiralSmithing += modifier.value;
+      }
+      if (modifier.stat === Stat.herbalism) {
+        if (modifier.application === 'multiple_of') herbalism = herbalism + (herbalism * modifier.value);
+        else herbalism += modifier.value;
+      }
+      if (modifier.stat === Stat.alchemy) {
+        if (modifier.application === 'multiple_of') alchemy = alchemy + (alchemy * modifier.value);
+        else alchemy += modifier.value;
+      }
+      if (modifier.stat === Stat.cooking) {
+        if (modifier.application === 'multiple_of') cooking = cooking + (cooking * modifier.value);
+        else cooking += modifier.value;
+      }
+      if (modifier.stat === Stat.musician) {
+        if (modifier.application === 'multiple_of') musician = musician + (musician * modifier.value);
+        else musician += modifier.value;
+      }
+      if (modifier.stat === Stat.artist) {
+        if (modifier.application === 'multiple_of') artist = artist + (artist * modifier.value);
+        else artist += modifier.value;
+      }
+      if (modifier.stat === Stat.carryCapacity) {
+        if (modifier.application === 'multiple_of') carryCapacity = carryCapacity + (carryCapacity * modifier.value);
+        else carryCapacity += modifier.value;
+      }
 
-      if (modifier.stat === Stat.MaxHealth) maxHealth += modifier.value;
-      if (modifier.stat === Stat.RangeAttack) rangedAttack += modifier.value;
-      if (modifier.stat === Stat.MeleeAttack) meleeAttack += modifier.value;
-      if (modifier.stat === Stat.Defence) defense += modifier.value;
-      if (modifier.stat === Stat.Movement) movement += modifier.value;
-      if (modifier.stat === Stat.maxStress) maxStress += modifier.value;
-      if (modifier.stat === Stat.minStress) minStress += modifier.value;
+      if (modifier.stat === Stat.MaxHealth) {
+        if (modifier.application === 'multiple_of') maxHealth = maxHealth + (maxHealth * modifier.value);
+        else maxHealth += modifier.value;
+      }
+      if (modifier.stat === Stat.RangeAttack) {
+        if (modifier.application === 'multiple_of') rangedAttack = rangedAttack + (rangedAttack * modifier.value);
+        else rangedAttack += modifier.value;
+      }
+      if (modifier.stat === Stat.MeleeAttack) {
+        if (modifier.application === 'multiple_of') meleeAttack = meleeAttack + (meleeAttack * modifier.value);
+        else meleeAttack += modifier.value;
+      }
+      if (modifier.stat === Stat.Defence) {
+        if (modifier.application === 'multiple_of') defense = defense + (defense * modifier.value);
+        else defense += modifier.value;
+      }
+      if (modifier.stat === Stat.Movement) {
+        if (modifier.application === 'multiple_of') movement = movement + (movement * modifier.value);
+        else movement += modifier.value;
+      }
+      if (modifier.stat === Stat.maxStress) {
+        if (modifier.application === 'multiple_of') maxStress = maxStress + (maxStress * modifier.value);
+        else maxStress += modifier.value;
+      }
+      if (modifier.stat === Stat.minStress) {
+        if (modifier.application === 'multiple_of') minStress = minStress + (minStress * modifier.value);
+        else minStress += modifier.value;
+      }
     });
     character.primaryStats.accuracy = accuracy;
     character.primaryStats.maxArmor = maxArmor;
@@ -388,9 +514,22 @@ export class CharactersService {
       item = this.airtable.getItemById(id);
     }
     if (item && item.tags) {
-      return item.tags.find(t => t == tag);
+      console.log('checking item.tags', item.tags);
+      console.log('looking for tag', tag);
+      return item.tags.find(t => t.toLowerCase() == tag.toLowerCase());
     } else {
       return '';
+    }
+  }
+
+  hasBodyProp(id: string, prop: string, item?: Item) {
+    if (!item) {
+      item = this.airtable.getItemById(id);
+    }
+    if (item && item.body_property) {
+      return item.body_property == prop;
+    } else {
+      return false;
     }
   }
 

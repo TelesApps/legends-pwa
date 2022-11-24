@@ -2,9 +2,13 @@ export interface StatusEffect {
     id?: string;
     stat: Stat;
     value: number;
+    // add is standard, multiple_of means it should add the result of the multiplication
+    application: 'add' | 'multiple_of' | 'multiply';
     duration?: number;
     durationCount?: number;
 }
+
+
 
 export enum Stat {
     MaxHealth, Health, MaxStamina, Stamina, MaxPower, Power, RangeAttack, MeleeAttack, MeleeDmgDelt, RangeDmdDelt, Defence,
