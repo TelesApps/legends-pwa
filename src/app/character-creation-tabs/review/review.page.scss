@@ -4,6 +4,11 @@
     height: 100%;
 }
 ion-thumbnail.portrait {
+    cursor: pointer;
     transform: scale(2);
     margin: 24px;
+    border: 1px solid black;
+    img {
+        background-color: red;
+    }
 }

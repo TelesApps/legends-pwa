@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ReviewPageRoutingModule } from './review-routing.module';
 
 import { ReviewPage } from './review.page';
+import { PortraitSelectionComponent } from './portrait-selection/portrait-selection.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ReviewPage } from './review.page';
     IonicModule,
     ReviewPageRoutingModule
   ],
-  declarations: [ReviewPage]
+  declarations: [ReviewPage, PortraitSelectionComponent]
 })
 export class ReviewPageModule {}

@@ -78,7 +78,9 @@ export class CharactersService {
       this.airtable.loadSkillsAndTraits();
     }
 
-    // Recalculate Melee Attack, Ranged Attack and Defence which may have been effected by Skills and Traits
+    // #TODO add calculation for item weight and penalty if character is overweight
+
+    // Maybe Recalculate Melee Attack, Ranged Attack and Defence which may have been effected by Skills and Traits
 
 
     console.log('character in creation : ', character);
@@ -343,12 +345,12 @@ export class CharactersService {
         else mental += modifier.value;
       }
       if (modifier.stat === Stat.Crit) {
-        if (modifier.application === 'multiple_of') critChance = critChance + (critChance * modifier.value);
-        else critChance += modifier.value;
+        if (modifier.application === 'multiple_of') critChance += modifier.value;
+        else critChance = critChance + (critChance * modifier.value);
       }
       if (modifier.stat === Stat.stressTolerance) {
-        if (modifier.application === 'multiple_of') stressTolerance = stressTolerance + (stressTolerance * modifier.value);
-        else stressTolerance += modifier.value;
+        if (modifier.application === 'multiple_of') stressTolerance += modifier.value;
+        else stressTolerance = stressTolerance + (stressTolerance * modifier.value);
       }
       if (modifier.stat === Stat.stealth) {
         if (modifier.application === 'multiple_of') stealth = stealth + (stealth * modifier.value);
@@ -436,12 +438,12 @@ export class CharactersService {
         else movement += modifier.value;
       }
       if (modifier.stat === Stat.maxStress) {
-        if (modifier.application === 'multiple_of') maxStress = maxStress + (maxStress * modifier.value);
-        else maxStress += modifier.value;
+        if (modifier.application === 'multiple_of') maxStress += modifier.value;
+        else maxStress = maxStress + (maxStress * modifier.value);
       }
       if (modifier.stat === Stat.minStress) {
-        if (modifier.application === 'multiple_of') minStress = minStress + (minStress * modifier.value);
-        else minStress += modifier.value;
+        if (modifier.application === 'multiple_of') minStress += modifier.value;
+        else minStress = minStress + (minStress * modifier.value);
       }
     });
     character.primaryStats.accuracy = accuracy;
