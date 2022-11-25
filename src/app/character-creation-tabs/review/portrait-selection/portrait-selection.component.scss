@@ -1,13 +1,14 @@
+.portrait-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .portrait {
+    cursor: pointer;
     margin: 4px;
     img {
         width: 100px;
         border: 1px solid black;
     }
-}
-
-ion-thumbnail.portrait {
-    cursor: pointer;
-    // transform: scale(2);
-    margin: 24px;
 }

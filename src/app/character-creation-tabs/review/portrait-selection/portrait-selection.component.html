@@ -7,13 +7,11 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <div style="display: flex; flex-wrap:wrap; justify-content: center;">
+        <div class="portrait-list">
           <div class="portrait" *ngFor="let url of portraitsUrl">
             <img [src]="url" alt="" srcset="">
           </div>
         </div>
-        <!-- <ion-thumbnail class="portrait">
-        </ion-thumbnail> -->
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -15,9 +15,8 @@ export class FirebaseDataService {
     if (this.$allPortraits.getValue().length < 1) {
       this.storage.ref('character-portraits').listAll().subscribe((res) => {
         const urls: Array<string> = [];
-        res.items.forEach(async imageRef => {
-          let url = await imageRef.getDownloadURL();
-          urls.push(url);
+        res.items.forEach(imageRef => {
+          imageRef.getDownloadURL().then(url => urls.push(url))
         });
         this.$allPortraits.next(urls);
       })
