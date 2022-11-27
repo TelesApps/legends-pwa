@@ -10,6 +10,8 @@ export class ConfirmSelectionComponent implements OnInit {
 
   @Input() headerTxt: string = 'Are you Sure?'
   @Input() bodyTxt: string = '';
+  @Input() cancelBtnTxt?: string = 'Cancel';
+  @Input() confirmBtnTxt?: string = 'Confirm';
 
   constructor(private modalController: ModalController) { }
 

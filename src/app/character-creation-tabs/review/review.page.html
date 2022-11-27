@@ -1,31 +1,46 @@
 <ion-content class="parent-header background-color-darker">
   <ion-grid class="h-100" fixed>
-    <ion-row class="h-100">
+    <ion-row>
       <ion-col size="12">
-        <ion-row>
-          <ion-col size="9">
-            <ion-item>
-              <ion-label position="floating">Character Name</ion-label>
-              <ion-input type="text" placeholder="Enter your character's name here"></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col size="3">
-            <ion-thumbnail class="portrait" (click)="onPortraitClick()">
-              <img [src]="portraits[20]" alt="" srcset="">
-            </ion-thumbnail>
-          </ion-col>
-          <ion-col size="12">
-            <ion-item>
-              <ion-label position="floating">Character Bios</ion-label>
-              <ion-textarea placeholder="Enter or paste your character's biography here (optional)"></ion-textarea>
-            </ion-item>
-          </ion-col>
-          <ion-col size="12">
-            <ion-button expand="block" shape="round">
-              Save Character
-            </ion-button>
-          </ion-col>
-        </ion-row>
+        <ion-item>
+          <ion-label position="floating">Character Name</ion-label>
+          <ion-input [(ngModel)]="characterName" type="text" placeholder="Enter your character's name here"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label position="floating">Character Bios</ion-label>
+          <ion-textarea [(ngModel)]="characterBios" placeholder="Enter or paste your character's biography here (optional)"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label>Class Title</ion-label>
+          <ion-select [(ngModel)]="selectedClassTitle" interface="action-sheet" placeholder="Optional Class Title">
+            <ion-select-option *ngFor="let title of classTitles" [value]="title">{{title}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="flex-center" size="12">
+        <ion-text color="primary">
+          <h3>Character's Portrait</h3>
+        </ion-text>
+        <div class="portrait" (click)="onPortraitClick()">
+          <img *ngIf="portrait" [src]="portrait" alt="" srcset="">
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row style="flex-grow: 1;">
+      <ion-col class="flex-end" size="12">
+        <ion-button [disabled]="!characterName" expand="block" shape="round" (click)="onSaveCharacter()">
+          Save Character
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

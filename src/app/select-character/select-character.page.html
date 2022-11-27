@@ -16,11 +16,11 @@
 <ion-grid fixed>
   <ion-row>
     <ion-col size="12">
-      <ion-item lines="none">
+      <ion-item *ngFor="let character of characters" lines="none">
         <ion-thumbnail class="portrait">
-          <img src="https://i.pinimg.com/564x/13/e0/77/13e077229349587d15a65b3b3f5b4466.jpg" />
+          <img [src]="character.portraitUrl" />
         </ion-thumbnail>
-        <ion-label class="ion-margin-start">Leto Atrietes</ion-label>
+        <ion-label class="ion-margin-start">{{ character.characterName }} <span *ngIf="character.classTitle">({{ character.classTitle }})</span></ion-label>
         <ion-checkbox></ion-checkbox>
       </ion-item>
     </ion-col>

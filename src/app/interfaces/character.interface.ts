@@ -3,7 +3,8 @@ import { StatusEffect } from "./status-effect.interface";
 export interface Character {
     playerId: string;
     characterId: string;
-    className?: string;
+    characterName: string;
+    classTitle?: string;
     bios?: string;
     portraitUrl?: string;
     primaryStats: PrimaryStats;
@@ -111,7 +112,8 @@ export function CreateNewCharacter() {
     const character: Character = {
         playerId: '',
         characterId: '',
-        className: '',
+        characterName: '',
+        classTitle: '',
         bios: '',
         portraitUrl: '',
         primaryStats: {

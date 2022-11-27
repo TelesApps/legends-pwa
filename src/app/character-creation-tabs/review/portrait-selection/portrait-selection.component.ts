@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { first } from 'rxjs/operators';
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 
@@ -9,16 +10,28 @@ import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 })
 export class PortraitSelectionComponent implements OnInit {
 
+  isLoading: boolean = true;
   portraitsUrl: Array<string> = []
-  constructor(private fireData: FirebaseDataService) { }
+  constructor(private fireData: FirebaseDataService, private modalController: ModalController) { }
 
   ngOnInit() {
     this.fireData.$allPortraits.subscribe((allUrls) => {
-      console.log('allUrls', allUrls);
       this.portraitsUrl = allUrls;
-      console.log('this.portraitsUrl', this.portraitsUrl);
+      this.isLoading = false;
     })
     this.fireData.loadAllPortraits();
+  }
+
+  onSelect(url: string) {
+    this.modalController.dismiss({
+      'selection': url,
+    })
+  }
+
+  cancelSelection() {
+    this.modalController.dismiss({
+      'selection': null,
+    })
   }
 
 }

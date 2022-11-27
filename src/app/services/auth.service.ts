@@ -24,6 +24,7 @@ export class AuthService {
       }
     })))
   }
+  
 
   // Register New User via email and password signup
   registerNewUser(email: string, password: string, userName: string) {
