@@ -1,3 +1,23 @@
-<p>
-  inform-player works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">{{ headerTxt }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col class="center-body" size="12">
+        <div *ngIf="bodyTxt">{{ bodyTxt }}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="close()" shape="round" expand="block" color="primary">
+      OK
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

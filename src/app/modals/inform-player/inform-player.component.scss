@@ -1,0 +1,19 @@
+ion-header,
+ion-content,
+ion-footer {
+    padding: 8px;
+}
+
+ion-title {
+    text-align: center;
+}
+
+.back-icon:hover {
+    cursor: pointer;
+}
+
+.center-body {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

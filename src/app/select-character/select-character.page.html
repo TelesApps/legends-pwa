@@ -1,6 +1,6 @@
 <ion-header>
   <ion-text class="ion-text-center">
-    <h2>Select Characters</h2>
+    <h2>Select Character(s)</h2>
   </ion-text>
   <ion-toolbar>
     <ion-button slot="start" color="danger" (click)="onDeleteCharacters()">
@@ -13,19 +13,20 @@
 </ion-header>
 
 <ion-content class="background-color-darker">
-<ion-grid fixed>
-  <ion-row>
-    <ion-col size="12">
-      <ion-item *ngFor="let character of characters" lines="none">
-        <ion-thumbnail class="portrait">
-          <img [src]="character.portraitUrl" />
-        </ion-thumbnail>
-        <ion-label class="ion-margin-start">{{ character.characterName }} <span *ngIf="character.classTitle">({{ character.classTitle }})</span></ion-label>
-        <ion-checkbox></ion-checkbox>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item *ngFor="let character of characters let i = index" lines="none">
+          <ion-checkbox slot="end" (ionChange)="onCharacterClick($event, character)"></ion-checkbox>
+          <ion-thumbnail class="portrait">
+            <img [src]="character.portraitUrl" />
+          </ion-thumbnail>
+          <ion-label class="ion-margin-start">{{ character.characterName }} <span *ngIf="character.classTitle">({{
+              character.classTitle }})</span></ion-label>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
 <ion-footer>

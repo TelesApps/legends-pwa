@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-inform-player',
@@ -7,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InformPlayerComponent implements OnInit {
 
-  constructor() { }
+  @Input() headerTxt: string = 'Please Note'
+  @Input() bodyTxt: string = `You'll receive usefull tips in messages like this`;
+
+  constructor(private modalController: ModalController) { }
 
   ngOnInit() {}
+
+  close() {
+    this.modalController.dismiss()
+  }
 
 }

@@ -12,10 +12,8 @@ ion-item {
     --border-style: solid;
     --border-width: 1px;
     margin: 4px;
-}
-
-ion-checkbox {
-    position: relative;
-    left: -12px;
-    transform: scale(1.2);
+    ion-checkbox {
+        zoom: 1.3;
+        margin-right: 12px;
+    }
 }

@@ -38,7 +38,7 @@
     </ion-row>
     <ion-row style="flex-grow: 1;">
       <ion-col class="flex-end" size="12">
-        <ion-button [disabled]="!characterName" expand="block" shape="round" (click)="onSaveCharacter()">
+        <ion-button [disabled]="!characterName || !portrait" expand="block" shape="round" (click)="onSaveCharacter()">
           Save Character
         </ion-button>
       </ion-col>
