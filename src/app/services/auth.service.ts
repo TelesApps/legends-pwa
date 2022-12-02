@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, of } from 'rxjs';
 import { CreateUser, Player } from '../interfaces/player.interface';
-import { switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { actionCodeSettings } from 'src/environments/environment';
 import * as firebase from 'firebase/auth';
@@ -24,7 +24,10 @@ export class AuthService {
       }
     })))
   }
-  
+
+  getPlayer() {
+    return this.Player$.pipe(first()).toPromise();
+  }
 
   // Register New User via email and password signup
   registerNewUser(email: string, password: string, userName: string) {

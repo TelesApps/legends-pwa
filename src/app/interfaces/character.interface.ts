@@ -15,6 +15,7 @@ export interface Character {
     statusEffects: Array<StatusEffect>;
     abilitiesId: Array<string>;
     skillsTraitsId: Array<string>;
+    isPlayerUsing?: boolean;
 }
 
 interface PrimaryStats {

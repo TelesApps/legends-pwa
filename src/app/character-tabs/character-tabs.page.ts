@@ -16,13 +16,11 @@ export class CharacterTabsPage implements OnInit, OnDestroy {
   }
 
   async checkForRoomSelection() {
-    console.log('checking');
-    this.auth.Player$.subscribe((player) => {
-      console.log('checking user', player);
-      if (!player.currentGameRoom) {
-        this.router.navigate(['/main-lobby'])
-      }
-    });
+    const player = await this.auth.getPlayer();
+    console.log('checking user', player);
+    if (!player.currentGameRoom) {
+      this.router.navigate(['/main-lobby'])
+    }
   }
 
   ngOnDestroy(): void {

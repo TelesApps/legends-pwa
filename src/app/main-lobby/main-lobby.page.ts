@@ -19,7 +19,6 @@ export class MainLobbyPage implements OnInit {
 
   ngOnInit() {
     this.auth.Player$.subscribe((player: Player) => {
-      console.log('player', this.localPlayer)
       if (!player) {
       } else {
         this.localPlayer = player;
@@ -29,9 +28,9 @@ export class MainLobbyPage implements OnInit {
       }
       this.isLoading = false;
     })
-    this.charactersService.characters$.subscribe((characters) => {
-      console.log('subscibed value', characters);
-    })
+    // this.charactersService.characters$.subscribe((characters) => {
+    //   console.log('subscibed value', characters);
+    // })
   }
 
 }

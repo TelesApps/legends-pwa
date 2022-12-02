@@ -15,8 +15,8 @@ import { CalculationsService } from './calculations.service';
 })
 export class CharactersService {
 
-  characters$: ReplaySubject<Array<Character>> = new ReplaySubject<Array<Character>>(1);
-  selectedCharacters: Array<Character>;
+  // characters$: ReplaySubject<Array<Character>> = new ReplaySubject<Array<Character>>(1);
+  selectedCharacters: Array<Character> = [];
 
   constructor(
     private auth: AuthService,
@@ -27,13 +27,13 @@ export class CharactersService {
       if (player) {
         if (player.charactersId) {
           console.log('inside player subscribe', player)
-          this.afs.collection('characters', ref => ref.where('playerId', '==', player.playerId)).valueChanges(take(1))
-            .subscribe((characters: any) => {
-              console.log('characters value change collection called');
-              this.characters$.next(characters);
-              this.characters$.complete();
-              this.setSelectedCharacters(player, characters);
-            })
+          // this.afs.collection('characters', ref => ref.where('playerId', '==', player.playerId)).valueChanges(take(1))
+          //   .subscribe((characters: any) => {
+          //     console.log('characters value change collection called');
+          //     this.characters$.next(characters);
+          //     this.characters$.complete();
+          //     this.setSelectedCharacters(player, characters);
+          //   })
         }
       }
     })
