@@ -16,6 +16,7 @@ export interface Character {
     abilitiesId: Array<string>;
     skillsTraitsId: Array<string>;
     isPlayerUsing?: boolean;
+    controlingPlayerId?: Array<string>;
 }
 
 interface PrimaryStats {

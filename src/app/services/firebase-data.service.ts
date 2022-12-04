@@ -27,6 +27,17 @@ export class FirebaseDataService {
     }
   }
 
+  getCharacters(ids: string[]) {
+    return this.afs.collection('characters', ref => ref.where("characterId", "in", ids)).get().pipe(map((querysnapshot) => {
+      console.log('querySnapshot', querysnapshot);
+      const characters: Array<Character> = [];
+      querysnapshot.forEach(doc => {
+        characters.push(<Character>doc.data());
+      });
+      return characters;
+    })).toPromise()
+  }
+
   getAllCharacters(playerId: string) {
     return this.afs.collection('characters', ref => ref.where("playerId", "==", playerId)).valueChanges();
   }

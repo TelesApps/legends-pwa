@@ -9,10 +9,10 @@
         </ion-col>
         <ion-col size="6">
           <ion-item lines="none">
-              <ion-fab-button slot="end" [routerLink]="['/encyclopedia-tabs']" [queryParams]="{breadcrumb: 'main-lobby'}" 
-              routerLinkActive="router-link-active">
-                <ion-icon id="encyclopedia-icon" name="library-outline"></ion-icon>
-              </ion-fab-button>
+            <ion-fab-button slot="end" [routerLink]="['/encyclopedia-tabs']" [queryParams]="{breadcrumb: 'main-lobby'}"
+              routerLinkActive="router-link-active" ariaLabel="encyclopedia">
+              <ion-icon id="encyclopedia-icon" name="library-outline" ariaLabel="Encyclopedia"></ion-icon>
+            </ion-fab-button>
             <ion-avatar class="ion-justify-content-center" slot="end" [routerLink]="['/my-profile']"
               [queryParams]="{breadcrumb: 'main-lobby'}" routerLinkActive="router-link-active">
               <img *ngIf="photoUrl" [src]="photoUrl">
@@ -34,9 +34,23 @@
       <ion-col size="12">
         <ion-card>
           <ion-card-header>
-            <ion-card-subtitle *ngIf="charactersService.selectedCharacters">Selected Characters</ion-card-subtitle>
-            <ion-card-title *ngIf="charactersService.selectedCharacters">Leto Atrietes</ion-card-title>
-            <ion-card-title *ngIf="!charactersService.selectedCharacters" class="ion-text-center">
+            <ion-card-subtitle *ngIf="charactersService.selectedCharacters">Selected Characters:
+              {{charactersService.selectedCharacters.length}}</ion-card-subtitle>
+            <ion-card-title
+              *ngIf="charactersService.selectedCharacters && charactersService.selectedCharacters.length > 0">
+              <div class="character-list">
+                <div *ngFor="let character of charactersService.selectedCharacters" class="character">
+                  <ion-img [src]="character.portraitUrl"></ion-img>
+                  <p>{{ character.characterName }}</p>
+                </div>
+              </div>
+            </ion-card-title>
+            <ion-button  expand="block">
+              Click me
+            </ion-button>
+            <ion-card-title
+              *ngIf="!charactersService.selectedCharacters || charactersService.selectedCharacters.length == 0"
+              class="ion-text-center">
               You do not have any selected characters, please select one before proceeding</ion-card-title>
           </ion-card-header>
         </ion-card>
@@ -81,7 +95,7 @@
             </ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
-            
+
           </ion-card-content>
         </ion-card>
       </ion-col>

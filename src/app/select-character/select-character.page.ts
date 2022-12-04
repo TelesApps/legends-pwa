@@ -30,9 +30,11 @@ export class SelectCharacterPage implements OnInit {
     this.auth.getPlayer().then((player: Player) => {
       console.log('got player', player);
       this.firebaseData.getAllCharacters(player.playerId).subscribe((characters: Array<Character>) => {
-        player.charactersId.forEach(id => {
+        player.selectedCharactersIds.forEach(id => {
           const selectedCharacter = characters.find(c => c.characterId === id);
-          selectedCharacter.isPlayerUsing = true;
+          if (selectedCharacter) {
+            selectedCharacter.isPlayerUsing = true;
+          }
         });
         console.log('characters', characters);
         this.characters = characters;
@@ -53,28 +55,25 @@ export class SelectCharacterPage implements OnInit {
     return player.selectedCharactersIds.find(id => id === id);
   }
 
-  onCharacterClick(event, character: Character) {
+  async onCharacterClick(event, character: Character) {
     if (event.detail.checked) {
-      if (this.characterSer.selectedCharacters.find(c => c.characterId == character.characterId) == undefined) {
-        character.isPlayerUsing = true;
-        this.characterSer.selectedCharacters.push(character);
-      }
+      character.isPlayerUsing = true;
+      // }
     } else {
       character.isPlayerUsing = false;
-      const index = this.characterSer.selectedCharacters.findIndex(c => c.characterId == character.characterId);
-      this.characterSer.selectedCharacters.splice(index, 1);
     }
   }
 
   async onDeleteCharacters() {
+    const toDelete = this.characters.filter(c => c.isPlayerUsing);
     let headerText = '';
     let bodyText = '';
-    if (this.characterSer.selectedCharacters.length < 1 || this.characterSer.selectedCharacters.length > 1) {
-      if (this.characterSer.selectedCharacters.length < 1) {
+    if (toDelete.length < 1 || toDelete.length > 1) {
+      if (toDelete.length < 1) {
         headerText = 'Select a character';
         bodyText = `You do not have any characters selected, please select one character then click to delete it`;
       }
-      else if (this.characterSer.selectedCharacters.length > 1) {
+      else if (toDelete.length > 1) {
         headerText = 'Too many characters selected';
         bodyText = `Please only select and delete one character at a time.`;
       }
@@ -88,8 +87,9 @@ export class SelectCharacterPage implements OnInit {
       modal.present();
     }
     else {
+      const character = this.characters.find(c => c.isPlayerUsing);
       headerText = 'Are You Sure?';
-      bodyText = `${this.characterSer.selectedCharacters[0].characterName} Will be deleted forever along with all of his stats, this cannot be undone!!! 
+      bodyText = `${character.characterName} Will be deleted forever along with all of his stats, this cannot be undone!!! 
       Are you sure?`;
       const modal = await this.modalController.create({
         component: ConfirmSelectionComponent,
@@ -103,8 +103,13 @@ export class SelectCharacterPage implements OnInit {
       modal.present();
       const { data } = await modal.onWillDismiss();
       if (data && data.isConfirm) {
-        console.log('make call to delete characters');
-        this.firebaseData.deleteCharacter(this.characterSer.selectedCharacters[0].characterId);
+        const player: Player = await this.auth.getPlayer();
+        const index = player.charactersId.findIndex(id => id == character.characterId);
+        if (index !== -1)
+          player.charactersId.splice(index, 1);
+        player.selectedCharactersIds = [];
+        this.auth.updateUserData(player);
+        this.firebaseData.deleteCharacter(character.characterId);
       }
 
     }
@@ -113,11 +118,15 @@ export class SelectCharacterPage implements OnInit {
   async onFinishSelection() {
     const player = await this.auth.getPlayer();
     console.log('player onFinish', player);
+    this.characterSer.selectedCharacters = [];
     let selected: string[] = [];
-    this.characterSer.selectedCharacters.forEach(character => {
-      selected.push(character.characterId);
+    this.characters.forEach(character => {
+      if (character.isPlayerUsing) {
+        selected.push(character.characterId);
+        this.characterSer.selectedCharacters.push(character);
+      }
     });
-    if(selected.toString() !== player.selectedCharactersIds.toString()) {
+    if (selected.toString() !== player.selectedCharactersIds.toString()) {
       console.log('Updating User Data in Firebase', player);
       player.selectedCharactersIds = selected;
       this.auth.updateUserData(player);

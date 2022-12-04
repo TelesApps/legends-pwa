@@ -61,7 +61,8 @@ export class CharacterCreationService {
 
   saveNewCharacterToCloud(player: Player, character: Character) {
     this.statSubscription.unsubscribe();
-    let characterId = player.userName.replace(/ /g,"_") + '_' + character.characterName.replace(/ /g,"_") + '_' + player.charactersId.length;
+    const timestamp = new Date();
+    let characterId = player.userName.replace(/ /g,"_") + '_' + character.characterName.replace(/ /g,"_") + '_' + timestamp.valueOf();
     characterId = characterId.toLowerCase();
     character.characterId = characterId;
     character.playerId = player.playerId;

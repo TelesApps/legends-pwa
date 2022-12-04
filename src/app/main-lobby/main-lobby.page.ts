@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Player } from '../interfaces/player.interface';
 import { AuthService } from '../services/auth.service';
 import { CharactersService } from '../services/characters.service';
+import { FirebaseDataService } from '../services/firebase-data.service';
 
 @Component({
   selector: 'app-main-lobby',
@@ -13,18 +14,23 @@ export class MainLobbyPage implements OnInit {
   isLoading = true;
   avatarText: string = ''
   photoUrl: string = '';
-  localPlayer: Player;
+  player: Player;
 
-  constructor(public auth: AuthService, public charactersService: CharactersService) { }
+  constructor(public auth: AuthService, public charactersService: CharactersService, private firebaseData: FirebaseDataService) { }
 
   ngOnInit() {
-    this.auth.Player$.subscribe((player: Player) => {
+    this.auth.getPlayer().then((player: Player) => {
       if (!player) {
       } else {
-        this.localPlayer = player;
+        this.player = player;
         this.avatarText = player.userName[0];
         this.avatarText = player.userName.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '')
         this.photoUrl = player.photoUrl;
+        if (!this.charactersService.selectedCharacters || this.charactersService.selectedCharacters.length == 0) {
+          this.firebaseData.getCharacters(player.selectedCharactersIds).then((characters) => {
+            this.charactersService.selectedCharacters = characters;
+          });
+        }
       }
       this.isLoading = false;
     })
