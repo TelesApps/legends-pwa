@@ -17,7 +17,7 @@ import { FirebaseDataService } from './firebase-data.service';
 export class CharactersService {
 
   selectedCharacters: BehaviorSubject<Array<Character>> = new BehaviorSubject([]);
-  selectedIndex: number = 0;
+  viewIndex: number = 0;
 
   constructor(
     private auth: AuthService,

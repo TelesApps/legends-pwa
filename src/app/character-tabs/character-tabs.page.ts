@@ -35,6 +35,13 @@ export class CharacterTabsPage implements OnInit, OnDestroy {
     }
   }
 
+  onViewChange(event: any) {
+    const index = this.characterSer.selectedCharacters.getValue().findIndex(c => c.characterId === event.detail.value);
+    if(index !== -1) {
+      this.characterSer.viewIndex = index;
+    }
+  }
+
   ngOnDestroy(): void {
   }
 
