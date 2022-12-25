@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Character } from 'src/app/interfaces/character.interface';
+import { CharactersService } from 'src/app/services/characters.service';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPage implements OnInit {
 
-  constructor() { }
+  character: Character;
+  constructor(public characterServ: CharactersService) { }
 
   ngOnInit() {
+    this.characterServ.selectedCharacters.subscribe((chracters) => {
+      this.character = chracters[0];
+    })
   }
 
 }

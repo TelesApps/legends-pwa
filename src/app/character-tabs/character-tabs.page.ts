@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Player } from '../interfaces/player.interface';
 import { AuthService } from '../services/auth.service';
+import { CharactersService } from '../services/characters.service';
+import { FirebaseDataService } from '../services/firebase-data.service';
 
 @Component({
   selector: 'app-character-tabs',
@@ -9,17 +12,26 @@ import { AuthService } from '../services/auth.service';
 })
 export class CharacterTabsPage implements OnInit, OnDestroy {
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, public characterSer: CharactersService, private firebaseData: FirebaseDataService,
+    private router: Router) { }
 
   ngOnInit() {
+
     this.checkForRoomSelection();
   }
 
   async checkForRoomSelection() {
-    const player = await this.auth.getPlayer();
-    console.log('checking user', player);
-    if (!player.currentGameRoom) {
-      this.router.navigate(['/main-lobby'])
+    // const player = await this.auth.getPlayer();
+    // console.log('checking user', player);
+    // if (!player.currentGameRoom) {
+    //   this.router.navigate(['/main-lobby'])
+    // }
+  }
+
+  async getPlayerCharacters() {
+    const player: Player = await this.auth.getPlayer();
+    if (!player) {
+    } else {
     }
   }
 

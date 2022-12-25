@@ -35,21 +35,21 @@
         <ion-card>
           <ion-card-header>
             <ion-card-subtitle *ngIf="charactersService.selectedCharacters">Selected Characters:
-              {{charactersService.selectedCharacters.length}}</ion-card-subtitle>
+              {{(charactersService.selectedCharacters | async).length}}</ion-card-subtitle>
             <ion-card-title
-              *ngIf="charactersService.selectedCharacters && charactersService.selectedCharacters.length > 0">
+              *ngIf="charactersService.selectedCharacters && (charactersService.selectedCharacters | async).length > 0">
               <div class="character-list">
-                <div *ngFor="let character of charactersService.selectedCharacters" class="character">
+                <div *ngFor="let character of charactersService.selectedCharacters | async" class="character">
                   <ion-img [src]="character.portraitUrl"></ion-img>
                   <p>{{ character.characterName }}</p>
                 </div>
               </div>
             </ion-card-title>
-            <ion-button  expand="block">
-              Click me
+            <ion-button  expand="block" [routerLink]="['/character-tabs']" routerLinkActive="router-link-active" >
+              View Character<span *ngIf="charactersService.selectedCharacters && (charactersService.selectedCharacters | async).length > 1">s</span>
             </ion-button>
             <ion-card-title
-              *ngIf="!charactersService.selectedCharacters || charactersService.selectedCharacters.length == 0"
+              *ngIf="!charactersService.selectedCharacters || (charactersService.selectedCharacters | async).length == 0"
               class="ion-text-center">
               You do not have any selected characters, please select one before proceeding</ion-card-title>
           </ion-card-header>

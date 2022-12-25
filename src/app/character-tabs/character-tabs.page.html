@@ -1,8 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title *ngIf="characterSer.selectedCharacters && characterSer.selectedCharacters.getValue()[0]" slot="start">
+      <ion-select interface="popover" [value]="characterSer.selectedCharacters.getValue()[0].characterId">
+        <ion-select-option *ngFor="let char of characterSer.selectedCharacters | async" [value]="char.characterId">
+          {{char.characterName }}</ion-select-option>
+      </ion-select>
+    </ion-title>
+    <ion-title>Lvl 5</ion-title>
+    <ion-fab-button id="click-trigger" size="small" slot="end">
+      <ion-icon name="menu"></ion-icon>
+    </ion-fab-button>
+    <ion-popover #popover trigger="click-trigger" triggerAction="click">
+      <ng-template>
+        <ion-content class="ion-padding">
+          <a>
+            <ion-item lines="full" [routerLink]="['/my-profile']" [queryParams]="{breadcrumb: 'character-tabs'}"
+              (click)="popover.dismiss()">
+              <ion-label>My Profile</ion-label>
+            </ion-item>
+          </a>
+          <a>
+            <ion-item lines="full" [routerLink]="['/main-lobby']" (click)="popover.dismiss()">
+              <ion-label>Main Menu</ion-label>
+            </ion-item>
+          </a>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </ion-toolbar>
+</ion-header>
+
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="main">
       <ion-icon name="man-outline"></ion-icon>
-      <ion-label>Main</ion-label>
+      <ion-label>Stats</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="equipment">
       <ion-icon name="construct-outline"></ion-icon>

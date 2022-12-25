@@ -26,17 +26,9 @@ export class MainLobbyPage implements OnInit {
         this.avatarText = player.userName[0];
         this.avatarText = player.userName.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '')
         this.photoUrl = player.photoUrl;
-        if (!this.charactersService.selectedCharacters || this.charactersService.selectedCharacters.length == 0) {
-          this.firebaseData.getCharacters(player.selectedCharactersIds).then((characters) => {
-            this.charactersService.selectedCharacters = characters;
-          });
-        }
       }
       this.isLoading = false;
     })
-    // this.charactersService.characters$.subscribe((characters) => {
-    //   console.log('subscibed value', characters);
-    // })
   }
 
 }

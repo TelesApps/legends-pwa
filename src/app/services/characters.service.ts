@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { first, map, take } from 'rxjs/operators';
 import { Character, CreateNewCharacter } from '../interfaces/character.interface';
 import { Item } from '../interfaces/item.interface';
@@ -9,44 +9,42 @@ import { Stat, StatusEffect } from '../interfaces/status-effect.interface';
 import { AirtableDataService } from './airtable-data.service';
 import { AuthService } from './auth.service';
 import { CalculationsService } from './calculations.service';
+import { FirebaseDataService } from './firebase-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CharactersService {
 
-  // characters$: ReplaySubject<Array<Character>> = new ReplaySubject<Array<Character>>(1);
-  selectedCharacters: Array<Character> = [];
+  selectedCharacters: BehaviorSubject<Array<Character>> = new BehaviorSubject([]);
+  selectedIndex: number = 0;
 
   constructor(
     private auth: AuthService,
-    private afs: AngularFirestore,
+    private firebaseData: FirebaseDataService,
     private airtable: AirtableDataService,
     private calculations: CalculationsService) {
     this.auth.Player$.pipe(first()).subscribe((player) => {
       if (player) {
         if (player.charactersId) {
           console.log('inside player subscribe', player)
-          // this.afs.collection('characters', ref => ref.where('playerId', '==', player.playerId)).valueChanges(take(1))
-          //   .subscribe((characters: any) => {
-          //     console.log('characters value change collection called');
-          //     this.characters$.next(characters);
-          //     this.characters$.complete();
-          //     this.setSelectedCharacters(player, characters);
-          //   })
+          this.firebaseData.getCharacters(player.selectedCharactersIds).then((characters) => {
+            this.selectedCharacters.next(characters);
+          });
+
         }
       }
     })
   }
 
-  setSelectedCharacters(player: Player, characters: Array<Character>) {
-    if (player.selectedCharactersIds) {
-      player.selectedCharactersIds.forEach(id => {
-        const character: Character = characters.find(c => c.characterId === id);
-        if (character) this.selectedCharacters.push(character);
-      });
-    }
-  }
+  // setSelectedCharacters(player: Player, characters: Array<Character>) {
+  //   if (player.selectedCharactersIds) {
+  //     player.selectedCharactersIds.forEach(id => {
+  //       const character: Character = characters.find(c => c.characterId === id);
+  //       if (character) this.selectedCharacters.push(character);
+  //     });
+  //   }
+  // }
 
   // Character Creation Service is also calling this to make this calculation, hence the Character input value
   calculateCharacterStats(character: Character) {

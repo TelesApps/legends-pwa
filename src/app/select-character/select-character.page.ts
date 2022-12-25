@@ -118,12 +118,12 @@ export class SelectCharacterPage implements OnInit {
   async onFinishSelection() {
     const player = await this.auth.getPlayer();
     console.log('player onFinish', player);
-    this.characterSer.selectedCharacters = [];
+    this.characterSer.selectedCharacters.next([]);
     let selected: string[] = [];
     this.characters.forEach(character => {
       if (character.isPlayerUsing) {
         selected.push(character.characterId);
-        this.characterSer.selectedCharacters.push(character);
+        this.characterSer.selectedCharacters.getValue().push(character);
       }
     });
     if (selected.toString() !== player.selectedCharactersIds.toString()) {
