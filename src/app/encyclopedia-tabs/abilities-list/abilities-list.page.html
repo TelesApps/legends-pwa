@@ -38,6 +38,9 @@
         <div *ngIf="isLoading" class="loading-icon">
           <ion-spinner name="bubbles"></ion-spinner>
         </div>
+        <ion-text *ngIf="errorMessage" class="ion-text-center" color="danger">
+          <p>{{errorMessage}}</p>
+        </ion-text>
         <ion-accordion-group #accordionGroup>
           <ion-accordion [id]="ability.title.toLowerCase()" *ngFor="let ability of filteredAbilities"
             class="legends-item" [value]="ability.title.toLowerCase()">

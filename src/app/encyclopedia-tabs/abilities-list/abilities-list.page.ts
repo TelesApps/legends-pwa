@@ -21,6 +21,7 @@ export class AbilitiesListPage implements OnInit {
   isSelectMode: boolean = false;
   remainingAP: number = 0;
   backUrl: string = '/character-creation-tabs/abilities-selection'
+  errorMessage = '';
   @ViewChild(IonContent, { static: false }) content: IonContent;
   @ViewChild('accordionGroup', { static: true }) accordionGroup: IonAccordionGroup;
   constructor(
@@ -44,6 +45,9 @@ export class AbilitiesListPage implements OnInit {
           this.backUrl = params.breadcrumb;
         }
       })
+    }, (error) => {
+      this.isLoading = false;
+      this.errorMessage = error.error.error.message
     })
     if (this.filteredAbilities.length < 1)
       this.airtable.loadAbilities();

@@ -1,171 +1,251 @@
 <ion-content class="parent-header background-color-darker">
   <ion-grid fixed>
     <ion-row *ngIf="characterServ.selectedCharacters.getValue()[characterServ.viewIndex] as character">
-      <ion-col size="6">
+      <!-- ********************** STATS SECTION ********************** -->
+      <ion-col class="stats-column" size="5">
         <!-- Health -->
         <div class="stats-box">
           <div class="flex-between">
             <b>H.</b>
-            <span>{{ character.primaryStats.maxHealth }}</span>
+            <span class="calculated-stat">{{ character.primaryStats.maxHealth }}</span>
           </div>
         </div>
         <!-- Stamina -->
         <div class="stats-box">
           <div class="flex-between">
             <b>Stam:</b>
-            <span>{{ character.primaryStats.maxStamina }}</span>
+            <span class="calculated-stat">{{ character.primaryStats.maxStamina }}</span>
           </div>
         </div>
         <!-- Power -->
         <div class="stats-box">
-          <span>
-            <span>P: {{ character.primaryStats.maxPower }}</span>
-          </span>
+          <div class="flex-between">
+            <b>P:</b>
+            <span class="calculated-stat">{{ character.primaryStats.maxPower }}</span>
+          </div>
         </div>
         <!-- Ranged Attack -->
         <div class="stats-box">
-          <span>
-            <span>Ranged Attack: {{ character.primaryStats.core_ranged | number: '1.0-1' }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged < 0,
-                  'green-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged > 0 }">
-              <span *ngIf="character.primaryStats.rangedAttack - character.primaryStats.core_ranged >= 0">
-                +</span>{{ character.primaryStats.rangedAttack -
-              character.primaryStats.core_ranged | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged < 0,
-                  'green-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged > 0 }">{{
-              character.primaryStats.rangedAttack | number: '1.0-0' }}</span>)
-          </span>
-          <span class="ion-text-end">Dmg:
-            {{ character.primaryStats.rangedDmgModifier | number: '1.0-1'}}
-          </span>
+          <div class="flex-between">
+            <div class="calculated-stat"><b>RA: </b> {{ character.primaryStats.core_ranged | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged < 0,
+                    'green-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged > 0 }">
+                <span *ngIf="character.primaryStats.rangedAttack - character.primaryStats.core_ranged >= 0">
+                  +</span>{{ character.primaryStats.rangedAttack -
+                character.primaryStats.core_ranged | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged < 0,
+                      'green-txt': character.primaryStats.rangedAttack - character.primaryStats.core_ranged > 0 }">{{
+                character.primaryStats.rangedAttack | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Melee Attack -->
         <div class="stats-box">
-          <span>
-            <span>Melee Attack: {{ character.primaryStats.core_melee | number: '1.0-1' }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee < 0,
-                  'green-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee > 0 }">
-              <span *ngIf="character.primaryStats.meleeAttack - character.primaryStats.core_melee >= 0">
-                +</span>{{ character.primaryStats.meleeAttack -
-              character.primaryStats.core_melee | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee < 0,
-                  'green-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee > 0 }">{{
-              character.primaryStats.meleeAttack | number: '1.0-0' }}</span>)
-          </span>
-          <span class="ion-text-end">Dmg:
-            {{ character.primaryStats.meleeDmgModifier | number: '1.0-1'
-            }}
-          </span>
+          <div class="flex-between">
+            <div><b>MA: </b> {{ character.primaryStats.core_melee | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee < 0,
+                    'green-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee > 0 }">
+                <span *ngIf="character.primaryStats.meleeAttack - character.primaryStats.core_melee >= 0">
+                  +</span>{{ character.primaryStats.meleeAttack -
+                character.primaryStats.core_melee | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee < 0,
+                      'green-txt': character.primaryStats.meleeAttack - character.primaryStats.core_melee > 0 }">{{
+                character.primaryStats.meleeAttack | number: '1.0-0' }}</span>)
+            </div>
+          </div>
+        </div>
+        <!-- Damage -->
+        <div class="stats-box">
+          <div class="flex-between">
+            <b>Dmg:</b>
+            <span class="calculated-stat">{{ character.primaryStats.maxPower }}</span>
+          </div>
         </div>
         <!-- Defence -->
         <div class="stats-box">
-          <span>
-            <span>Defence: {{ character.primaryStats.core_defense | number: '1.0-1' }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.defense - character.primaryStats.core_defense < 0,
-                  'green-txt': character.primaryStats.defense - character.primaryStats.core_defense > 0 }">
-              <span *ngIf="character.primaryStats.defense - character.primaryStats.core_defense >= 0">
-                +</span>{{ character.primaryStats.defense -
-              character.primaryStats.core_defense | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.defense - character.primaryStats.core_defense < 0,
-                  'green-txt': character.primaryStats.defense - character.primaryStats.core_defense > 0 }">{{
-              character.primaryStats.defense | number: '1.0-0' }}</span>)
-          </span>
-          <!-- Armor -->
-          <span class="ion-text-end">Armor:
-            {{ character.primaryStats.maxArmor | number: '1.0-1' }}
-          </span>
+          <div class="flex-between">
+            <div><b>D: </b> {{ character.primaryStats.core_defense | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.defense - character.primaryStats.core_defense < 0,
+                    'green-txt': character.primaryStats.defense - character.primaryStats.core_defense > 0 }">
+                <span *ngIf="character.primaryStats.defense - character.primaryStats.core_defense >= 0">
+                  +</span>{{ character.primaryStats.defense -
+                character.primaryStats.core_defense | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.defense - character.primaryStats.core_defense < 0,
+                      'green-txt': character.primaryStats.defense - character.primaryStats.core_defense > 0 }">{{
+                character.primaryStats.defense | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Strength -->
         <div class="stats-box">
-          <span>
-            <span>Strength: {{ character.primaryStats.core_strength }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.strength - character.primaryStats.core_strength < 0,
-                  'green-txt': character.primaryStats.strength - character.primaryStats.core_strength > 0 }">
-              <span *ngIf="character.primaryStats.strength - character.primaryStats.core_strength >= 0">
-                +</span>{{ character.primaryStats.strength -
-              character.primaryStats.core_strength | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.strength - character.primaryStats.core_strength < 0,
-                  'green-txt': character.primaryStats.strength - character.primaryStats.core_strength > 0 }">{{
-              character.primaryStats.strength | number: '1.0-0' }}</span>)
-          </span>
+          <div class="flex-between">
+            <div><b>Str: </b> {{ character.primaryStats.core_strength | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.strength - character.primaryStats.core_strength < 0,
+                    'green-txt': character.primaryStats.strength - character.primaryStats.core_strength > 0 }">
+                <span *ngIf="character.primaryStats.strength - character.primaryStats.core_strength >= 0">
+                  +</span>{{ character.primaryStats.strength -
+                character.primaryStats.core_strength | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.strength - character.primaryStats.core_strength < 0,
+                      'green-txt': character.primaryStats.strength - character.primaryStats.core_strength > 0 }">{{
+                character.primaryStats.strength | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Agility -->
         <div class="stats-box">
-          <span>
-            <span>Agility: {{ character.primaryStats.core_agility }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.agility - character.primaryStats.core_agility < 0,
-                  'green-txt': character.primaryStats.agility - character.primaryStats.core_agility > 0 }">
-              <span *ngIf="character.primaryStats.agility - character.primaryStats.core_agility >= 0">
-                +</span>{{ character.primaryStats.agility -
-              character.primaryStats.core_agility | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.agility - character.primaryStats.core_agility < 0,
-                  'green-txt': character.primaryStats.agility - character.primaryStats.core_agility > 0 }">{{
-              character.primaryStats.agility | number: '1.0-0' }}</span>)
-          </span>
+          <div class="flex-between">
+            <div><b>Ag: </b> {{ character.primaryStats.core_agility | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.agility - character.primaryStats.core_agility < 0,
+                    'green-txt': character.primaryStats.agility - character.primaryStats.core_agility > 0 }">
+                <span *ngIf="character.primaryStats.agility - character.primaryStats.core_agility >= 0">
+                  +</span>{{ character.primaryStats.agility -
+                character.primaryStats.core_agility | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.agility - character.primaryStats.core_agility < 0,
+                      'green-txt': character.primaryStats.agility - character.primaryStats.core_agility > 0 }">{{
+                character.primaryStats.agility | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Accuracy -->
         <div class="stats-box">
-          <span>
-            <span>Accuracy: {{ character.primaryStats.core_accuracy }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy < 0,
-                  'green-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy > 0 }">
-              <span *ngIf="character.primaryStats.accuracy - character.primaryStats.core_accuracy >= 0">
-                +</span>{{ character.primaryStats.accuracy -
-              character.primaryStats.core_accuracy | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy < 0,
-                  'green-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy > 0 }">{{
-              character.primaryStats.accuracy | number: '1.0-0' }}</span>)
-          </span>
+          <div class="flex-between">
+            <div><b>Acc: </b> {{ character.primaryStats.core_accuracy | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy < 0,
+                    'green-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy > 0 }">
+                <span *ngIf="character.primaryStats.accuracy - character.primaryStats.core_accuracy >= 0">
+                  +</span>{{ character.primaryStats.accuracy -
+                character.primaryStats.core_accuracy | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy < 0,
+                      'green-txt': character.primaryStats.accuracy - character.primaryStats.core_accuracy > 0 }">{{
+                character.primaryStats.accuracy | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Perception -->
         <div class="stats-box">
-          <span>
-            <span>Perception: {{ character.primaryStats.core_perception }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.perception - character.primaryStats.core_perception < 0,
-                  'green-txt': character.primaryStats.perception - character.primaryStats.core_perception > 0 }">
-              <span *ngIf="character.primaryStats.perception - character.primaryStats.core_perception >= 0">
-                +</span>{{ character.primaryStats.perception -
-              character.primaryStats.core_perception | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.perception - character.primaryStats.core_perception < 0,
-                  'green-txt': character.primaryStats.perception - character.primaryStats.core_perception > 0 }">{{
-              character.primaryStats.perception | number: '1.0-0' }}</span>)
-          </span>
+          <div class="flex-between">
+            <div><b>Per: </b> {{ character.primaryStats.core_perception | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.perception - character.primaryStats.core_perception < 0,
+                    'green-txt': character.primaryStats.perception - character.primaryStats.core_perception > 0 }">
+                <span *ngIf="character.primaryStats.perception - character.primaryStats.core_perception >= 0">
+                  +</span>{{ character.primaryStats.perception -
+                character.primaryStats.core_perception | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.perception - character.primaryStats.core_perception < 0,
+                      'green-txt': character.primaryStats.perception - character.primaryStats.core_perception > 0 }">{{
+                character.primaryStats.perception | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Mental -->
         <div class="stats-box">
-          <span>
-            <span>Mental: {{ character.primaryStats.core_mental }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.mental - character.primaryStats.core_mental < 0,
-                  'green-txt': character.primaryStats.mental - character.primaryStats.core_mental > 0 }">
-              <span *ngIf="character.primaryStats.mental - character.primaryStats.core_mental >= 0">
-                +</span>{{ character.primaryStats.mental -
-              character.primaryStats.core_mental | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.mental - character.primaryStats.core_mental < 0,
-                  'green-txt': character.primaryStats.mental - character.primaryStats.core_mental > 0 }">{{
-              character.primaryStats.mental | number: '1.0-0' }}</span>)
-          </span>
+          <div class="flex-between">
+            <div><b>M: </b> {{ character.primaryStats.core_mental | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.mental - character.primaryStats.core_mental < 0,
+                    'green-txt': character.primaryStats.mental - character.primaryStats.core_mental > 0 }">
+                <span *ngIf="character.primaryStats.mental - character.primaryStats.core_mental >= 0">
+                  +</span>{{ character.primaryStats.mental -
+                character.primaryStats.core_mental | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.mental - character.primaryStats.core_mental < 0,
+                      'green-txt': character.primaryStats.mental - character.primaryStats.core_mental > 0 }">{{
+                character.primaryStats.mental | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
         <!-- Movement -->
         <div class="stats-box">
-          <span>
-            <span>Movement: {{ character.primaryStats.core_movement | number: '1.0-1' }} </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.movement - character.primaryStats.core_movement < 0,
-                  'green-txt': character.primaryStats.movement - character.primaryStats.core_movement > 0 }">
-              <span *ngIf="character.primaryStats.movement - character.primaryStats.core_movement >= 0">
-                +</span>{{ character.primaryStats.movement -
-              character.primaryStats.core_movement | number: '1.0-1' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.movement - character.primaryStats.core_movement < 0,
-                  'green-txt': character.primaryStats.movement - character.primaryStats.core_movement > 0 }">{{
-              character.primaryStats.movement | number: '1.0-0' }}</span>)
-          </span>
-        </div>
-        <!-- Crit -->
-        <div class="stats-box">
-          <span>
-            <span>Crit Chance: {{ character.primaryStats.core_critChance | percent: '1.0-2' }}
-            </span>
-            <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.critChance - character.primaryStats.core_critChance < 0,
-                  'green-txt': character.primaryStats.critChance - character.primaryStats.core_critChance > 0 }">
-              <span *ngIf="character.primaryStats.critChance - character.primaryStats.core_critChance >= 0">
-                +</span>{{ character.primaryStats.critChance -
-              character.primaryStats.core_critChance | number: '1.0-2' }}</span>(<span [ngClass]="{'red-txt': character.primaryStats.critChance - character.primaryStats.core_critChance < 0,
-                  'green-txt': character.primaryStats.critChance - character.primaryStats.core_critChance > 0 }">{{
-              character.primaryStats.critChance | percent: '1.0-2' }}</span>)
-          </span>
+          <div class="flex-between">
+            <div><b>Mov: </b> {{ character.primaryStats.core_movement | number: '1.0-1' }}
+            </div>
+            <div>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.movement - character.primaryStats.core_movement < 0,
+                    'green-txt': character.primaryStats.movement - character.primaryStats.core_movement > 0 }">
+                <span *ngIf="character.primaryStats.movement - character.primaryStats.core_movement >= 0">
+                  +</span>{{ character.primaryStats.movement -
+                character.primaryStats.core_movement | number: '1.0-1' }}
+              </span>
+              (<span class="calculated-stat" [ngClass]="{'red-txt': character.primaryStats.movement - character.primaryStats.core_movement < 0,
+                      'green-txt': character.primaryStats.movement - character.primaryStats.core_movement > 0 }">{{
+                character.primaryStats.movement | number: '1.0-0' }}</span>)
+            </div>
+          </div>
         </div>
       </ion-col>
-      <ion-col size="6"> more content</ion-col>
+      <!-- ***************** EQUIPMENT SECTION ********************** -->
+      <ion-col size="7">
+        <div class="flex-between">
+          <!-- Armor -->
+          <div class="stats-box flex-grow">
+            <span class="ion-text-end calculated-stat">Armor:
+              {{ character.primaryStats.maxArmor | number: '1.0-1' }}
+            </span>
+          </div>
+          <!-- Crit -->
+          <div class="stats-box flex-grow">
+            <span>
+              <span><b>Crit:</b>
+              </span>
+              <span class="small-text" [ngClass]="{'red-txt': character.primaryStats.critChance - 
+                    character.primaryStats.core_critChance < 0,
+                  'green-txt': character.primaryStats.critChance - character.primaryStats.core_critChance > 0 }">
+                <span *ngIf="character.primaryStats.critChance - character.primaryStats.core_critChance >= 0">
+                  +</span>{{ character.primaryStats.critChance -
+                character.primaryStats.core_critChance | number: '1.0-2' }}</span>(<span class="calculated-stat"
+                [ngClass]="{'red-txt': character.primaryStats.critChance - character.primaryStats.core_critChance < 0,
+                  'green-txt': character.primaryStats.critChance - character.primaryStats.core_critChance > 0 }">{{
+                character.primaryStats.critChance | percent: '1.0-2' }}</span>)
+            </span>
+          </div>
+        </div>
+        <div class="flex-between">
+          <!-- MAIN HAND -->
+          <div class="stats-box equipment-box" (click)="openMoreDetails()">
+            <div class="ion-text-center">Main Hand</div>
+            <div class="img-slot">
+              <ion-img [src]="getImgFromId(character.equipments.mainHandId, 
+                  '../../../assets/icons/main-hand-empty.png')">
+              </ion-img>
+            </div>
+            <div class="ion-text-end ammo-count">
+              <div class="container">
+                <span>14</span>
+              </div>
+            </div>
+          </div>
+          <!-- OFF HAND -->
+          <div class="stats-box equipment-box">
+            <div class="ion-text-center">Off Hand</div>
+            <div class="img-slot">
+              <ion-img [src]="getImgFromId(character.equipments.offHandId, 
+                  '../../../assets/icons/main-hand-empty.png')">
+                </ion-img>
+            </div>
+          </div>
+        </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

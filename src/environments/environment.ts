@@ -14,7 +14,7 @@ export const environment = {
     measurementId: "G-RHEHKFYYJ9"
   },
   useEmulators: {},
-  airtable_key: "keyiQeUMh8M9dAatG"
+  airtable_token: "patRMlff8oQvBi15b.aa8b99c6a475dbce771a67f824f77e754fffdef554295d11a12082e830bd770f"
 };
 
 export const actionCodeSettings = {

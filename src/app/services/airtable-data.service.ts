@@ -15,7 +15,7 @@ export class AirtableDataService {
 
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + environment.airtable_key
+    'Authorization': 'Bearer ' + environment.airtable_token
   });
   options = {
     headers: this.httpHeaders,
@@ -25,7 +25,7 @@ export class AirtableDataService {
   $skillsTraits: ReplaySubject<Array<SkillTraits>> = new ReplaySubject<Array<SkillTraits>>(1);
   $abilities: ReplaySubject<Array<Ability>> = new ReplaySubject<Array<Ability>>(1);
   allItems: Array<Item> = [];
-  skillsTraits: Array<SkillTraits> =  [];
+  skillsTraits: Array<SkillTraits> = [];
   abilities: Array<Ability> = []
 
   constructor(private http: HttpClient) {
@@ -71,22 +71,26 @@ export class AirtableDataService {
 
   loadAbilities() {
     const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
-    this.http.get(`https://api.airtable.com/v0/appbI9FWav2qCfbIj/AbilityList/` + sortByTitleAsc, this.options).subscribe((data: AirTableData) => {
-      console.log('res from get abilities', data);
-      const allAbilities: Ability[] = [];
-      data.records.forEach(record => {
-        const skills: Ability = <Ability>record.fields;
-        allAbilities.push(skills);
-      });
-      this.$abilities.next(allAbilities);
-      this.$abilities.complete();
-    })
+    this.http.get(`https://api.airtable.com/v0/appbI9FWav2qCfbIj/AbilityList/` + sortByTitleAsc, this.options)
+      .subscribe((data: AirTableData) => {
+        console.log('res from get abilities', data);
+        const allAbilities: Ability[] = [];
+        data.records.forEach(record => {
+          const skills: Ability = <Ability>record.fields;
+          allAbilities.push(skills);
+        });
+        this.$abilities.next(allAbilities);
+        this.$abilities.complete();
+      }, (error) => {
+        console.error(error);
+        this.$abilities.error(error);
+      })
   }
 
   getItemById(id: string): Item {
-    if(id) {
+    if (id) {
       const item = this.allItems.find(i => i.airtable_id === id);
-      if(item) return item;
+      if (item) return item;
       else {
         console.error('Item not found');
         return undefined
@@ -98,9 +102,9 @@ export class AirtableDataService {
   }
 
   getSkillTraitById(id: string): SkillTraits {
-    if(id) {
+    if (id) {
       const skillTrait = this.skillsTraits.find(s => s.airtable_id === id);
-      if(skillTrait) return skillTrait
+      if (skillTrait) return skillTrait
       else {
         console.error('Skill or trait not found');
         return undefined;
