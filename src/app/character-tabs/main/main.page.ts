@@ -16,6 +16,7 @@ export class MainPage implements OnInit {
   constructor(public characterServ: CharactersService, public dataService: AirtableDataService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.dataService.loadItems();
     this.characterServ.selectedCharacters.subscribe((chracters) => {
       this.character = chracters[0];
     })

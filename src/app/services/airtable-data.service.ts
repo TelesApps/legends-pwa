@@ -37,22 +37,30 @@ export class AirtableDataService {
   }
 
   loadItems() {
-    const allItems = [];
-    const allPromises: Array<Promise<any>> = [];
-    console.log('calling')
-    const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
-    allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Weapons/` + sortByTitleAsc, this.options).toPromise());
-    allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Equipment/` + sortByTitleAsc, this.options).toPromise());
-    Promise.all(allPromises).then((allData: Array<AirTableData>) => {
-      allData.forEach(data => {
-        data.records.forEach(record => {
-          const item: Item = <Item>record.fields;
-          allItems.push(item);
+    if(!this.allItems || this.allItems.length < 1) {
+      const allItems = [];
+      const allPromises: Array<Promise<any>> = [];
+      console.log('calling')
+      const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
+      allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Weapons/` + sortByTitleAsc, this.options).toPromise());
+      allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Equipment/` + sortByTitleAsc, this.options).toPromise());
+      Promise.all(allPromises).then((allData: Array<AirTableData>) => {
+        allData.forEach(data => {
+          data.records.forEach(record => {
+            const item: Item = <Item>record.fields;
+            allItems.push(item);
+          });
         });
-      });
-      this.$allItems.next(allItems);
-      this.$allItems.complete();
-    })
+        this.$allItems.next(allItems);
+        this.$allItems.complete();
+      }).catch((error) => {
+        console.error('there was an error when retrieving items');
+        console.error(error)
+        this.$allItems.error(error);
+      })
+    } else {
+      console.warn('Did not airTbale to load Items because allItems Array length is more then 0')
+    }
   }
 
   loadSkillsAndTraits() {
