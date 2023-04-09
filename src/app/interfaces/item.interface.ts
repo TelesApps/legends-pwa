@@ -6,6 +6,7 @@ export interface Item {
     title: string;
     components?: string[];
     dmg_type?: DmgType[];
+    weapon_range: number;
     weight: number;
     effects: string[];
     crafting_requirements?: string[];

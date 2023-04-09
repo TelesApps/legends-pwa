@@ -16,3 +16,7 @@ export enum Stat {
     stress, stressTolerance, stealth, lockPicking, quickHands, persuasion, intimidation, engineering, tracking, scoutScavange, mining,
     smithing, phiralSmith, herbalism, alchemy, cooking, musician, artist, carryCapacity
 }
+
+export enum BodyPart {
+    Head, MainHand, OffHand, Chest, Hands, Legs, Feet
+}

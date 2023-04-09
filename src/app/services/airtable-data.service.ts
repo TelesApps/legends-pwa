@@ -37,7 +37,7 @@ export class AirtableDataService {
   }
 
   loadItems() {
-    if(!this.allItems || this.allItems.length < 1) {
+    if (!this.allItems || this.allItems.length < 1) {
       const allItems = [];
       const allPromises: Array<Promise<any>> = [];
       console.log('calling')
@@ -59,7 +59,7 @@ export class AirtableDataService {
         this.$allItems.error(error);
       })
     } else {
-      console.warn('Did not airTbale to load Items because allItems Array length is more then 0')
+      console.warn('Did not call airTbale to load Items because allItems Array length is more then 0')
     }
   }
 
@@ -105,6 +105,25 @@ export class AirtableDataService {
       }
     } else {
       console.error('id is invalid', id);
+      return undefined
+    }
+  }
+
+  doesItemContainTag(itemId: string, tag: string): boolean {
+    if (itemId) {
+      const item = this.allItems.find(i => i.airtable_id === itemId);
+      if (item) {
+        if (item.tags) {
+          const itemTag = item.tags.find(t => t.toLowerCase() === tag.toLowerCase());
+          return itemTag ? true : false;
+        }
+      }
+      else {
+        console.error('Item not found');
+        return undefined
+      }
+    } else {
+      console.error('id is invalid', itemId);
       return undefined
     }
   }

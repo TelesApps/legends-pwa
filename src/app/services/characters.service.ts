@@ -10,6 +10,7 @@ import { AirtableDataService } from './airtable-data.service';
 import { AuthService } from './auth.service';
 import { CalculationsService } from './calculations.service';
 import { FirebaseDataService } from './firebase-data.service';
+import { DmgType } from '../interfaces/airtable-data.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,39 @@ export class CharactersService {
       }
     })
   }
+
+  getWeaponDamageTypes(character: Character, isMainHand = true): DmgType[] | null {
+    let itemId = '';
+    if (isMainHand) itemId = character.equipments.mainHandId;
+    else itemId = character.equipments.offHandId;
+    if (itemId) {
+      const item = this.airtable.getItemById(itemId);
+      if (item) return item.dmg_type;
+      else return null;
+    }
+    else return null;
+  }
+
+  getWeaponDmg(weapon: Item, isRanged: boolean): number {
+    const statusEffects: StatusEffect[] = this.calculations.calculateEffectsFromStrings(weapon.effects, null, isRanged);
+    const dmgEffect = statusEffects.find(se => se.stat === Stat.MeleeDmgDelt || se.stat === Stat.RangeDmdDelt);
+    if (dmgEffect && dmgEffect.value)
+      return dmgEffect.value;
+    else return 0;
+  }
+
+  isTwoHandedWeapon(itemId: string) {
+    if (itemId) {
+      const weapon = this.airtable.getItemById(itemId);
+      if (weapon && weapon.tags) {
+        const tag = weapon.tags.find(t => t.toLowerCase() === '2 hands' || t.toLowerCase() === '2hands');
+        return tag ? true : false;
+      } else return false;
+    } else return false;
+  }
+
+
+
 
   // setSelectedCharacters(player: Player, characters: Array<Character>) {
   //   if (player.selectedCharactersIds) {

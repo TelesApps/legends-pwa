@@ -4,28 +4,28 @@
       <!-- ********************** STATS SECTION ********************** -->
       <ion-col class="stats-column" size="5">
         <!-- Health -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Health)" class="stats-box">
           <div class="flex-between">
             <b>H.</b>
             <span class="calculated-stat">{{ character.primaryStats.maxHealth }}</span>
           </div>
         </div>
         <!-- Stamina -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Stamina)" class="stats-box">
           <div class="flex-between">
             <b>Stam:</b>
             <span class="calculated-stat">{{ character.primaryStats.maxStamina }}</span>
           </div>
         </div>
         <!-- Power -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Power)" class="stats-box">
           <div class="flex-between">
             <b>P:</b>
             <span class="calculated-stat">{{ character.primaryStats.maxPower }}</span>
           </div>
         </div>
         <!-- Ranged Attack -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.RangeAttack)" class="stats-box">
           <div class="flex-between">
             <div class="calculated-stat"><b>RA: </b> {{ character.primaryStats.core_ranged | number: '1.0-1' }}
             </div>
@@ -43,7 +43,7 @@
           </div>
         </div>
         <!-- Melee Attack -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.MeleeAttack)" class="stats-box">
           <div class="flex-between">
             <div><b>MA: </b> {{ character.primaryStats.core_melee | number: '1.0-1' }}
             </div>
@@ -61,14 +61,21 @@
           </div>
         </div>
         <!-- Damage -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.MeleeDmgDelt)" class="stats-box">
           <div class="flex-between">
             <b>Dmg:</b>
-            <span class="calculated-stat">{{ character.primaryStats.maxPower }}</span>
+            <span
+              *ngIf="!isRangeWeapon(character.equipments.mainHandId) || !isRangeWeapon(character.equipments.offHandId)"
+              class="calculated-stat">
+              {{ getTotalWeaponDmg(character.equipments.mainHandId, character.equipments.offHandId) }}</span>
+            <span
+              *ngIf="isRangeWeapon(character.equipments.mainHandId) || isRangeWeapon(character.equipments.offHandId)"
+              class="calculated-stat">
+              {{ getTotalWeaponDmg(character.equipments.mainHandId, character.equipments.offHandId, true) }}</span>
           </div>
         </div>
         <!-- Defence -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Defence)" class="stats-box">
           <div class="flex-between">
             <div><b>D: </b> {{ character.primaryStats.core_defense | number: '1.0-1' }}
             </div>
@@ -86,7 +93,7 @@
           </div>
         </div>
         <!-- Strength -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Strength)" class="stats-box">
           <div class="flex-between">
             <div><b>Str: </b> {{ character.primaryStats.core_strength | number: '1.0-1' }}
             </div>
@@ -104,7 +111,7 @@
           </div>
         </div>
         <!-- Agility -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Agility)" class="stats-box">
           <div class="flex-between">
             <div><b>Ag: </b> {{ character.primaryStats.core_agility | number: '1.0-1' }}
             </div>
@@ -122,7 +129,7 @@
           </div>
         </div>
         <!-- Accuracy -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Accuracy)" class="stats-box">
           <div class="flex-between">
             <div><b>Acc: </b> {{ character.primaryStats.core_accuracy | number: '1.0-1' }}
             </div>
@@ -140,7 +147,7 @@
           </div>
         </div>
         <!-- Perception -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Perception)" class="stats-box">
           <div class="flex-between">
             <div><b>Per: </b> {{ character.primaryStats.core_perception | number: '1.0-1' }}
             </div>
@@ -158,7 +165,7 @@
           </div>
         </div>
         <!-- Mental -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Mental)" class="stats-box">
           <div class="flex-between">
             <div><b>M: </b> {{ character.primaryStats.core_mental | number: '1.0-1' }}
             </div>
@@ -176,7 +183,7 @@
           </div>
         </div>
         <!-- Movement -->
-        <div class="stats-box">
+        <div (click)="openMoreDetails(Stat.Movement)" class="stats-box">
           <div class="flex-between">
             <div><b>Mov: </b> {{ character.primaryStats.core_movement | number: '1.0-1' }}
             </div>
@@ -198,13 +205,13 @@
       <ion-col size="7">
         <div class="flex-between">
           <!-- Armor -->
-          <div class="stats-box flex-grow">
+          <div class="stats-box flex-grow" (click)="openMoreDetails(Stat.Armor)">
             <span class="ion-text-end calculated-stat">Armor:
               {{ character.primaryStats.maxArmor | number: '1.0-1' }}
             </span>
           </div>
           <!-- Crit -->
-          <div class="stats-box flex-grow">
+          <div class="stats-box flex-grow" (click)="openMoreDetails(Stat.Crit)">
             <span>
               <span><b>Crit:</b>
               </span>
@@ -222,7 +229,7 @@
         </div>
         <div class="flex-between">
           <!-- MAIN HAND -->
-          <div class="stats-box equipment-box" (click)="openMoreDetails()">
+          <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.MainHand)">
             <div class="ion-text-center">Main Hand</div>
             <div class="img-slot">
               <ion-img [src]="getImgFromId(character.equipments.mainHandId, 
@@ -236,12 +243,12 @@
             </div>
           </div>
           <!-- OFF HAND -->
-          <div class="stats-box equipment-box">
+          <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.OffHand)">
             <div class="ion-text-center">Off Hand</div>
             <div class="img-slot">
               <ion-img [src]="getImgFromId(character.equipments.offHandId, 
                   '../../../assets/icons/main-hand-empty.png')">
-                </ion-img>
+              </ion-img>
             </div>
           </div>
         </div>
