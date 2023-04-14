@@ -12,7 +12,7 @@ import { SkillTraits } from '../interfaces/skills-traits.interface';
   providedIn: 'root'
 })
 export class AirtableDataService {
-
+  isLoadingData = false;
   httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Authorization': 'Bearer ' + environment.airtable_token
@@ -34,21 +34,28 @@ export class AirtableDataService {
   }
 
   loadDatabase() {
-    if (this.$allItems.getValue().length < 1) {
+    if (!this.isLoadingData && this.$allItems.getValue().length < 1) {
+      this.isLoadingData = true;
 
       const weapons$ = this.fetchItemsFromAirtable('app0h83f2CwnHyEX3', 'Weapons');
       const equipment$ = this.fetchItemsFromAirtable('app0h83f2CwnHyEX3', 'Equipment');
       const skills$ = this.fetchItemsFromAirtable('app2iTLZLWFFxHulK', 'Skills');
       const abilities$ = this.fetchItemsFromAirtable('appbI9FWav2qCfbIj', 'AbilityList');
 
-      forkJoin([weapons$, equipment$]).pipe(
-        map(([weapons, equipment]) => [...weapons, ...equipment])
-      ).subscribe(items => this.$allItems.next(items));
-  
-      skills$.subscribe(skills => this.$skillsTraits.next(skills));
-      abilities$.subscribe(abilities => this.$abilities.next(abilities));
+      forkJoin([weapons$, equipment$, skills$, abilities$]).subscribe(
+        ([weapons, equipment, skills, abilities]) => {
+          this.$allItems.next([...weapons, ...equipment]);
+          this.$skillsTraits.next(skills);
+          this.$abilities.next(abilities);
+          this.isLoadingData = false;
+        },
+        error => {
+          console.error('Error loading data', error);
+          this.isLoadingData = false;
+        }
+      );
     } else {
-      console.warn('Did not call airTbale to load Items because allItems Array length is more then 0')
+      console.warn('Did not call airTbale to load Items because allItems Array length is more than 0 or data is already loading');
     }
   }
 
@@ -64,6 +71,9 @@ export class AirtableDataService {
 
   getItemById(id: string): Item {
     if (id) {
+      if (this.$allItems.getValue().length < 1) {
+        return undefined;
+      }
       const item = this.$allItems.getValue().find(i => i.airtable_id === id);
       if (item) return item;
       else {
