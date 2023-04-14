@@ -65,7 +65,7 @@ export class ItemsListPage implements OnInit {
         this.isLoading = false;
       })
     });
-    if (this.allItems.length < 1) this.airtable.loadItems();
+    if (this.allItems.length < 1) this.airtable.loadDatabase();
   }
 
 

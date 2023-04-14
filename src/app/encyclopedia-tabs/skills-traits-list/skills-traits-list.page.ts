@@ -41,7 +41,7 @@ export class SkillsTraitsListPage implements OnInit {
     })
     console.log('length', this.filterredSkills.length)
     if (this.filterredSkills.length < 1)
-      this.airtable.loadSkillsAndTraits();
+      this.airtable.loadDatabase();
     this.route.queryParams.subscribe((params) => {
       this.skillTypeFilter = [];
       console.log(params)

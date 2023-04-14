@@ -93,21 +93,21 @@ export class CharactersService {
     character.primaryStats.core_defense = this.calculations.calcDefense(character);
     character.primaryStats.core_movement = this.calculations.calcMovement(character);
     // Calculate weapon modifiers
-    if (this.airtable.allItems && this.airtable.allItems.length > 0) {
+    if (this.airtable.$allItems && this.airtable.$allItems.getValue().length > 0) {
       this.calculateEquipmentModifiers(character);
     } else {
       console.error('Items not yet available from Airtable, loading now');
-      this.airtable.loadItems();
+      this.airtable.loadDatabase();
     }
     // Add weapon modifiers to stats
     this.addModifiersToStats(character, character.equipmentModifier);
-    if (this.airtable.skillsTraits && this.airtable.skillsTraits.length > 0) {
+    if (this.airtable.$skillsTraits && this.airtable.$skillsTraits.getValue().length > 0) {
       this.calculateSkillTraitsModifiers(character);
       // Add Skill modifiers to stats
       this.addModifiersToStats(character, character.skillTraitsModifiers, false, true);
     } else {
       console.error('Skills and Traits not yet available from Airtable, loading now');
-      this.airtable.loadSkillsAndTraits();
+      this.airtable.loadDatabase();
     }
 
     // #TODO add calculation for item weight and penalty if character is overweight

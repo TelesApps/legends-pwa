@@ -50,7 +50,7 @@ export class AbilitiesListPage implements OnInit {
       this.errorMessage = error.error.error.message
     })
     if (this.filteredAbilities.length < 1)
-      this.airtable.loadAbilities();
+      this.airtable.loadDatabase();
   }
 
   onFilterChange(event?) {

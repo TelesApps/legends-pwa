@@ -19,7 +19,7 @@ export class MainPage implements OnInit {
   constructor(public characterServ: CharactersService, public airtable: AirtableDataService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.airtable.loadItems();
+    this.airtable.loadDatabase();
     this.characterServ.selectedCharacters.subscribe((chracters) => {
       this.character = chracters[0];
     })
@@ -27,7 +27,7 @@ export class MainPage implements OnInit {
 
   getImgFromId(id: string, defaultUrl: string): string {
     if (id) {
-      const item = this.airtable.allItems.find(i => i.airtable_id === id);
+      const item = this.airtable.$allItems.getValue().find(i => i.airtable_id === id);
       if (item) return item.image[0].url;
       else return defaultUrl;
     }

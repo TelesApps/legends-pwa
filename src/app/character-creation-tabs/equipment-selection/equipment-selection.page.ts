@@ -133,7 +133,7 @@ export class EquipmentSelectionPage implements OnInit {
 
   getImgFromId(id: string, defaultUrl: string): string {
     if (id) {
-      const item = this.dataService.allItems.find(i => i.airtable_id === id);
+      const item = this.dataService.$allItems.getValue().find(i => i.airtable_id === id);
       if (item) return item.image[0].url;
       else return defaultUrl;
     }

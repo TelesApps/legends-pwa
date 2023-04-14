@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import { Ability } from '../interfaces/ability.interface';
@@ -21,83 +21,50 @@ export class AirtableDataService {
     headers: this.httpHeaders,
   };
 
-  $allItems: ReplaySubject<Array<Item>> = new ReplaySubject<Array<Item>>(1);
-  $skillsTraits: ReplaySubject<Array<SkillTraits>> = new ReplaySubject<Array<SkillTraits>>(1);
-  $abilities: ReplaySubject<Array<Ability>> = new ReplaySubject<Array<Ability>>(1);
-  allItems: Array<Item> = [];
-  skillsTraits: Array<SkillTraits> = [];
-  abilities: Array<Ability> = []
+  $allItems: BehaviorSubject<Array<Item>> = new BehaviorSubject<Array<Item>>([]);
+  $skillsTraits: BehaviorSubject<Array<SkillTraits>> = new BehaviorSubject<Array<SkillTraits>>([]);
+  $abilities: BehaviorSubject<Array<Ability>> = new BehaviorSubject<Array<Ability>>([]);
 
   constructor(private http: HttpClient) {
     // TO QUERY AIRTABLE FOR SPECIFIC PARAMATERS, USE SOMETHING LIKE THE CODE BELLOW
     //this.options['params'] = {filterByFormula: 'Weight=1'}
-    this.$allItems.subscribe(allItems => this.allItems = allItems);
-    this.$skillsTraits.subscribe(skillsTraits => this.skillsTraits = skillsTraits);
-    this.$abilities.subscribe(abilities => this.abilities = abilities);
+    // this.$allItems.subscribe(allItems => this.allItems = allItems);
+    // this.$skillsTraits.subscribe(skillsTraits => this.skillsTraits = skillsTraits);
+    // this.$abilities.subscribe(abilities => this.abilities = abilities);
   }
 
-  loadItems() {
-    if (!this.allItems || this.allItems.length < 1) {
-      const allItems = [];
-      const allPromises: Array<Promise<any>> = [];
-      console.log('calling')
-      const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
-      allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Weapons/` + sortByTitleAsc, this.options).toPromise());
-      allPromises.push(this.http.get(`https://api.airtable.com/v0/app0h83f2CwnHyEX3/Equipment/` + sortByTitleAsc, this.options).toPromise());
-      Promise.all(allPromises).then((allData: Array<AirTableData>) => {
-        allData.forEach(data => {
-          data.records.forEach(record => {
-            const item: Item = <Item>record.fields;
-            allItems.push(item);
-          });
-        });
-        this.$allItems.next(allItems);
-        this.$allItems.complete();
-      }).catch((error) => {
-        console.error('there was an error when retrieving items');
-        console.error(error)
-        this.$allItems.error(error);
-      })
+  loadDatabase() {
+    if (this.$allItems.getValue().length < 1) {
+
+      const weapons$ = this.fetchItemsFromAirtable('app0h83f2CwnHyEX3', 'Weapons');
+      const equipment$ = this.fetchItemsFromAirtable('app0h83f2CwnHyEX3', 'Equipment');
+      const skills$ = this.fetchItemsFromAirtable('app2iTLZLWFFxHulK', 'Skills');
+      const abilities$ = this.fetchItemsFromAirtable('appbI9FWav2qCfbIj', 'AbilityList');
+
+      forkJoin([weapons$, equipment$]).pipe(
+        map(([weapons, equipment]) => [...weapons, ...equipment])
+      ).subscribe(items => this.$allItems.next(items));
+  
+      skills$.subscribe(skills => this.$skillsTraits.next(skills));
+      abilities$.subscribe(abilities => this.$abilities.next(abilities));
     } else {
       console.warn('Did not call airTbale to load Items because allItems Array length is more then 0')
     }
   }
 
-  loadSkillsAndTraits() {
-    const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
-    this.http.get(`https://api.airtable.com/v0/app2iTLZLWFFxHulK/Skills/` + sortByTitleAsc, this.options).subscribe((data: AirTableData) => {
-      console.log('res from get  skills and traits', data);
-      const allSkills: SkillTraits[] = [];
-      data.records.forEach(record => {
-        const skills: SkillTraits = <SkillTraits>record.fields;
-        allSkills.push(skills);
-      });
-      this.$skillsTraits.next(allSkills);
-      this.$skillsTraits.complete();
-    })
+  private fetchItemsFromAirtable(appId: string, endpoint: string): Observable<any[]> {
+    const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc';
+    const url = `https://api.airtable.com/v0/${appId}/${endpoint}/${sortByTitleAsc}`;
+
+    return this.http.get<AirTableData>(url, this.options).pipe(
+      map(data => data.records.map(record => record.fields))
+    );
   }
 
-  loadAbilities() {
-    const sortByTitleAsc = '?sort%5B0%5D%5Bfield%5D=title&sort%5B0%5D%5Bdirection%5D=asc'
-    this.http.get(`https://api.airtable.com/v0/appbI9FWav2qCfbIj/AbilityList/` + sortByTitleAsc, this.options)
-      .subscribe((data: AirTableData) => {
-        console.log('res from get abilities', data);
-        const allAbilities: Ability[] = [];
-        data.records.forEach(record => {
-          const skills: Ability = <Ability>record.fields;
-          allAbilities.push(skills);
-        });
-        this.$abilities.next(allAbilities);
-        this.$abilities.complete();
-      }, (error) => {
-        console.error(error);
-        this.$abilities.error(error);
-      })
-  }
 
   getItemById(id: string): Item {
     if (id) {
-      const item = this.allItems.find(i => i.airtable_id === id);
+      const item = this.$allItems.getValue().find(i => i.airtable_id === id);
       if (item) return item;
       else {
         console.error('Item not found');
@@ -111,7 +78,7 @@ export class AirtableDataService {
 
   doesItemContainTag(itemId: string, tag: string): boolean {
     if (itemId) {
-      const item = this.allItems.find(i => i.airtable_id === itemId);
+      const item = this.$allItems.getValue().find(i => i.airtable_id === itemId);
       if (item) {
         if (item.tags) {
           const itemTag = item.tags.find(t => t.toLowerCase() === tag.toLowerCase());
@@ -119,7 +86,6 @@ export class AirtableDataService {
         }
       }
       else {
-        console.error('Item not found');
         return undefined
       }
     } else {
@@ -130,7 +96,7 @@ export class AirtableDataService {
 
   getSkillTraitById(id: string): SkillTraits {
     if (id) {
-      const skillTrait = this.skillsTraits.find(s => s.airtable_id === id);
+      const skillTrait = this.$skillsTraits.getValue().find(s => s.airtable_id === id);
       if (skillTrait) return skillTrait
       else {
         console.error('Skill or trait not found');

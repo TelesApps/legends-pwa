@@ -30,7 +30,7 @@ export class SkillsSelectionPage implements OnInit {
       }
       this.creation.characterSubj.pipe(first()).subscribe((character) => {
         this.character = character;
-        console.log('this.airtable.skillsTraits', this.airtable.skillsTraits);
+        console.log('this.airtable.skillsTraits', this.airtable.$skillsTraits.getValue());
         if (this.creation.skillTraitsSelection) {
           this.creation.skillsPoints -= this.creation.skillTraitsSelection.cost;
           console.log('Skill selected: ', this.creation.skillTraitsSelection);
