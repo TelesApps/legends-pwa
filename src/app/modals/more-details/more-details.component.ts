@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-more-details',
@@ -7,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MoreDetailsComponent implements OnInit {
 
-  constructor() { }
+  @Input() headerTxt: string = ''
+  @Input() statDetails: string = ``;
+
+  constructor(private modal: ModalController) { }
 
   ngOnInit() {}
+
+  close() {
+    this.modal.dismiss();
+  }
 
 }

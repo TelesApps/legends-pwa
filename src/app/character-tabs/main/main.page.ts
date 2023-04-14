@@ -61,6 +61,10 @@ export class MainPage implements OnInit {
   async openMoreDetails(stat?: Stat, bodyPart?: BodyPart) {
     const modal = await this.modalCtrl.create({
       component: MoreDetailsComponent,
+      componentProps: {
+        'headerTxt': 'stat: ' + stat,
+        'statDetails': `bodyPart: ` + bodyPart,
+      }
     });
     modal.present();
 
