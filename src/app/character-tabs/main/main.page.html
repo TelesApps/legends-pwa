@@ -1,6 +1,6 @@
 <ion-content class="parent-header background-color-darker">
   <ion-grid fixed>
-    <ion-row *ngIf="characterServ.selectedCharacters.getValue()[characterServ.viewIndex] as character">
+    <ion-row *ngIf="(characterServ.selectedCharacters | async)[characterServ.viewIndex] as character">
       <!-- ********************** STATS SECTION ********************** -->
       <ion-col class="stats-column" size="5">
         <!-- Health -->

@@ -15,14 +15,14 @@ export class MainPage implements OnInit {
 
   Stat = Stat;
   BodyPart = BodyPart;
-  character: Character;
+  // character: Character;
   constructor(public characterServ: CharactersService, public airtable: AirtableDataService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.airtable.loadDatabase();
-    this.characterServ.selectedCharacters.subscribe((chracters) => {
-      this.character = chracters[0];
-    })
+    // this.characterServ.selectedCharacters.subscribe((chracters) => {
+    //   // this.character = chracters[0];
+    // })
   }
 
   getImgFromId(id: string, defaultUrl: string): string {

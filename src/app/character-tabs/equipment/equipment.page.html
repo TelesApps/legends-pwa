@@ -1,9 +1,365 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>equipment</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="parent-header background-color-darker">
+  <ion-grid class="h-100" fixed>
+    <ion-row *ngIf="(characterServ.selectedCharacters | async)[characterServ.viewIndex] as character" class="h-100">
+      <ion-col class="equipment-sheet" size="12">
+        <ion-row>
+          <!-- HEAD -->
+          <ion-col size="6">
+            <div *ngIf="{ isShowHead: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot">
+                <div *ngIf="character.equipments.headId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('head', character.equipments.headId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.headId, 
+                  '../../../assets/icons/helmet-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Head</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('head', character.equipments.headId)">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.headId"
+                  (click)="variable.isShowHead = !variable.isShowHead">{{airtable.getItemById(character.equipments.headId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.headId">
+                  <ion-button (click)="onSelectEquipment('head', character.equipments.headId)" expand="block"
+                    fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.headId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowHead" name="chevron-down-outline" (click)="variable.isShowHead = true">
+                </ion-icon>
+                <ion-icon *ngIf="variable.isShowHead" name="chevron-up-outline" (click)="variable.isShowHead = false">
+                </ion-icon>
+              </div>
+              <div *ngIf="character.equipments.headId && variable.isShowHead" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.headId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.headId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.headId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- ARMOR -->
+          <ion-col size="6">
+            <div class="stats-box">
+              <span *ngIf="character.primaryStats"><b>Total Armor:</b> {{ character.primaryStats.maxArmor }}</span>
+            </div>
+          </ion-col>
+          <!-- MAIN HAND -->
+          <ion-col size="6">
+            <div *ngIf="{ isShowMainhand: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot">
+                <div *ngIf="character.equipments.mainHandId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('main-hand', character.equipments.mainHandId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.mainHandId, 
+                  '../../../assets/icons/main-hand-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Main Hand</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare"
+                  (click)="onSelectEquipment('weapon', character.equipments.mainHandId, 'main-hand')">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.mainHandId"
+                  (click)="variable.isShowMainhand = !variable.isShowMainhand">{{airtable.getItemById(character.equipments.mainHandId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.mainHandId">
+                  <ion-button (click)="onSelectEquipment('weapon', character.equipments.mainHandId, 'main-hand')"
+                    expand="block" fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.mainHandId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowMainhand" name="chevron-down-outline"
+                  (click)="variable.isShowMainhand = true"></ion-icon>
+                <ion-icon *ngIf="variable.isShowMainhand" name="chevron-up-outline"
+                  (click)="variable.isShowMainhand = false"></ion-icon>
+              </div>
+              <div *ngIf="character.equipments.mainHandId && variable.isShowMainhand" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.mainHandId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.mainHandId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.mainHandId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- OFF HAND -->
+          <ion-col size="6">
+            <div *ngIf="{ isShowOffHand: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot" [ngClass]="{'off-hand-shadow': character.equipments.offHandId && isTwoHands(character.equipments.offHandId) &&
+                character.equipments.mainHandId == character.equipments.offHandId}">
+                <div *ngIf="character.equipments.offHandId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('off-hand', character.equipments.offHandId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.offHandId, 
+                  '../../../assets/icons/main-hand-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Off Hand</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare"
+                  (click)="onSelectEquipment('weapon', character.equipments.offHandId, 'off-hand')">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.offHandId"
+                  (click)="variable.isShowOffHand = !variable.isShowOffHand">{{airtable.getItemById(character.equipments.offHandId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.offHandId">
+                  <ion-button (click)="onSelectEquipment('weapon', character.equipments.offHandId, 'off-hand')"
+                    expand="block" fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.offHandId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowOffHand" name="chevron-down-outline"
+                  (click)="variable.isShowOffHand = true"></ion-icon>
+                <ion-icon *ngIf="variable.isShowOffHand" name="chevron-up-outline"
+                  (click)="variable.isShowOffHand = false"></ion-icon>
+              </div>
+              <div *ngIf="character.equipments.offHandId && variable.isShowOffHand" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.offHandId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.offHandId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.offHandId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- CHEST -->
+          <ion-col size="6">
+            <div *ngIf="{ isShowChest: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot">
+                <div *ngIf="character.equipments.chestId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('chest', character.equipments.chestId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.chestId, 
+                  '../../../assets/icons/chest-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Chest</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('chest', character.equipments.chestId)">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.chestId"
+                  (click)="variable.isShowChest = !variable.isShowChest">{{airtable.getItemById(character.equipments.chestId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.chestId">
+                  <ion-button (click)="onSelectEquipment('chest', character.equipments.chestId)" expand="block"
+                    fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.chestId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowChest" name="chevron-down-outline"
+                  (click)="variable.isShowChest = true"></ion-icon>
+                <ion-icon *ngIf="variable.isShowChest" name="chevron-up-outline" (click)="variable.isShowChest = false">
+                </ion-icon>
+              </div>
+              <div *ngIf="character.equipments.chestId && variable.isShowChest" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.chestId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.chestId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.chestId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- HANDS-->
+          <ion-col size="6">
+            <div *ngIf="{ isShowHands: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot">
+                <div *ngIf="character.equipments.handsId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('hands', character.equipments.handsId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.handsId, 
+                  '../../../assets/icons/hands-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Hands</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('hands', character.equipments.handsId)">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.handsId"
+                  (click)="variable.isShowHands = !variable.isShowHands">{{airtable.getItemById(character.equipments.handsId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.handsId">
+                  <ion-button (click)="onSelectEquipment('hands', character.equipments.handsId)" expand="block"
+                    fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.handsId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowHands" name="chevron-down-outline"
+                  (click)="variable.isShowHands = true"></ion-icon>
+                <ion-icon *ngIf="variable.isShowHands" name="chevron-up-outline" (click)="variable.isShowHands = false">
+                </ion-icon>
+              </div>
+              <div *ngIf="character.equipments.handsId && variable.isShowHands" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.handsId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.handsId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.handsId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- LEGS -->
+          <ion-col size="6">
+            <div *ngIf="{ isShowLegs: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot">
+                <div *ngIf="character.equipments.legsId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('legs', character.equipments.legsId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.legsId, 
+                  '../../../assets/icons/legs-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Legs</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('legs', character.equipments.legsId)">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.legsId"
+                  (click)="variable.isShowLegs = !variable.isShowLegs">{{airtable.getItemById(character.equipments.legsId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.legsId">
+                  <ion-button (click)="onSelectEquipment('legs', character.equipments.legsId)" expand="block"
+                    fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.legsId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowLegs" name="chevron-down-outline" (click)="variable.isShowLegs = true">
+                </ion-icon>
+                <ion-icon *ngIf="variable.isShowLegs" name="chevron-up-outline" (click)="variable.isShowLegs = false">
+                </ion-icon>
+              </div>
+              <div *ngIf="character.equipments.legsId && variable.isShowLegs" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.legsId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.legsId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.legsId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- FEET -->
+          <ion-col size="6">
+            <div *ngIf="{ isShowFeet: false } as variable" class="stats-box equipment-box">
+              <div class="img-slot">
+                <div *ngIf="character.equipments.feetId" class="remove-trinket-btn btn-effect"
+                  (click)="onRemoveEquipment('feet', character.equipments.feetId)">
+                  <ion-icon name="close"></ion-icon>
+                </div>
+                <ion-img [src]="getImgFromId(character.equipments.feetId, 
+                  '../../../assets/icons/boots-empty.png')">
+                </ion-img>
+              </div>
+              <div class="box-title"><b>Feet</b></div>
+              <div class="edit-icon btn-effect">
+                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('boots', character.equipments.feetId)">
+                </ion-icon>
+              </div>
+              <div class="box-body">
+                <span *ngIf="character.equipments.feetId"
+                  (click)="variable.isShowFeet = !variable.isShowFeet">{{airtable.getItemById(character.equipments.feetId).title  || ''}}</span>
+                <span *ngIf="!character.equipments.feetId">
+                  <ion-button (click)="onSelectEquipment('boots', character.equipments.feetId)" expand="block"
+                    fill="clear">
+                    none
+                  </ion-button>
+                </span>
+              </div>
+              <div *ngIf="character.equipments.feetId" class="arrow-icon btn-effect">
+                <ion-icon *ngIf="!variable.isShowFeet" name="chevron-down-outline" (click)="variable.isShowFeet = true">
+                </ion-icon>
+                <ion-icon *ngIf="variable.isShowFeet" name="chevron-up-outline" (click)="variable.isShowFeet = false">
+                </ion-icon>
+              </div>
+              <div *ngIf="character.equipments.feetId && variable.isShowFeet" class="effects-area">
+                <span *ngIf="airtable.getItemById(character.equipments.feetId).armor">
+                  Armor: {{airtable.getItemById(character.equipments.feetId).armor}},
+                </span>
+                <span> {{airtable.getItemById(character.equipments.feetId).effects}}</span>
+              </div>
+            </div>
+          </ion-col>
+          <!-- RINGS AND TRINKETS -->
+          <ion-col size="12">
+            <div *ngIf="{ isShowEffects: false } as variable" class="stats-box">
+              <div class="ion-text-center"><b>Rings and Trinkets</b>
+                <span class="btn-effect" style="margin-left: 8px">
+                  <ion-icon *ngIf="!variable.isShowEffects" name="chevron-down-outline"
+                    (click)="variable.isShowEffects = true">
+                  </ion-icon>
+                  <ion-icon *ngIf="variable.isShowEffects" name="chevron-up-outline"
+                    (click)="variable.isShowEffects = false">
+                  </ion-icon>
+                </span>
+              </div>
+              <div class="trinkets-list">
+                <div *ngFor="let trinketId of character.equipments.trinketsId; let i = index" class="trinket">
+                  <div class="img-trinket">
+                    <div class="remove-trinket-btn btn-effect" (click)="onRemoveTrinket(i)">
+                      <ion-icon name="close"></ion-icon>
+                    </div>
+                    <ion-img [src]="getImgFromId(trinketId, 
+                    '')">
+                    </ion-img>
+                  </div>
+                  <div *ngIf="variable.isShowEffects" class="ion-text-center trinket-effects">
+                    {{airtable.getItemById(trinketId).effects}}
+                  </div>
+                </div>
+                <div class="add-icon" style="align-self: center;">
+                  <ion-fab-button size="small" (click)="onSelectEquipment('trinket', '')">
+                    <ion-icon name="add"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row class="backpack-row">
+          <ion-col size="12">
+            <div class="stats-box equipment-box h-100 backpack">
+              <div class="box-title"><b>Backpack</b></div>
+              <div class="backpack-items-list">
+                <div *ngFor="let itemId of character.equipments.backPack; let i = index" class="backpack-item">
+                  <div class="img-backpackItem ">
+                    <div class="remove-trinket-btn btn-effect" (click)="onRemoveBackpack(i)">
+                      <ion-icon name="close"></ion-icon>
+                    </div>
+                    <ion-img [src]="getImgFromId(itemId, 
+                    '')">
+                    </ion-img>
+                  </div>
+                </div>
+              </div>
+              <div class="add-icon">
+                <ion-fab-button size="small" (click)="onSelectEquipment('equipment', '', 'backpack')">
+                  <ion-icon name="add"></ion-icon>
+                </ion-fab-button>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
