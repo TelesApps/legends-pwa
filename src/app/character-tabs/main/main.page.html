@@ -227,28 +227,95 @@
             </span>
           </div>
         </div>
-        <div class="flex-between">
-          <!-- MAIN HAND -->
-          <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.MainHand)">
-            <div class="ion-text-center">Main Hand</div>
-            <div class="img-slot">
-              <ion-img [src]="getImgFromId(character.equipments.mainHandId, 
+        <div class="equipment-section">
+          <div class="flex-between">
+            <!-- MAIN HAND -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.MainHand)">
+              <div class="ion-text-center">Main Hand</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.mainHandId, 
                   '../../../assets/icons/main-hand-empty.png')">
-              </ion-img>
+                </ion-img>
+              </div>
+              <div class="ion-text-end ammo-count">
+                <div class="container">
+                  <span>14</span>
+                </div>
+              </div>
             </div>
-            <div class="ion-text-end ammo-count">
-              <div class="container">
-                <span>14</span>
+            <!-- OFF HAND -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.OffHand)">
+              <div class="ion-text-center">Off Hand</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.offHandId, 
+                  '../../../assets/icons/main-hand-empty.png')">
+                </ion-img>
               </div>
             </div>
           </div>
-          <!-- OFF HAND -->
-          <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.OffHand)">
-            <div class="ion-text-center">Off Hand</div>
-            <div class="img-slot">
-              <ion-img [src]="getImgFromId(character.equipments.offHandId, 
-                  '../../../assets/icons/main-hand-empty.png')">
-              </ion-img>
+          <div class="flex-between">
+            <!-- HEAD -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.Head)">
+              <div class="ion-text-center">Head</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.headId, 
+                  '../../../assets/icons/helmet-empty.png')">
+                </ion-img>
+              </div>
+            </div>
+            <!-- CHEST -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.Chest)">
+              <div class="ion-text-center">Chest</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.chestId, 
+                  '../../../assets/icons/chest-empty.png')">
+                </ion-img>
+              </div>
+            </div>
+          </div>
+          <div class="flex-between">
+            <!-- HANDS -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.Hands)">
+              <div class="ion-text-center">Hands</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.handsId, 
+                  '../../../assets/icons/hands-empty.png')">
+                </ion-img>
+              </div>
+            </div>
+            <!-- LEGS -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.Legs)">
+              <div class="ion-text-center">Legs</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.legsId, 
+                  '../../../assets/icons/legs-empty.png')">
+                </ion-img>
+              </div>
+            </div>
+          </div>
+          <div class="flex-between">
+            <!-- FEET -->
+            <div class="stats-box equipment-box" style="max-width: 49%;" (click)="openMoreDetails(null, BodyPart.Feet)">
+              <div class="ion-text-center">Feet</div>
+              <div class="img-slot">
+                <ion-img [src]="getImgFromId(character.equipments.feetId, 
+                  '../../../assets/icons/boots-empty.png')">
+                </ion-img>
+              </div>
+            </div>
+            <!-- TRINKETS -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.Trinkets)">
+              <div class="ion-text-center">Trinkets</div>
+              <span *ngIf="character.equipments.trinketsId" class="trinkets">
+                {{ character.equipments.trinketsId.length }}
+              </span>
+            </div>
+          </div>
+          <div class="flex-between">
+            <!-- Status Changes -->
+            <div class="stats-box equipment-box" (click)="openMoreDetails(null, BodyPart.Feet)">
+              <div class="ion-text-center">Status Changes</div>
+              <span>+1 Str (3T), -4Acc (2T)</span>
             </div>
           </div>
         </div>

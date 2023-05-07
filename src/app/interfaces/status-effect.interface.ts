@@ -18,5 +18,5 @@ export enum Stat {
 }
 
 export enum BodyPart {
-    Head, MainHand, OffHand, Chest, Hands, Legs, Feet
+    Head, MainHand, OffHand, Chest, Hands, Legs, Feet, Trinkets
 }
