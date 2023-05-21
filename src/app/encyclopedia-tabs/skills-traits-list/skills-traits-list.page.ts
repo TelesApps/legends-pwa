@@ -107,7 +107,7 @@ export class SkillsTraitsListPage implements OnInit {
 
   onSkillSelected(skill: SkillTraits) {
     this.creation.skillTraitsSelection = skill;
-    this.router.navigate([this.backUrl], { queryParams: { selection: this.backQuerySegmentSelection } });
+    this.router.navigate([this.backUrl], { queryParams: { selection: this.backQuerySegmentSelection, selected_id: skill.airtable_id } });
     this.accordionGroup.value = undefined;
   }
 

@@ -151,7 +151,7 @@ export class AbilitiesListPage implements OnInit {
 
   onAbilitySelected(ability: Ability) {
     this.creation.abilitySelection = ability;
-    this.router.navigate([this.backUrl]);
+    this.router.navigate([this.backUrl], { queryParams: { selected_id: ability.airtable_id } });
     console.log('ability selected: ', ability)
     this.accordionGroup.value = undefined;
   }

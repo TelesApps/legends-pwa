@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
-import { first, map, take } from 'rxjs/operators';
-import { Character, CreateNewCharacter } from '../interfaces/character.interface';
-import { Item } from '../interfaces/item.interface';
-import { Player } from '../interfaces/player.interface';
+import { BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { Character } from '../interfaces/character.interface';
+import { Item, ItemSelection } from '../interfaces/item.interface';
 import { Stat, StatusEffect } from '../interfaces/status-effect.interface';
 import { AirtableDataService } from './airtable-data.service';
 import { AuthService } from './auth.service';
@@ -68,17 +66,7 @@ export class CharactersService {
     } else return false;
   }
 
-
-
-
-  // setSelectedCharacters(player: Player, characters: Array<Character>) {
-  //   if (player.selectedCharactersIds) {
-  //     player.selectedCharactersIds.forEach(id => {
-  //       const character: Character = characters.find(c => c.characterId === id);
-  //       if (character) this.selectedCharacters.push(character);
-  //     });
-  //   }
-  // }
+  /// #TODO perhaps move all of the calculations to the calculations service.
 
   // Character Creation Service is also calling this to make this calculation, hence the Character input value
   calculateCharacterStats(character: Character) {

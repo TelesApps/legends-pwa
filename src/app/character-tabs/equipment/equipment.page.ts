@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { Character } from 'src/app/interfaces/character.interface';
 import { Item } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
@@ -18,10 +19,16 @@ export class EquipmentPage implements OnInit {
     public airtable: AirtableDataService,
     public characterServ: CharactersService,
     private router: Router,
+    private activeRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.airtable.loadDatabase();
+    this.activeRoute.queryParams.pipe(take(1)).subscribe((params) => {
+      if(params.selected_id) {
+        this.onEquipmentAddedToBackback(params.selected_id);
+      }
+    });
     // this.characterServ.selectedCharacters.subscribe((chracters) => {
     //   this.character = chracters[0];
     // })
@@ -125,6 +132,26 @@ export class EquipmentPage implements OnInit {
   }
   onRemoveBackpack(index: number) {
     // this.character.equipments.backPack.splice(index, 1);
+  }
+
+  onAddNewEquipment(bodyProperty: string, hand?: 'main-hand' | 'off-hand' | 'backpack') {
+    this.router.navigate(['/encyclopedia-tabs/items-list'], {
+      replaceUrl: true,
+      queryParams: {
+        breadcrumb: '/character-tabs/equipment',
+        bodyProperty: bodyProperty,
+        isSelectType: 'all',
+      }
+    });
+  }
+
+  onEquipmentAddedToBackback(itemId) {
+    this.characterServ.selectedCharacters.pipe(take(1)).subscribe((characters) => {
+      characters[this.characterServ.viewIndex]
+        .equipments.backPack.push(itemId);
+      this.characterServ.selectedCharacters.next(characters);
+      console.log('pushed new item to backpack for this charatcer', characters[this.characterServ.viewIndex]);
+    });
   }
 
   getImgFromId(id: string, defaultUrl: string): string {

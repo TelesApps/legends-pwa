@@ -335,6 +335,7 @@
             </div>
           </ion-col>
         </ion-row>
+        <!-- BACKPACK -->
         <ion-row class="backpack-row">
           <ion-col size="12">
             <div class="stats-box equipment-box h-100 backpack">
@@ -342,7 +343,7 @@
               <div class="backpack-items-list">
                 <div *ngFor="let itemId of character.equipments.backPack; let i = index" class="backpack-item">
                   <div class="img-backpackItem ">
-                    <div class="remove-trinket-btn btn-effect" (click)="onRemoveBackpack(i)">
+                    <div class="backpack-remove-btn btn-effect" (click)="onRemoveBackpack(i)">
                       <ion-icon name="close"></ion-icon>
                     </div>
                     <ion-img [src]="getImgFromId(itemId, 
@@ -352,7 +353,7 @@
                 </div>
               </div>
               <div class="add-icon">
-                <ion-fab-button size="small" (click)="onSelectEquipment('equipment', '', 'backpack')">
+                <ion-fab-button size="small" (click)="onAddNewEquipment('all', 'backpack')">
                   <ion-icon name="add"></ion-icon>
                 </ion-fab-button>
               </div>

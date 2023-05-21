@@ -123,7 +123,7 @@ export class ItemsListPage implements OnInit {
 
   onItemSelected(item: Item) {
     this.creation.itemSelection.onSelectedItem = item;
-    this.router.navigate([this.backUrl]);
+    this.router.navigate([this.backUrl], { queryParams: { selected_id: item.airtable_id } });
     this.accordionGroup.value = undefined;
     // use character-creation service to tell them the item selected;
 
