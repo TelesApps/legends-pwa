@@ -17,14 +17,16 @@
               </div>
               <div class="box-title"><b>Head</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('head', character.equipments.headId)">
+                <ion-icon *ngIf="character.equipments.headId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('head', character.equipments.headId)">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.headId"
-                  (click)="variable.isShowHead = !variable.isShowHead">{{airtable.getItemById(character.equipments.headId).title  || ''}}</span>
+                  (click)="variable.isShowHead = !variable.isShowHead">{{airtable.getItemById(character.equipments.headId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.headId">
-                  <ion-button (click)="onSelectEquipment('head', character.equipments.headId)" expand="block"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('head', character.equipments.headId)" expand="block"
                     fill="clear">
                     none
                   </ion-button>
@@ -64,15 +66,16 @@
               </div>
               <div class="box-title"><b>Main Hand</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare"
-                  (click)="onSelectEquipment('weapon', character.equipments.mainHandId, 'main-hand')">
+                <ion-icon *ngIf="character.equipments.mainHandId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('weapon', character.equipments.mainHandId, 'main-hand')">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.mainHandId"
-                  (click)="variable.isShowMainhand = !variable.isShowMainhand">{{airtable.getItemById(character.equipments.mainHandId).title  || ''}}</span>
+                  (click)="variable.isShowMainhand = !variable.isShowMainhand">{{airtable.getItemById(character.equipments.mainHandId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.mainHandId">
-                  <ion-button (click)="onSelectEquipment('weapon', character.equipments.mainHandId, 'main-hand')"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('weapon', character.equipments.mainHandId, 'main-hand')"
                     expand="block" fill="clear">
                     none
                   </ion-button>
@@ -107,15 +110,16 @@
               </div>
               <div class="box-title"><b>Off Hand</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare"
-                  (click)="onSelectEquipment('weapon', character.equipments.offHandId, 'off-hand')">
+                <ion-icon *ngIf="character.equipments.offHandId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('weapon', character.equipments.offHandId, 'off-hand')">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.offHandId"
-                  (click)="variable.isShowOffHand = !variable.isShowOffHand">{{airtable.getItemById(character.equipments.offHandId).title  || ''}}</span>
+                  (click)="variable.isShowOffHand = !variable.isShowOffHand">{{airtable.getItemById(character.equipments.offHandId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.offHandId">
-                  <ion-button (click)="onSelectEquipment('weapon', character.equipments.offHandId, 'off-hand')"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('weapon', character.equipments.offHandId, 'off-hand')"
                     expand="block" fill="clear">
                     none
                   </ion-button>
@@ -149,14 +153,16 @@
               </div>
               <div class="box-title"><b>Chest</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('chest', character.equipments.chestId)">
+                <ion-icon *ngIf="character.equipments.chestId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('chest', character.equipments.chestId)">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.chestId"
-                  (click)="variable.isShowChest = !variable.isShowChest">{{airtable.getItemById(character.equipments.chestId).title  || ''}}</span>
+                  (click)="variable.isShowChest = !variable.isShowChest">{{airtable.getItemById(character.equipments.chestId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.chestId">
-                  <ion-button (click)="onSelectEquipment('chest', character.equipments.chestId)" expand="block"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('chest', character.equipments.chestId)" expand="block"
                     fill="clear">
                     none
                   </ion-button>
@@ -190,14 +196,16 @@
               </div>
               <div class="box-title"><b>Hands</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('hands', character.equipments.handsId)">
+                <ion-icon *ngIf="character.equipments.handsId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('hands', character.equipments.handsId)">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.handsId"
-                  (click)="variable.isShowHands = !variable.isShowHands">{{airtable.getItemById(character.equipments.handsId).title  || ''}}</span>
+                  (click)="variable.isShowHands = !variable.isShowHands">{{airtable.getItemById(character.equipments.handsId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.handsId">
-                  <ion-button (click)="onSelectEquipment('hands', character.equipments.handsId)" expand="block"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('hands', character.equipments.handsId)" expand="block"
                     fill="clear">
                     none
                   </ion-button>
@@ -231,14 +239,16 @@
               </div>
               <div class="box-title"><b>Legs</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('legs', character.equipments.legsId)">
+                <ion-icon *ngIf="character.equipments.legsId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('legs', character.equipments.legsId)">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.legsId"
-                  (click)="variable.isShowLegs = !variable.isShowLegs">{{airtable.getItemById(character.equipments.legsId).title  || ''}}</span>
+                  (click)="variable.isShowLegs = !variable.isShowLegs">{{airtable.getItemById(character.equipments.legsId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.legsId">
-                  <ion-button (click)="onSelectEquipment('legs', character.equipments.legsId)" expand="block"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('legs', character.equipments.legsId)" expand="block"
                     fill="clear">
                     none
                   </ion-button>
@@ -272,14 +282,16 @@
               </div>
               <div class="box-title"><b>Feet</b></div>
               <div class="edit-icon btn-effect">
-                <ion-icon slot="end" name="git-compare" (click)="onSelectEquipment('boots', character.equipments.feetId)">
+                <ion-icon *ngIf="character.equipments.feetId" slot="end" name="git-compare"
+                  (click)="onStartItemSelectionFromBackpack('boots', character.equipments.feetId)">
                 </ion-icon>
               </div>
               <div class="box-body">
                 <span *ngIf="character.equipments.feetId"
-                  (click)="variable.isShowFeet = !variable.isShowFeet">{{airtable.getItemById(character.equipments.feetId).title  || ''}}</span>
+                  (click)="variable.isShowFeet = !variable.isShowFeet">{{airtable.getItemById(character.equipments.feetId).title
+                  || ''}}</span>
                 <span *ngIf="!character.equipments.feetId">
-                  <ion-button (click)="onSelectEquipment('boots', character.equipments.feetId)" expand="block"
+                  <ion-button (click)="onStartItemSelectionFromBackpack('boots', character.equipments.feetId)" expand="block"
                     fill="clear">
                     none
                   </ion-button>
@@ -327,7 +339,7 @@
                   </div>
                 </div>
                 <div class="add-icon" style="align-self: center;">
-                  <ion-fab-button size="small" (click)="onSelectEquipment('trinket', '')">
+                  <ion-fab-button size="small" (click)="onStartItemSelectionFromBackpack('trinket', '')">
                     <ion-icon name="add"></ion-icon>
                   </ion-fab-button>
                 </div>
@@ -343,12 +355,16 @@
               <div class="backpack-items-list">
                 <div *ngFor="let itemId of character.equipments.backPack; let i = index" class="backpack-item">
                   <div class="img-backpackItem ">
-                    <div class="backpack-remove-btn btn-effect" (click)="onRemoveBackpack(i)">
+                    <div *ngIf="!backPackSelection" class="backpack-remove-btn btn-effect" (click)="onRemoveBackpack(i)">
                       <ion-icon name="close"></ion-icon>
                     </div>
                     <ion-img [src]="getImgFromId(itemId, 
                     '')">
                     </ion-img>
+                    <ion-button *ngIf="isShowEquipButton(itemId)" (click)="onEquipItem(itemId)" expand="block"
+                      size="small">
+                      Equip
+                    </ion-button>
                   </div>
                 </div>
               </div>

@@ -107,7 +107,7 @@ export class CharactersService {
 
   }
 
-  calculateEquipmentModifiers(character: Character) {
+  private calculateEquipmentModifiers(character: Character) {
     // First Remove all status effects that has the id of each body part;
     character.equipmentModifier = character.equipmentModifier.filter(se => !se.id.includes('head-'));
     character.equipmentModifier = character.equipmentModifier.filter(se => !se.id.includes('main_hand-'));
@@ -209,7 +209,7 @@ export class CharactersService {
     return character;
   }
 
-  calculateSkillTraitsModifiers(character: Character) {
+  private calculateSkillTraitsModifiers(character: Character) {
     character.skillTraitsModifiers = [];
     // #TODO Add additional IF logic for skills and traits based on the conditions column in airtable.
     console.log('calculateSkillTraitsModifiers called')
@@ -229,7 +229,7 @@ export class CharactersService {
 
   }
 
-  isConditionsMet(character: Character, conditions: string[]) {
+  private isConditionsMet(character: Character, conditions: string[]) {
     let isMet = true;
     conditions.forEach(condition => {
       const fields = condition.split('=');
@@ -267,7 +267,7 @@ export class CharactersService {
 
   /// calcFromCurrent means the calculated stats such as MeleeAttack, RangedAttack, MaxHeatlh etc will not be calculated
   /// by the usual algorithm, but will simply be added from the current stat.
-  addModifiersToStats(character: Character, modifiers: Array<StatusEffect>, isFromCore = true, calcFromCurrent = false) {
+  private addModifiersToStats(character: Character, modifiers: Array<StatusEffect>, isFromCore = true, calcFromCurrent = false) {
     console.log('addModifiersToStats called', modifiers);
     // 1- Creates a value from the core stat if isFromCore = true, else does not use core.
     // 2- Adds all of the modifiers to that value.

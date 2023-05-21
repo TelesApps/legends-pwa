@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonTabs } from '@ionic/angular';
 import { take } from 'rxjs/operators';
 import { Character } from 'src/app/interfaces/character.interface';
-import { Item } from 'src/app/interfaces/item.interface';
+import { Item, ItemSelection } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
 import { CharacterCreationService } from 'src/app/services/character-creation.service';
 import { CharactersService } from 'src/app/services/characters.service';
@@ -14,105 +15,119 @@ import { CharactersService } from 'src/app/services/characters.service';
 })
 export class EquipmentPage implements OnInit {
 
-  // character: Character
+  backPackSelection: ItemSelection;
+
   constructor(
     public airtable: AirtableDataService,
     public characterServ: CharactersService,
     private router: Router,
     private activeRoute: ActivatedRoute,
+    private tabs: IonTabs
   ) { }
 
   ngOnInit() {
     this.airtable.loadDatabase();
     this.activeRoute.queryParams.pipe(take(1)).subscribe((params) => {
-      if(params.selected_id) {
+      if (params.selected_id) {
         this.onEquipmentAddedToBackback(params.selected_id);
       }
     });
-    // this.characterServ.selectedCharacters.subscribe((chracters) => {
-    //   this.character = chracters[0];
-    // })
+    this.tabs.ionTabsDidChange.subscribe((event) => {
+      this.backPackSelection = null;
+    });
   }
 
-  onSelectEquipment(bodyProperty: string, currentId: string, hand?: 'main-hand' | 'off-hand' | 'backpack') {
-    // if (currentId) {
-    //   const currentItem = this.dataService.getItemById(currentId);
-    //   if (currentItem)
-    //     this.creation.itemSelection.currentlyEquipped = currentItem;
-    // }
-    // this.creation.itemSelection.bodyProperty = bodyProperty;
-    // this.creation.itemSelection.isStartingItem = true;
-    // this.creation.itemSelection.hand = hand;
-    // const isSelectType = hand ? 'all' : bodyProperty;
-    // this.router.navigate(['/encyclopedia-tabs/items-list'], {
-    //   replaceUrl: true,
-    //   queryParams: {
-    //     breadcrumb: '/character-creation-tabs/equipment-selection',
-    //     bodyProperty: bodyProperty,
-    //     isSelectType: isSelectType,
-    //     hand: hand,
-    //   }
-    // });
+  onStartItemSelectionFromBackpack(bodyProperty: string, currentId: string, hand?: 'main-hand' | 'off-hand' | 'backpack') {
+    const currentItem = this.airtable.getItemById(currentId);
+    this.backPackSelection = {
+      currentlyEquipped: currentItem ? currentItem : null,
+      bodyProperty: bodyProperty,
+      isStartingItem: false,
+      hand: hand,
+      onSelectedItem: null,
+    }
+
+    console.log('onSelectEquipment: ', this.backPackSelection);
   }
 
-  onEquipmentSelected(selectedId: string) {
-    // if (this.creation.itemSelection.hand === 'main-hand') {
-    //   this.character.equipments.mainHandId = selectedId;
-    //   if (this.isTwoHands(selectedId)) {
-    //     this.character.equipments.offHandId = selectedId;
-    //   } else {
-    //     if (this.character.equipments.offHandId && this.isTwoHands(this.character.equipments.offHandId)) {
-    //       this.character.equipments.offHandId = '';
-    //     }
-    //   }
-    // } else if (this.creation.itemSelection.hand === 'off-hand') {
-    //   this.character.equipments.offHandId = selectedId;
-    //   if (this.isTwoHands(selectedId))
-    //     this.character.equipments.mainHandId = selectedId;
-    //   else {
-    //     const mainHandItem = this.dataService.getItemById(this.character.equipments.mainHandId);
-    //     if (mainHandItem && mainHandItem.tags.find(
-    //       t => t == '2 Hands' || t == '2 hands' || t == '2Hands' || t == '2hands' || t == '2 Hand' || t == '2 hand')) {
-    //       this.character.equipments.mainHandId = '';
-    //     }
-    //   }
-    // } else if (this.creation.itemSelection.bodyProperty === 'trinket') {
-    //   this.character.equipments.trinketsId.push(selectedId);
-    // } else if (this.creation.itemSelection.hand === 'backpack') {
-    //   this.character.equipments.backPack.push(selectedId);
-    // } else {
-    //   switch (this.creation.itemSelection.bodyProperty) {
-    //     case 'head': this.character.equipments.headId = selectedId; break;
-    //     case 'chest': this.character.equipments.chestId = selectedId; break;
-    //     case 'hands': this.character.equipments.handsId = selectedId; break;
-    //     case 'legs': this.character.equipments.legsId = selectedId; break;
-    //     case 'boots': this.character.equipments.feetId = selectedId; break;
-    //   }
+  onEquipItem(selectedId: string) {
+    const characters = this.characterServ.selectedCharacters.getValue();
+    const viewIndex = this.characterServ.viewIndex;
+    if (this.backPackSelection.hand === 'main-hand') {
+      if (characters[viewIndex].equipments.mainHandId)
+        characters[viewIndex].equipments.backPack.push(characters[viewIndex].equipments.mainHandId);
+      characters[viewIndex].equipments.mainHandId = selectedId;
+      if (this.isTwoHands(selectedId)) {
+        if (characters[viewIndex].equipments.offHandId)
+          characters[viewIndex].equipments.backPack.push(characters[viewIndex].equipments.offHandId);
+        characters[viewIndex].equipments.offHandId = selectedId;
+      } else {
+        if (characters[viewIndex].equipments.offHandId && this.isTwoHands(characters[viewIndex].equipments.offHandId)) {
+          characters[viewIndex].equipments.offHandId = '';
+        }
+      }
+    } else if (this.backPackSelection.hand === 'off-hand') {
+      if (characters[viewIndex].equipments.offHandId)
+        characters[viewIndex].equipments.backPack.push(characters[viewIndex].equipments.offHandId);
+      characters[viewIndex].equipments.offHandId = selectedId;
+      if (this.isTwoHands(selectedId)) {
+        if (characters[viewIndex].equipments.mainHandId)
+          characters[viewIndex].equipments.backPack.push(characters[viewIndex].equipments.mainHandId);
+        characters[viewIndex].equipments.mainHandId = selectedId;
+      }
+      else {
+        const mainHandItem = this.airtable.getItemById(characters[viewIndex].equipments.mainHandId);
+        if (mainHandItem && mainHandItem.tags.find(
+          t => t == '2 Hands' || t == '2 hands' || t == '2Hands' || t == '2hands' || t == '2 Hand' || t == '2 hand')) {
+          characters[viewIndex].equipments.mainHandId = '';
+        }
+      }
+    } else if (this.backPackSelection.bodyProperty === 'trinket') {
+      characters[viewIndex].equipments.trinketsId.push(selectedId);
+    } else if (this.backPackSelection.hand === 'backpack') {
+      characters[viewIndex].equipments.backPack.push(selectedId);
+    } else {
+      switch (this.backPackSelection.bodyProperty) {
+        case 'head': characters[viewIndex].equipments.headId = selectedId; break;
+        case 'chest': characters[viewIndex].equipments.chestId = selectedId; break;
+        case 'hands': characters[viewIndex].equipments.handsId = selectedId; break;
+        case 'legs': characters[viewIndex].equipments.legsId = selectedId; break;
+        case 'boots': characters[viewIndex].equipments.feetId = selectedId; break;
+      }
+    }
+    // remove item from backpack since its now equiped
+    characters[viewIndex].equipments.backPack = characters[viewIndex].equipments.backPack.filter(id => id !== selectedId);
+    this.backPackSelection = null;
 
-    // }
-    // this.creation.characterSubj.next(this.character);
+    this.characterServ.calculateCharacterStats(characters[viewIndex]);
+    this.characterServ.selectedCharacters.next(characters);
 
     // this.creation.initItemSelection();
   }
 
   onRemoveEquipment(bodyPart: 'head' | 'main-hand' | 'off-hand' | 'chest' | 'hands' | 'legs' | 'feet', equipmentId: string) {
-    // const item = this.dataService.getItemById(equipmentId);
-    // // give character cost of item back
+    const item = this.airtable.getItemById(equipmentId);
+    const characters = this.characterServ.selectedCharacters.getValue();
+    const viewIndex = this.characterServ.viewIndex;
+    // add item to backpack
+    characters[viewIndex].equipments.backPack.push(equipmentId);
+    // Remove item from body part
+    if (bodyPart === 'head') characters[viewIndex].equipments.headId = '';
+    if (bodyPart === 'main-hand') {
+      characters[viewIndex].equipments.mainHandId = ''
+      if (this.isTwoHands('', item)) characters[viewIndex].equipments.offHandId = '';
+    };
+    if (bodyPart === 'off-hand') {
+      characters[viewIndex].equipments.offHandId = ''
+      if (this.isTwoHands('', item)) characters[viewIndex].equipments.mainHandId = '';
+    };
+    if (bodyPart === 'chest') characters[viewIndex].equipments.chestId = '';
+    if (bodyPart === 'hands') characters[viewIndex].equipments.handsId = '';
+    if (bodyPart === 'legs') characters[viewIndex].equipments.legsId = '';
+    if (bodyPart === 'feet') characters[viewIndex].equipments.feetId = '';
 
-    // if (bodyPart === 'head') this.character.equipments.headId = '';
-    // if (bodyPart === 'main-hand') {
-    //   this.character.equipments.mainHandId = ''
-    //   if (this.isTwoHands('', item)) this.character.equipments.offHandId = '';
-    // };
-    // if (bodyPart === 'off-hand') {
-    //   this.character.equipments.offHandId = ''
-    //   if (this.isTwoHands('', item)) this.character.equipments.mainHandId = '';
-    // };
-    // if (bodyPart === 'chest') this.character.equipments.chestId = '';
-    // if (bodyPart === 'hands') this.character.equipments.handsId = '';
-    // if (bodyPart === 'legs') this.character.equipments.legsId = '';
-    // if (bodyPart === 'feet') this.character.equipments.feetId = '';
-    // this.creation.characterSubj.next(this.character);
+    this.characterServ.calculateCharacterStats(characters[viewIndex]);
+    this.characterServ.selectedCharacters.next(characters);
   }
 
   isTwoHands(id: string, item?: Item) {
@@ -127,9 +142,15 @@ export class EquipmentPage implements OnInit {
   }
 
   onRemoveTrinket(index: number) {
-    // this.character.equipments.trinketsId.splice(index, 1);
-    // this.creation.characterSubj.next(this.character);
+    const characters = this.characterServ.selectedCharacters.getValue();
+    const viewIndex = this.characterServ.viewIndex;
+    characters[viewIndex].equipments.backPack.push(characters[viewIndex].equipments.trinketsId[index]);
+    characters[viewIndex].equipments.trinketsId.splice(index, 1);
+
+    this.characterServ.calculateCharacterStats(characters[viewIndex]);
+    this.characterServ.selectedCharacters.next(characters);
   }
+
   onRemoveBackpack(index: number) {
     // this.character.equipments.backPack.splice(index, 1);
   }
@@ -164,4 +185,19 @@ export class EquipmentPage implements OnInit {
       return defaultUrl;
     }
   }
+
+  isShowEquipButton(itemId) {
+    if (this.backPackSelection) {
+      const item = this.airtable.getItemById(itemId);
+      if (this.backPackSelection.bodyProperty.toLocaleLowerCase() == item.body_property.toLocaleLowerCase()) {
+        return true;
+      }
+      if (this.backPackSelection.hand && this.backPackSelection.hand === 'main-hand' || this.backPackSelection.hand === 'off-hand') {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
 }

@@ -115,6 +115,7 @@ ion-col {
 .backpack-items-list {
     display: flex;
     flex-grow: 1;
+    flex-wrap: wrap;
 }
 .backpack-item {
     margin: 4px;

@@ -100,6 +100,7 @@ ion-col {
     // }
 }
 .backpack-remove-btn {
+    height: 0px;
     ion-icon {
         background-color: var(--ion-color-danger);
         color: var(--ion-color-danger-contrast);
@@ -123,6 +124,7 @@ ion-col {
 .backpack-items-list {
     display: flex;
     flex-grow: 1;
+    flex-wrap: wrap;
 }
 .backpack-item {
     margin: 4px;
@@ -131,6 +133,11 @@ ion-col {
     width: 80px;
     ion-img {
         width: 80px;
+    }
+    ion-button {
+        position: relative;
+        top: -32px;
+        --background:rgba(43,58,103, 0.8) !important;
     }
 }
 
