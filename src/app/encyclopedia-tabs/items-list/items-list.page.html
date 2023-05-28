@@ -29,14 +29,15 @@
           <ion-label position="floating">Body Property</ion-label>
           <ion-select #bodyProperty [(ngModel)]="bodyPropertyFilter" placeholder="Filter By Body Property"
             multiple="true" (ionChange)="onFilterChange($event)">
-            <ion-select-option value="equipment">Equipment</ion-select-option>
-            <ion-select-option value="trinket">Rings and Trinkets</ion-select-option>
-            <ion-select-option value="shield">Shield</ion-select-option>
-            <ion-select-option value="boots">Boots</ion-select-option>
-            <ion-select-option value="legs">Legs</ion-select-option>
-            <ion-select-option value="head">Head</ion-select-option>
-            <ion-select-option value="hands">Hands</ion-select-option>
             <ion-select-option value="weapon">Weapon</ion-select-option>
+            <ion-select-option value="shield">Shield</ion-select-option>
+            <ion-select-option value="head">Head</ion-select-option>
+            <ion-select-option value="chest">Chest</ion-select-option>
+            <ion-select-option value="hands">Hands</ion-select-option>
+            <ion-select-option value="legs">Legs</ion-select-option>
+            <ion-select-option value="boots">Boots</ion-select-option>
+            <ion-select-option value="trinket">Rings and Trinkets</ion-select-option>
+            <ion-select-option value="equipment">Equipment</ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>

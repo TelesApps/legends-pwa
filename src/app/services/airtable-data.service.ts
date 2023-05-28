@@ -24,6 +24,7 @@ export class AirtableDataService {
   $allItems: BehaviorSubject<Array<Item>> = new BehaviorSubject<Array<Item>>([]);
   $skillsTraits: BehaviorSubject<Array<SkillTraits>> = new BehaviorSubject<Array<SkillTraits>>([]);
   $abilities: BehaviorSubject<Array<Ability>> = new BehaviorSubject<Array<Ability>>([]);
+  isLoadDataComplete: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   constructor(private http: HttpClient) {
     // TO QUERY AIRTABLE FOR SPECIFIC PARAMATERS, USE SOMETHING LIKE THE CODE BELLOW
@@ -48,6 +49,8 @@ export class AirtableDataService {
           this.$skillsTraits.next(skills);
           this.$abilities.next(abilities);
           this.isLoadingData = false;
+          this.isLoadDataComplete.next(true);
+          this.isLoadDataComplete.complete();
         },
         error => {
           console.error('Error loading data', error);
