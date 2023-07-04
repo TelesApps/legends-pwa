@@ -5,6 +5,7 @@ import { CharacterCreationService } from 'src/app/services/character-creation.se
 import { first } from 'rxjs/operators';
 import { Character } from 'src/app/interfaces/character.interface';
 import { Ability } from 'src/app/interfaces/ability.interface';
+import { EncylopediaService } from 'src/app/services/encylopedia.service';
 
 
 @Component({
@@ -17,11 +18,11 @@ export class AbilitiesSelectionPage implements OnInit {
   character: Character;
   selectedFoundations: Array<Ability> = [];
   noneFoundations: Array<Ability> = [];
-  constructor(private router: Router, public creation: CharacterCreationService) { }
+  constructor(private router: Router, public creation: CharacterCreationService, public encyclopedia: EncylopediaService) { }
 
   ngOnInit() {
     // Populate selected abilities list for foundations and nonefoundations based on previous selections
-    this.creation.characterSelectedAbilities.forEach(ability => {
+    this.encyclopedia.characterSelectedAbilities.forEach(ability => {
       if (ability.tags && ability.tags.length > 0 && ability.tags[0].toLowerCase() === 'foundation') {
         this.selectedFoundations.push(ability);
       } else {
@@ -29,14 +30,14 @@ export class AbilitiesSelectionPage implements OnInit {
       }
     });
     this.creation.characterSubj.pipe(first()).subscribe((character) => {
-      console.log('characterSelectedAbilities: ', this.creation.characterSelectedAbilities);
+      console.log('characterSelectedAbilities: ', this.encyclopedia.characterSelectedAbilities);
       this.character = character;
       if (this.creation.abilitySelection) {
         this.creation.abilityPoints -= this.creation.abilitySelection.points_req;
         console.log('ability selected: ', this.creation.abilitySelection);
         this.character.abilitiesId.push(this.creation.abilitySelection.airtable_id);
         // Add title to abilitiesTitle so that encyclopedia knows the prereqs character has.
-        this.creation.characterSelectedAbilities.push(this.creation.abilitySelection);
+        this.encyclopedia.characterSelectedAbilities.push(this.creation.abilitySelection);
         if (this.creation.abilitySelection.tags && this.creation.abilitySelection.tags.length > 0 &&
           this.creation.abilitySelection.tags[0].toLowerCase() === 'foundation') {
           this.selectedFoundations.push(this.creation.abilitySelection);
@@ -70,11 +71,11 @@ export class AbilitiesSelectionPage implements OnInit {
       if (index != -1) this.noneFoundations.splice(index, 1)
     }
     // Remove from list of creation.selected abilities
-    const creationIndex = this.creation.characterSelectedAbilities.findIndex(a => a.airtable_id === id);
+    const creationIndex = this.encyclopedia.characterSelectedAbilities.findIndex(a => a.airtable_id === id);
     if (creationIndex != -1)  {
-      const ability = this.creation.characterSelectedAbilities[creationIndex];
+      const ability = this.encyclopedia.characterSelectedAbilities[creationIndex];
       this.creation.abilityPoints += ability.points_req;
-      this.creation.characterSelectedAbilities.splice(creationIndex, 1);
+      this.encyclopedia.characterSelectedAbilities.splice(creationIndex, 1);
     }
     // remove from character's abilities ID list
     const idIndex = this.character.abilitiesId.findIndex(a => a === id);
@@ -86,8 +87,8 @@ export class AbilitiesSelectionPage implements OnInit {
 
   isDependencyExist(ability: Ability) {
     let dependency = false;
-    for (let index = 0; index < this.creation.characterSelectedAbilities.length; index++) {
-      const selected = this.creation.characterSelectedAbilities[index];
+    for (let index = 0; index < this.encyclopedia.characterSelectedAbilities.length; index++) {
+      const selected = this.encyclopedia.characterSelectedAbilities[index];
       if (selected.prereq && selected.prereq.find(t => t.toLowerCase() === ability.title.toLowerCase())) {
         dependency = true;
         break;

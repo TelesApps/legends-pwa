@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { SkillTraits } from 'src/app/interfaces/skills-traits.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
 import { CharactersService } from 'src/app/services/characters.service';
+import { EncylopediaService } from 'src/app/services/encylopedia.service';
 
 @Component({
   selector: 'app-skills',
@@ -22,6 +23,7 @@ export class SkillsPage implements OnInit, OnDestroy {
   constructor(
     public characterServ: CharactersService,
     public airtable: AirtableDataService,
+    private encyclopedia: EncylopediaService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private tabs: IonTabs) { }
@@ -68,6 +70,8 @@ export class SkillsPage implements OnInit, OnDestroy {
   }
 
   onOpenSkills(selection: string) {
+    this.encyclopedia.characterSelectedSkills = this.characterSkills;
+    this.encyclopedia.characterSelectedTraits = this.characterTraits;
     this.router.navigate(['/encyclopedia-tabs/skills-traits-list'], {
       replaceUrl: true,
       queryParams: {
@@ -79,6 +83,10 @@ export class SkillsPage implements OnInit, OnDestroy {
   }
 
   onSkillTraitSelected(id) {
+    // Currently not working properly
+    // MAY NEED TO IMPLIMENTE AN ENCYCLOPEDIA SERVICES
+    // Encyclopedia services could handle all of the cases of which items to load on the list, and which
+    // Items are accesible to the character making hte selection
     const skillTrait = this.airtable.getSkillTraitById(id);
     if (skillTrait) {
       if (skillTrait.type === 'trait') {
@@ -95,41 +103,38 @@ export class SkillsPage implements OnInit, OnDestroy {
           characters[this.characterServ.viewIndex].skillsTraitsId.push(id);
           this.characterServ.selectedCharacters.next(characters);
         }
-        this.characterSkills.push(skillTrait);
       }
     }
   }
 
   onRemoveSkill(id: string, type: string) {
     // Remove from list of creation.selected skills or traits
-    // if (type === 'trait') {
-    //   const creationIndex = this.creation.characterSelectedTraits.findIndex(a => a.airtable_id === id);
-    //   if (creationIndex != -1) {
-    //     const trait = this.creation.characterSelectedTraits[creationIndex];
-    //     this.creation.skillsPoints += trait.cost;
-    //     this.creation.characterSelectedTraits.splice(creationIndex, 1);
-    //   }
-    // } else {
-    //   const creationIndex = this.creation.characterSelectedSkills.findIndex(a => a.airtable_id === id);
-    //   if (creationIndex != -1) {
-    //     const skill = this.creation.characterSelectedSkills[creationIndex];
-    //     this.creation.skillsPoints += skill.cost;
-    //     this.creation.characterSelectedSkills.splice(creationIndex, 1);
-    //   }
-    // }
-    // // remove from character's skills ID list
-    // const idIndex = this.character.skillsTraitsId.findIndex(a => a === id);
-    // if (idIndex != -1) this.character.skillsTraitsId.splice(idIndex, 1);
-
-    // this.creation.characterSubj.next(this.character);
+    if (type === 'trait') {
+      const index = this.characterTraits.findIndex(a => a.airtable_id === id);
+      if (index != -1) {
+        const trait = this.encyclopedia.characterSelectedTraits[index];
+        this.encyclopedia.characterSelectedTraits.splice(index, 1);
+      }
+    } else {
+      const creationIndex = this.characterSkills.findIndex(a => a.airtable_id === id);
+      if (creationIndex != -1) {
+        const skill = this.characterSkills[creationIndex];
+        this.characterSkills.splice(creationIndex, 1);
+      }
+    }
+    // remove from character's skills ID list
+    const characters = this.characterServ.selectedCharacters.getValue();
+    const idIndex = characters[this.characterServ.viewIndex].skillsTraitsId.findIndex(a => a === id);
+    if (idIndex != -1) characters[this.characterServ.viewIndex].skillsTraitsId.splice(idIndex, 1);
+    this.characterServ.selectedCharacters.next(characters);
 
   }
 
   isDependencyExist(skill: SkillTraits) {
     let dependency = false;
     if (skill.type === 'trait') {
-      for (let index = 0; index < this.characterSkills.length; index++) {
-        const selected = this.characterSkills[index];
+      for (let index = 0; index < this.characterTraits.length; index++) {
+        const selected = this.characterTraits[index];
         if (selected.prereq && selected.prereq.find(t => t.toLowerCase() === skill.title.toLowerCase())) {
           dependency = true;
           break;

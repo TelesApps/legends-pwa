@@ -4,6 +4,7 @@ import { IonAccordionGroup, IonContent } from '@ionic/angular';
 import { SkillTraits } from 'src/app/interfaces/skills-traits.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
 import { CharacterCreationService } from 'src/app/services/character-creation.service';
+import { EncylopediaService } from 'src/app/services/encylopedia.service';
 
 @Component({
   selector: 'app-skills-traits-list',
@@ -25,6 +26,7 @@ export class SkillsTraitsListPage implements OnInit {
   constructor(
     public airtable: AirtableDataService,
     public creation: CharacterCreationService,
+    public encyclopedia: EncylopediaService,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -128,9 +130,9 @@ export class SkillsTraitsListPage implements OnInit {
   }
   hasSkill(title: string) {
     let selected;
-    selected = this.creation.characterSelectedSkills.find(t => t.title === title);
+    selected = this.encyclopedia.characterSelectedSkills.find(t => t.title === title);
     if (selected) return selected;
-    selected = this.creation.characterSelectedTraits.find(t => t.title === title);
+    selected = this.encyclopedia.characterSelectedTraits.find(t => t.title === title);
     return selected
   }
 

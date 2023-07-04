@@ -255,9 +255,9 @@
           <ion-item *ngFor="let skill of characterSkills">
             <ion-accordion *ngIf="skill" class="selected-item" [value]="skill.airtable_id">
               <ion-item slot="header">
-                <ion-icon *ngIf="!isDependencyExist(skill)" name="close"
+                <ion-icon *ngIf="isEditing && !isDependencyExist(skill)" name="close"
                   (click)="onRemoveSkill(skill.airtable_id, skill.type)"></ion-icon>
-                <ion-icon *ngIf="isDependencyExist(skill)" name="lock-closed"></ion-icon>
+                <ion-icon *ngIf="isEditing && isDependencyExist(skill)" name="lock-closed"></ion-icon>
                 <div class="flex-between selected-header">
                   <div>{{ skill.title }}</div>
                   <div>{{ skill.cost }}</div>

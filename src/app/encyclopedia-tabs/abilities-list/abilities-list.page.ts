@@ -5,6 +5,7 @@ import { IonAccordionGroup, IonContent } from '@ionic/angular';
 import { Ability } from 'src/app/interfaces/ability.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
 import { CharacterCreationService } from 'src/app/services/character-creation.service';
+import { EncylopediaService } from 'src/app/services/encylopedia.service';
 
 @Component({
   selector: 'app-abilities-list',
@@ -28,6 +29,7 @@ export class AbilitiesListPage implements OnInit {
     public airtable: AirtableDataService,
     private route: ActivatedRoute,
     public creation: CharacterCreationService,
+    public encyclopedia: EncylopediaService,
     private router: Router) { }
 
   ngOnInit() {
@@ -146,7 +148,7 @@ export class AbilitiesListPage implements OnInit {
   }
 
   hasAbility(title: string) {
-    return this.creation.characterSelectedAbilities.find(t => t.title === title);
+    return this.encyclopedia.characterSelectedAbilities.find(t => t.title === title);
   }
 
   onAbilitySelected(ability: Ability) {
