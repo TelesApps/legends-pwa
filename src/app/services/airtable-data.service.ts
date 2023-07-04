@@ -121,4 +121,18 @@ export class AirtableDataService {
       return undefined
     }
   }
+
+  getAbilityById(id: string): Ability {
+    if (id) {
+      const ability = this.$abilities.getValue().find(a => a.airtable_id === id);
+      if (ability) return ability
+      else {
+        console.error('Ability not found');
+        return undefined;
+      }
+    } else {
+      console.error('id is invalid', id);
+      return undefined
+    }
+  }
 }

@@ -1,0 +1,41 @@
+.box-title {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.foundations-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.foundation-tags {
+    font-size: 9pt;
+    padding: 2px;
+    margin: 4px;
+    //flex-grow: 1;
+    width: clamp(170px, 32%, 600px);
+}
+
+.ability-header {
+    width: 100vw;
+}
+
+ion-item {
+    --border-style: none;
+}
+.ability-item {
+    --ion-background-color: var(--ion-color-light) !important;
+    background: var(--ion-color-darker) !important;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    margin: 4px;
+}
+.ability-details {
+    padding: 12px;
+
+    .ability-details-title {
+        display: flex;
+        flex-direction: column;
+    }
+}

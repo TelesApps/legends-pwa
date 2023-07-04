@@ -1,9 +1,80 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>abilities</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="parent-header background-color-darker">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-icon name="lock-closed"></ion-icon>
+        Means one of your ability is reliant on this one
+      </ion-col>
+      <ion-col class="ion-text-center" size="12">
+        <div style="float: right; width: 0px; position: relative; left: -50px;">
+          <ion-fab-button size="small" (click)="onOpenAbilitiesList()">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+        </div>
+        <ion-text color="primary">
+          <h2>Abilities</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="stats-box" size="12">
+        <div class="box-title">Foundations</div>
+        <div *ngIf="foundations && foundations.length > 0 else noSkills">
+          <ion-accordion-group class="foundations-list">
+            <span *ngFor="let ability of foundations" class="foundation-tags">
+              <ion-accordion class="stats-box" [value]="ability.airtable_id">
+                <ion-item slot="header" color="light">
+                  <ion-icon *ngIf="!isDependencyExist(ability)" name="close"
+                    (click)="onRemoveAbility(ability.airtable_id)"></ion-icon>
+                  <ion-icon *ngIf="isDependencyExist(ability)" name="lock-closed"></ion-icon>
+                  <ion-label>{{ ability.title }}</ion-label>
+                </ion-item>
+                <div class="ion-padding" slot="content">
+                  <div><b>{{ ability.title }}:</b></div>
+                  {{ ability.description }}
+                </div>
+              </ion-accordion>
+            </span>
+          </ion-accordion-group>
+        </div>
+        <ng-template #noSkills>
+          <div>No Foundational Skills Selected</div>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+    <ion-row style="width: 106%; margin-left: -3%;">
+      <ion-col size="12">
+        <ion-accordion-group>
+          <ion-text *ngIf="abilities && abilities.length == 0" color="primary" class="ion-text-center">
+            <h4>Click the add button to start adding abilities</h4>
+          </ion-text>
+          <ion-item *ngFor="let ability of abilities">
+            <ion-accordion class="ability-item" [value]="ability.airtable_id">
+              <ion-item slot="header">
+                <ion-icon slot="start" *ngIf="!isDependencyExist(ability)" name="close"
+                    (click)="onRemoveAbility(ability.airtable_id)"></ion-icon>
+                  <ion-icon slot="start" *ngIf="isDependencyExist(ability)" name="lock-closed"></ion-icon>
+                <div class="flex-between ability-header">
+                  <div>{{ ability.title }}</div>
+                  <div>{{ ability.turn_units_req }}</div>
+                  <div>{{ ability.execution_cost }}</div>
+                </div>
+              </ion-item>
+              <ion-list class="ability-details" slot="content">
+                <hr>
+                <div class="ability-details-title">
+                  <b>Tags: {{ ability.tags }}</b>
+                  <b>Prereq: {{ ability.prereq }}</b>
+                  <b>Cost: {{ ability.execution_cost }}</b>
+                </div>
+                <div>
+                  <p>{{ ability.effect }}</p>
+                </div>
+              </ion-list>
+            </ion-accordion>
+          </ion-item>
+        </ion-accordion-group>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
