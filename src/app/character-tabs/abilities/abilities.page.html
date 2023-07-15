@@ -1,14 +1,13 @@
 <ion-content class="parent-header background-color-darker">
   <ion-grid fixed>
     <ion-row>
-      <ion-col size="12">
-        <ion-icon name="lock-closed"></ion-icon>
-        Means one of your ability is reliant on this one
-      </ion-col>
       <ion-col class="ion-text-center" size="12">
         <div style="float: right; width: 0px; position: relative; left: -50px;">
-          <ion-fab-button size="small" (click)="onOpenAbilitiesList()">
-            <ion-icon name="add"></ion-icon>
+          <ion-fab-button *ngIf="!isEditing" size="small" (click)="isEditing = true">
+            <ion-icon name="pencil"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button *ngIf="isEditing" size="small" (click)="isEditing = false">
+            <ion-icon name="checkmark"></ion-icon>
           </ion-fab-button>
         </div>
         <ion-text color="primary">
@@ -24,9 +23,9 @@
             <span *ngFor="let ability of foundations" class="foundation-tags">
               <ion-accordion class="stats-box" [value]="ability.airtable_id">
                 <ion-item slot="header" color="light">
-                  <ion-icon *ngIf="!isDependencyExist(ability)" name="close"
+                  <ion-icon *ngIf="isEditing && !isDependencyExist(ability)" name="close"
                     (click)="onRemoveAbility(ability.airtable_id)"></ion-icon>
-                  <ion-icon *ngIf="isDependencyExist(ability)" name="lock-closed"></ion-icon>
+                  <ion-icon *ngIf="isEditing && isDependencyExist(ability)" name="lock-closed"></ion-icon>
                   <ion-label>{{ ability.title }}</ion-label>
                 </ion-item>
                 <div class="ion-padding" slot="content">
@@ -51,7 +50,7 @@
           <ion-item *ngFor="let ability of abilities">
             <ion-accordion class="ability-item" [value]="ability.airtable_id">
               <ion-item slot="header">
-                <ion-icon slot="start" *ngIf="!isDependencyExist(ability)" name="close"
+                <ion-icon slot="start" *ngIf="isEditing && !isDependencyExist(ability)" name="close"
                     (click)="onRemoveAbility(ability.airtable_id)"></ion-icon>
                   <ion-icon slot="start" *ngIf="isDependencyExist(ability)" name="lock-closed"></ion-icon>
                 <div class="flex-between ability-header">
@@ -73,6 +72,9 @@
               </ion-list>
             </ion-accordion>
           </ion-item>
+          <ion-button *ngIf="isEditing" expand="block" (click)="onOpenAbilitiesList()">
+            <ion-icon name="add"></ion-icon> Add New Skill
+          </ion-button>
         </ion-accordion-group>
       </ion-col>
     </ion-row>

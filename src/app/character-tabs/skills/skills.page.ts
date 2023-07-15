@@ -83,10 +83,6 @@ export class SkillsPage implements OnInit, OnDestroy {
   }
 
   onSkillTraitSelected(id) {
-    // Currently not working properly
-    // MAY NEED TO IMPLIMENTE AN ENCYCLOPEDIA SERVICES
-    // Encyclopedia services could handle all of the cases of which items to load on the list, and which
-    // Items are accesible to the character making hte selection
     const skillTrait = this.airtable.getSkillTraitById(id);
     if (skillTrait) {
       if (skillTrait.type === 'trait') {

@@ -8,6 +8,7 @@ export interface Ability {
     points_req: number;
     prereq: string[];
     tags: string[];
+    isFoundation: boolean;
     title: string;
     turn_units_req: string;
     image?: Image[];

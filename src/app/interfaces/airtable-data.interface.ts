@@ -32,6 +32,7 @@ export interface Fields {
     body_property:          string;
     type?:                  string;
     conditions?:            string[];
+    isFoundation?:          boolean;
 }
 
 export enum DmgType {
