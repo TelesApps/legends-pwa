@@ -15,7 +15,7 @@ import { EncylopediaService } from 'src/app/services/encylopedia.service';
 })
 export class SkillsPage implements OnInit, OnDestroy {
 
-  segmentSelection = 'traits';
+  segmentSelection = 'overview';
   characterSkills: SkillTraits[] = [];
   characterTraits: SkillTraits[] = [];
   characterSubscription: Subscription;

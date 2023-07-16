@@ -28,6 +28,7 @@ export class CharactersService {
         if (player.charactersId) {
           console.log('inside player subscribe', player)
           this.firebaseData.getCharacters(player.selectedCharactersIds).then((characters) => {
+            console.log('characters', characters)
             this.selectedCharacters.next(characters);
           });
 

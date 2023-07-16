@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-title *ngIf="characterSer.selectedCharacters && characterSer.selectedCharacters.getValue()[0]" slot="start">
-      <ion-select interface="popover" [value]="characterSer.selectedCharacters.getValue()[0].characterId" (ionChange)="onViewChange($event)">
-        <ion-select-option *ngFor="let char of characterSer.selectedCharacters | async" [value]="char.characterId">
+      <ion-select interface="popover" [value]="(characterSer.selectedCharacters | async)[0].characterId" (ionChange)="onViewChange($event)">
+        <ion-select-option *ngFor="let char of (characterSer.selectedCharacters | async)" [value]="char.characterId">
           {{char.characterName }}</ion-select-option>
       </ion-select>
     </ion-title>

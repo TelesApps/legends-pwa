@@ -356,7 +356,7 @@
                 <div *ngFor="let itemId of character.equipments.backPack; let i = index" class="backpack-item">
                   <div class="img-backpackItem ">
                     <div *ngIf="!backPackSelection" class="backpack-remove-btn btn-effect" (click)="onRemoveBackpack(i)">
-                      <ion-icon name="close"></ion-icon>
+                      <ion-icon name="trash-outline"></ion-icon>
                     </div>
                     <ion-img [src]="getImgFromId(itemId, 
                     '')">

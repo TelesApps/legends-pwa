@@ -204,7 +204,7 @@
       <ion-col size="12">
         <ion-accordion-group>
           <!-- ngFor the selected Traits here -->
-          <ion-item *ngFor="let trait of creation.characterSelectedTraits">
+          <ion-item *ngFor="let trait of encyclopedia.characterSelectedTraits">
             <ion-accordion class="selected-item" [value]="trait.airtable_id">
               <ion-item slot="header">
                 <ion-icon *ngIf="!isDependencyExist(trait)" name="close"
@@ -242,7 +242,7 @@
       <ion-col size="12">
         <ion-accordion-group>
           <!-- ngFor the selected Traits here -->
-          <ion-item *ngFor="let skill of creation.characterSelectedSkills">
+          <ion-item *ngFor="let skill of encyclopedia.characterSelectedSkills">
             <ion-accordion class="selected-item" [value]="skill.airtable_id">
               <ion-item slot="header">
                 <ion-icon *ngIf="!isDependencyExist(skill)" name="close"

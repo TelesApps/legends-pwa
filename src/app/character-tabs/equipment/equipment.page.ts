@@ -7,6 +7,8 @@ import { Item, ItemSelection } from 'src/app/interfaces/item.interface';
 import { AirtableDataService } from 'src/app/services/airtable-data.service';
 import { CharacterCreationService } from 'src/app/services/character-creation.service';
 import { CharactersService } from 'src/app/services/characters.service';
+import { ModalController } from '@ionic/angular';
+import { ConfirmSelectionComponent } from 'src/app/modals/confirm-selection/confirm-selection.component';
 
 @Component({
   selector: 'app-equipment',
@@ -22,7 +24,8 @@ export class EquipmentPage implements OnInit {
     public characterServ: CharactersService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private tabs: IonTabs
+    private tabs: IonTabs,
+    public modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -151,8 +154,20 @@ export class EquipmentPage implements OnInit {
     this.characterServ.selectedCharacters.next(characters);
   }
 
-  onRemoveBackpack(index: number) {
-    // this.character.equipments.backPack.splice(index, 1);
+  async onRemoveBackpack(index: number) {
+    const modal = await this.modalController.create({
+      component: ConfirmSelectionComponent,
+      componentProps: {
+        'headerTxt': 'Remove Item Permanently?',
+        'bodyTxt': `This will permanently remove this item from your backpack`,
+        'confirmBtnTxt': 'Remove',
+      }
+    });
+    modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data && data.isConfirm) {
+      this.characterServ.selectedCharacters.getValue()[this.characterServ.viewIndex].equipments.backPack.splice(index, 1);
+    }
   }
 
   onAddNewEquipment(bodyProperty: string, hand?: 'main-hand' | 'off-hand' | 'backpack') {
