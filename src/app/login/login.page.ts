@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
@@ -12,12 +12,12 @@ import { AuthService } from '../services/auth.service';
 export class LoginPage implements OnInit {
 
   isRegister = false;
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   loadingModal: HTMLIonLoadingElement;
-  userName = new FormControl('', [Validators.required, Validators.maxLength(22)]);
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required, Validators.minLength(6)]);
-  confirmPass = new FormControl('', [Validators.required, Validators.minLength(6)]);
+  userName = new UntypedFormControl('', [Validators.required, Validators.maxLength(22)]);
+  email = new UntypedFormControl('', [Validators.required, Validators.email]);
+  password = new UntypedFormControl('', [Validators.required, Validators.minLength(6)]);
+  confirmPass = new UntypedFormControl('', [Validators.required, Validators.minLength(6)]);
 
   constructor(public loadingController: LoadingController, public authService: AuthService, private router: Router) { }
 
@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
 
   setLoginForm() {
     if (this.isRegister) {
-      this.loginForm = new FormGroup({
+      this.loginForm = new UntypedFormGroup({
         userName: this.userName,
         email: this.email,
         password: this.password,
@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
       })
     }
     else {
-      this.loginForm = new FormGroup({
+      this.loginForm = new UntypedFormGroup({
         email: this.email,
         password: this.password,
       })

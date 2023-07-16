@@ -9,16 +9,15 @@ import { MoreDetailsComponent } from './more-details/more-details.component';
 
 
 @NgModule({
-  entryComponents: [ConfirmSelectionComponent, InformPlayerComponent, MoreDetailsComponent],
-  declarations: [ ConfirmSelectionComponent, InformPlayerComponent, MoreDetailsComponent ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-  ],
-  exports: [
-    ConfirmSelectionComponent,
-    InformPlayerComponent
-  ]
+    declarations: [ConfirmSelectionComponent, InformPlayerComponent, MoreDetailsComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+    ],
+    exports: [
+        ConfirmSelectionComponent,
+        InformPlayerComponent
+    ]
 })
 export class ModalsModule { }

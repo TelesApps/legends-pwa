@@ -31,35 +31,35 @@ import { CalculationsService } from './services/calculations.service';
 firebase.initializeApp(environment.firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, ItemsListPage],
-  entryComponents: [],
-  imports: [
-    BrowserModule,
-    FormsModule, 
-    IonicModule.forRoot(),
-    HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AppRoutingModule,
-    LoginPageModule,
-    MainLobbyPageModule,
-    SelectCharacterPageModule,
-    MyProfilePageModule,
-    CharacterCreationTabsPageModule,
-    CharacterTabsPageModule,
-    EncyclopediaTabsPageModule,
-    ModalsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
-    CharacterCreationService,
-    AirtableDataService,
-    CalculationsService
-  ],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent, ItemsListPage],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        IonicModule.forRoot(),
+        HttpClientModule,
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AppRoutingModule,
+        LoginPageModule,
+        MainLobbyPageModule,
+        SelectCharacterPageModule,
+        MyProfilePageModule,
+        CharacterCreationTabsPageModule,
+        CharacterTabsPageModule,
+        EncyclopediaTabsPageModule,
+        ModalsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        })
+    ],
+    providers: [
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+        CharacterCreationService,
+        AirtableDataService,
+        CalculationsService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
