@@ -3,6 +3,7 @@ import { StatusEffect } from "./status-effect.interface";
 export interface Character {
     playerId: string;
     characterId: string;
+    gameRoomId?: string;
     characterName: string;
     classTitle?: string;
     bios?: string;
@@ -114,6 +115,7 @@ export function CreateNewCharacter() {
     const character: Character = {
         playerId: '',
         characterId: '',
+        gameRoomId: '',
         characterName: '',
         classTitle: '',
         bios: '',

@@ -45,8 +45,9 @@
                 </div>
               </div>
             </ion-card-title>
-            <ion-button  expand="block" [routerLink]="['/character-tabs']" routerLinkActive="router-link-active" >
-              View Character<span *ngIf="charactersService.selectedCharacters && (charactersService.selectedCharacters | async).length > 1">s</span>
+            <ion-button expand="block" [routerLink]="['/character-tabs']" routerLinkActive="router-link-active">
+              View Character<span
+                *ngIf="charactersService.selectedCharacters && (charactersService.selectedCharacters | async).length > 1">s</span>
             </ion-button>
             <ion-card-title
               *ngIf="!charactersService.selectedCharacters || (charactersService.selectedCharacters | async).length == 0"
@@ -105,9 +106,11 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button slot="start">
-      Create a Room
-    </ion-button>
+    <div *ngIf="(auth.Player$ | async) as player">
+      <ion-button *ngIf="player && player.playerStatus === 'gameMaster'" slot="start" (click)="onOpenCreateRoomModal()">
+        Create a Room
+      </ion-button>
+    </div>
     <ion-button slot="end" [routerLink]="['/select-character']" [queryParams]="{breadcrumb: 'main-lobby'}">
       Character Selection
     </ion-button>

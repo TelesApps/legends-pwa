@@ -3,6 +3,8 @@ import { Player } from '../interfaces/player.interface';
 import { AuthService } from '../services/auth.service';
 import { CharactersService } from '../services/characters.service';
 import { FirebaseDataService } from '../services/firebase-data.service';
+import { ModalController } from '@ionic/angular';
+import { CreateRoomComponent } from '../modals/create-room/create-room.component';
 
 @Component({
   selector: 'app-main-lobby',
@@ -15,8 +17,10 @@ export class MainLobbyPage implements OnInit {
   avatarText: string = ''
   photoUrl: string = '';
   player: Player;
+  isCreateRoomModalOpen: boolean = false;
+  createRoomName: string = '';
 
-  constructor(public auth: AuthService, public charactersService: CharactersService, private firebaseData: FirebaseDataService) { }
+  constructor(public auth: AuthService, public charactersService: CharactersService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.auth.getPlayer().then((player: Player) => {
@@ -29,6 +33,19 @@ export class MainLobbyPage implements OnInit {
       }
       this.isLoading = false;
     })
+  }
+
+  async onOpenCreateRoomModal() {
+    const modal = await this.modalCtrl.create({
+      component: CreateRoomComponent,
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
+    console.log('data', data);
+    if (role === 'confirm') {
+    }
   }
 
 }
