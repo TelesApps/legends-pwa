@@ -15,8 +15,8 @@
         </ion-text>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="stats-box" size="12">
+    <ion-row *ngIf="(characterServ.selectedCharacters | async)[characterServ.viewIndex] as character">
+      <ion-col *ngIf="isCharacterAbilitiesLoaded(character)" class="stats-box" size="12">
         <div class="box-title">Foundations</div>
         <div *ngIf="foundations && foundations.length > 0 else noSkills">
           <ion-accordion-group class="foundations-list">

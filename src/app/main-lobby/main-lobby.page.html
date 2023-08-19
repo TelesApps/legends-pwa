@@ -8,13 +8,14 @@
           </ion-title>
         </ion-col>
         <ion-col size="6">
-          <ion-item lines="none">
+          <ion-item *ngIf="(auth.Player$ | async) as player" lines="none">
             <ion-fab-button slot="end" [routerLink]="['/encyclopedia-tabs']" [queryParams]="{breadcrumb: 'main-lobby'}"
               routerLinkActive="router-link-active" ariaLabel="encyclopedia">
               <ion-icon id="encyclopedia-icon" name="library-outline" ariaLabel="Encyclopedia"></ion-icon>
             </ion-fab-button>
-            <ion-avatar class="ion-justify-content-center" slot="end" [routerLink]="['/my-profile']"
-              [queryParams]="{breadcrumb: 'main-lobby'}" routerLinkActive="router-link-active">
+            <ion-avatar *ngIf="setProfileInfo(player)" class="ion-justify-content-center" slot="end"
+              [routerLink]="['/my-profile']" [queryParams]="{breadcrumb: 'main-lobby'}"
+              routerLinkActive="router-link-active">
               <img *ngIf="photoUrl" [src]="photoUrl">
               <ion-text *ngIf="!photoUrl" color="primary">
                 {{avatarText}}
@@ -45,7 +46,9 @@
                 </div>
               </div>
             </ion-card-title>
-            <ion-button expand="block" [routerLink]="['/character-tabs']" routerLinkActive="router-link-active">
+            <ion-button
+              [disabled]="charactersService.selectedCharacters && (charactersService.selectedCharacters | async).length < 1"
+              expand="block" [routerLink]="['/character-tabs']" routerLinkActive="router-link-active">
               View Character<span
                 *ngIf="charactersService.selectedCharacters && (charactersService.selectedCharacters | async).length > 1">s</span>
             </ion-button>
@@ -107,7 +110,8 @@
 <ion-footer>
   <ion-toolbar>
     <div *ngIf="(auth.Player$ | async) as player">
-      <ion-button *ngIf="player && player.playerStatus === 'gameMaster'" slot="start" (click)="onOpenCreateRoomModal()">
+      <ion-button *ngIf="player && player.playerStatus === 'gameMaster'" slot="start"
+        (click)="onOpenCreateRoomModal(player)">
         Create a Room
       </ion-button>
     </div>

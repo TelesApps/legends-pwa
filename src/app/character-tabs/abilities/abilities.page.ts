@@ -13,15 +13,15 @@ import { EncylopediaService } from 'src/app/services/encylopedia.service';
   templateUrl: './abilities.page.html',
   styleUrls: ['./abilities.page.scss'],
 })
-export class AbilitiesPage implements OnInit, OnDestroy {
+export class AbilitiesPage implements OnInit {
 
   foundations: Array<Ability> = [];
   abilities: Array<Ability> = [];
   isEditing = false;
-  characterSubscription: Subscription;
+  // characterSubscription: Subscription;
 
   constructor(
-    private characterServ: CharactersService,
+    public characterServ: CharactersService,
     private encyclopedia: EncylopediaService,
     private activeRoute: ActivatedRoute,
     private airtable: AirtableDataService,
@@ -38,16 +38,17 @@ export class AbilitiesPage implements OnInit, OnDestroy {
       }
     });
 
-    this.characterSubscription = this.characterServ.selectedCharacters.subscribe((characters) => {
-      const character = characters[this.characterServ.viewIndex];
-      this.setCharacterAbilities(character);
-    });
     this.activeRoute.queryParams.pipe(first()).subscribe((params) => {
       console.log('params: ', params);
       if (params.selected_id) {
         this.onAbilitySelected(params.selected_id);
       }
     });
+  }
+
+  isCharacterAbilitiesLoaded(character) {
+    this.setCharacterAbilities(character);
+    return character
   }
 
   setCharacterAbilities(character: Character) {
@@ -139,8 +140,5 @@ export class AbilitiesPage implements OnInit, OnDestroy {
     return dependency;
   }
 
-  ngOnDestroy() {
-    this.characterSubscription.unsubscribe();
-  }
 
 }

@@ -5,6 +5,7 @@ import { CharactersService } from '../services/characters.service';
 import { FirebaseDataService } from '../services/firebase-data.service';
 import { ModalController } from '@ionic/angular';
 import { CreateRoomComponent } from '../modals/create-room/create-room.component';
+import { CreateGameRoomObject } from '../interfaces/game-room.interface';
 
 @Component({
   selector: 'app-main-lobby',
@@ -16,35 +17,46 @@ export class MainLobbyPage implements OnInit {
   isLoading = true;
   avatarText: string = ''
   photoUrl: string = '';
-  player: Player;
   isCreateRoomModalOpen: boolean = false;
   createRoomName: string = '';
 
   constructor(public auth: AuthService, public charactersService: CharactersService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    this.auth.getPlayer().then((player: Player) => {
-      if (!player) {
-      } else {
-        this.player = player;
-        this.avatarText = player.userName[0];
-        this.avatarText = player.userName.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '')
-        this.photoUrl = player.photoUrl;
-      }
-      this.isLoading = false;
-    })
+    
   }
 
-  async onOpenCreateRoomModal() {
+  setProfileInfo(player: Player) {
+    if (!player) {
+    } else {
+      this.avatarText = player.userName[0];
+      this.avatarText = player.userName.split(/\s/).reduce((response, word) => response += word.slice(0, 1), '')
+      this.photoUrl = player.photoUrl;
+    }
+    this.isLoading = false;
+    return player;
+  }
+
+  async onOpenCreateRoomModal(player: Player) {
     const modal = await this.modalCtrl.create({
       component: CreateRoomComponent,
     });
     modal.present();
 
-    const { data, role } = await modal.onWillDismiss();
+    const { data } = await modal.onWillDismiss();
 
-    console.log('data', data);
-    if (role === 'confirm') {
+    if (player && data && data.status === 'confirm') {
+      let gameRoom = CreateGameRoomObject();
+      gameRoom.gameRoomName = data.roomName;
+      gameRoom.isGamePublic = data.publicGame;
+      gameRoom.playersAlloted = data.playerLimit;
+      gameRoom.charactersPerPlayerAlloted = data.charactersPerPlayer;
+      gameRoom.totalCharactersAlloted = data.totalCharacters;
+      gameRoom.gameMasterId = player.playerId;
+      gameRoom.playersId.push(player.playerId);
+      gameRoom.charactersId = gameRoom.charactersId.concat(player.selectedCharactersIds);
+  
+      console.log('save this to firebase, ', gameRoom);
     }
   }
 

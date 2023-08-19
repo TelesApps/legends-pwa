@@ -10,7 +10,7 @@
   <form [formGroup]="createRoomForm" action="">
     <ion-item>
       <ion-label position="floating">Room Name</ion-label>
-      <ion-input [formControl]="roomName" type="text" placeholder="Enter Room Name"></ion-input>
+      <ion-input aria-label="Room Name" [formControl]="roomName" type="text" placeholder="Enter Room Name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Player Limit:</ion-label>
@@ -32,12 +32,12 @@
     </ion-item>
     <ion-item>
       <ion-label>Public Room</ion-label>
-      <ion-checkbox [formControl]="publicGame"></ion-checkbox>
+      <ion-checkbox [formControl]="publicGame">Public Room</ion-checkbox>
     </ion-item>
   </form>
 </ion-content>
 <ion-toolbar>
-  <ion-button (click)="onCreateRoom()" expand="block">
+  <ion-button [disabled]="!createRoomForm.valid" (click)="onCreateRoom()" expand="block">
     Create Room
   </ion-button>
 </ion-toolbar>

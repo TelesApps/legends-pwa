@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IonModal } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-room',
@@ -16,7 +17,7 @@ export class CreateRoomComponent implements OnInit {
   charactersPerPlayer: number = 1;
   totalCharacters: number = 0;
 
-  constructor() { }
+  constructor(private modalControl: ModalController) { }
 
   ngOnInit() {
     this.createRoomForm = new FormGroup({
@@ -25,7 +26,7 @@ export class CreateRoomComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.modalControl.dismiss();
   }
 
   addPlayerLimit(value) {
@@ -50,7 +51,14 @@ export class CreateRoomComponent implements OnInit {
   }
 
   onCreateRoom() {
-
+    this.modalControl.dismiss({
+      status: 'confirm',
+      roomName: this.roomName.value,
+      publicGame: this.publicGame.value,
+      playerLimit: this.playerLimit,
+      charactersPerPlayer: this.charactersPerPlayer,
+      totalCharacters: this.totalCharacters
+    })
   }
 
 }
