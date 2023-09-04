@@ -23,7 +23,7 @@ export class MainLobbyPage implements OnInit {
   constructor(public auth: AuthService, public charactersService: CharactersService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    
+
   }
 
   setProfileInfo(player: Player) {
@@ -40,6 +40,9 @@ export class MainLobbyPage implements OnInit {
   async onOpenCreateRoomModal(player: Player) {
     const modal = await this.modalCtrl.create({
       component: CreateRoomComponent,
+      componentProps: {
+        player
+      }
     });
     modal.present();
 
@@ -47,6 +50,9 @@ export class MainLobbyPage implements OnInit {
 
     if (player && data && data.status === 'confirm') {
       let gameRoom = CreateGameRoomObject();
+      const timestamp = new Date();
+      gameRoom.gameRoomId = player.userName.toLocaleLowerCase().replace(/ /g, "_") + '_' +
+        data.roomName.toLocaleLowerCase().replace(/ /g, "_") + '_' + timestamp.valueOf();
       gameRoom.gameRoomName = data.roomName;
       gameRoom.isGamePublic = data.publicGame;
       gameRoom.playersAlloted = data.playerLimit;
@@ -55,7 +61,7 @@ export class MainLobbyPage implements OnInit {
       gameRoom.gameMasterId = player.playerId;
       gameRoom.playersId.push(player.playerId);
       gameRoom.charactersId = gameRoom.charactersId.concat(player.selectedCharactersIds);
-  
+
       console.log('save this to firebase, ', gameRoom);
     }
   }

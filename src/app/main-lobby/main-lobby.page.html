@@ -112,7 +112,7 @@
     <div *ngIf="(auth.Player$ | async) as player">
       <ion-button *ngIf="player && player.playerStatus === 'gameMaster'" slot="start"
         (click)="onOpenCreateRoomModal(player)">
-        Create a Room
+        Create Room
       </ion-button>
     </div>
     <ion-button slot="end" [routerLink]="['/select-character']" [queryParams]="{breadcrumb: 'main-lobby'}">
