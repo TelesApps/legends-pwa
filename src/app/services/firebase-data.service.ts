@@ -42,6 +42,12 @@ export class FirebaseDataService {
     return this.afs.collection('characters', ref => ref.where("playerId", "==", playerId)).valueChanges();
   }
 
+  //Update Character In Cloud
+  updateCharacter(character: Character) {
+    const docRef = this.afs.collection('characters').doc(character.characterId)
+    return docRef.set(character, { merge: true });
+  }
+
   deleteCharacter(id: string) {
     return this.afs.collection('characters').doc(id).delete();
   }

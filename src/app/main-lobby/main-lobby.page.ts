@@ -6,6 +6,7 @@ import { FirebaseDataService } from '../services/firebase-data.service';
 import { ModalController } from '@ionic/angular';
 import { CreateRoomComponent } from '../modals/create-room/create-room.component';
 import { CreateGameRoomObject } from '../interfaces/game-room.interface';
+import { GameRoomsService } from '../services/game-rooms.service';
 
 @Component({
   selector: 'app-main-lobby',
@@ -20,7 +21,12 @@ export class MainLobbyPage implements OnInit {
   isCreateRoomModalOpen: boolean = false;
   createRoomName: string = '';
 
-  constructor(public auth: AuthService, public charactersService: CharactersService, private modalCtrl: ModalController) { }
+  constructor(
+    public auth: AuthService,
+    public charactersService: CharactersService,
+    private firebase: FirebaseDataService,
+    private gameRooms: GameRoomsService,
+    private modalCtrl: ModalController) { }
 
   ngOnInit() {
 
@@ -61,8 +67,16 @@ export class MainLobbyPage implements OnInit {
       gameRoom.gameMasterId = player.playerId;
       gameRoom.playersId.push(player.playerId);
       gameRoom.charactersId = gameRoom.charactersId.concat(player.selectedCharactersIds);
-
+      // Add game room ID to each character in game room then save it to cloud.
+      this.charactersService.selectedCharacters.getValue().forEach((character) => {
+        if(!character.gameRoomIds) {
+          character['gameRoomIds'] = [];
+        }
+        character.gameRoomIds.push(gameRoom.gameRoomId);
+        this.firebase.updateCharacter(character);
+      });
       console.log('save this to firebase, ', gameRoom);
+      this.gameRooms.createGameRoom(gameRoom);
     }
   }
 

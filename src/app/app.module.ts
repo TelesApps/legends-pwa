@@ -27,6 +27,7 @@ import { InformPlayerComponent } from './modals/inform-player/inform-player.comp
 import { ModalsModule } from './modals/modals.module';
 import { CharacterCreationService } from './services/character-creation.service';
 import { CalculationsService } from './services/calculations.service';
+import { GameRoomsService } from './services/game-rooms.service';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -58,7 +59,8 @@ firebase.initializeApp(environment.firebaseConfig);
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         CharacterCreationService,
         AirtableDataService,
-        CalculationsService
+        CalculationsService,
+        GameRoomsService
     ],
     bootstrap: [AppComponent]
 })
