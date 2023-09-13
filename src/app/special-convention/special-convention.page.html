@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Special Convention Rating</ion-title>
+    <ion-title>Special Convention</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,7 +10,7 @@
       <ion-col sizeXs="12" sizeSm="6" sizeMd="4">
         <ion-row>
           <ion-col size="12">
-            <h3 class="ion-text-center">Group Members</h3>
+            <h3 class="ion-text-center">Group Members ({{usersSelected}})</h3>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -21,9 +21,9 @@
             </ion-item>
           </ion-col>
           <ion-col size="12">
-            <ion-button (click)="onAddMember()">
+            <!-- <ion-button (click)="onAddMember()">
               Add Member
-            </ion-button>
+            </ion-button> -->
           </ion-col>
         </ion-row>
       </ion-col>
@@ -34,7 +34,7 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col class="ion-text-end" *ngFor="let location of allConventions let i = index" size="12">
+          <ion-col *ngFor="let location of allConventions let i = index" size="12">
             <div class="location-container">
               <div class="number">{{ i + 1 }}</div>
               <div class="location">
@@ -43,7 +43,7 @@
                 </div>
                 <div class="location-text">
                   <div class="name" [style]="'color: ' + location.color">{{ location.label }}</div>
-                  <div class="rating">{{ location.total_rating }}</div>
+                  <div class="rating">Total Points {{ location.total_rating }}</div>
                 </div>
               </div>
             </div>

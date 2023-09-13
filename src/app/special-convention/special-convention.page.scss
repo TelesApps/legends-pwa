@@ -1,11 +1,28 @@
 
 .location-container {
     display: flex;
-    transition: transform 0.3s ease-in-out; // This will provide a smooth animation effect
+    align-items: center;
 }
 
+.number {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+ion-item {
+    width: 95%;
+}
 .location {
     display: flex;
+    align-items: center;
+    .img {
+        width: 100px;
+    }
+    .rating {
+        font-weight: 400;
+        font-size: 11pt;
+    }
 }
 
 .location-text {
@@ -14,7 +31,3 @@
     font-size: 1.2rem;
 }
 
-:host {
-    display: block;
-    overflow: hidden; // Ensures that animated elements don't go outside the boundaries
-}

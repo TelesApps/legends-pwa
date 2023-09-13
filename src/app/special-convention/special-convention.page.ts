@@ -32,9 +32,6 @@ export interface Convention {
   styleUrls: ['./special-convention.page.scss'],
 })
 export class SpecialConventionPage implements OnInit {
-
-  allRatings$: BehaviorSubject<Array<Rating>> = new BehaviorSubject([]);
-
   allConventions: Array<Convention> = [
     {
       label: 'Chile (Santiago)',
@@ -108,8 +105,10 @@ export class SpecialConventionPage implements OnInit {
       total_rating: 0,
       color: '#386539'
     },
-  ]
+  ];
 
+  allRatings$: BehaviorSubject<Array<Rating>> = new BehaviorSubject([]);
+  usersSelected = 0;
 
   constructor(private afs: AngularFirestore) { }
 
@@ -135,18 +134,18 @@ export class SpecialConventionPage implements OnInit {
   onAddMember() {
     const rating: Rating =
     {
-      name: 'Melissa',
-      Chile: { label: 'Chile (Santiago)', rating: 2 },
-      Dominican_Republic: { label: 'Dominican Republic (Santo Domingo)', rating: 1 },
+      name: 'The Claudio',
+      Chile: { label: 'Chile (Santiago)', rating: 3 },
+      Dominican_Republic: { label: 'Dominican Republic (Santo Domingo)', rating: 2 },
       Guadeloupe: { label: 'Guadeloupe (Baie-Mahault)', rating: 2 },
       Paraguay: { label: 'Paraguay (Asunción)', rating: 2 },
-      Fiji: { label: 'Fiji (Suva)', rating: 1 },
-      Bulgaria: { label: 'Bulgaria (Sofia)', rating: 3 },
-      Czech_Republic: { label: 'Czech Republic (Prague)', rating: 5 },
-      Finland: { label: 'Finland (Helsinki)', rating: 5 },
-      France: { label: 'France (Lyon)', rating: 3 },
+      Fiji: { label: 'Fiji (Suva)', rating: 2 },
+      Bulgaria: { label: 'Bulgaria (Sofia)', rating: 4 },
+      Czech_Republic: { label: 'Czech Republic (Prague)', rating: 4 },
+      Finland: { label: 'Finland (Helsinki)', rating: 3 },
+      France: { label: 'France (Lyon)', rating: 5 },
       Hungary: { label: 'Hungary (Budapest)', rating: 3 },
-      Iceland: { label: 'Iceland (Reykjavík)', rating: 4 },
+      Iceland: { label: 'Iceland (Reykjavík)', rating: 5 },
       Switzerland: { label: 'Switzerland (Zürich)', rating: 5 },
       isSelected: false
     }
@@ -158,6 +157,7 @@ export class SpecialConventionPage implements OnInit {
     console.log('recalculating rating');
     // First, reset all total_ratings to 0 in allConventions
     this.allConventions.forEach(convention => convention.total_rating = 0);
+    this.usersSelected = 0;
 
     // Fetch the current value of allRatings$ (note: you might also consider using allRatings$.getValue() directly)
     const allRatings = this.allRatings$.getValue();
@@ -165,11 +165,12 @@ export class SpecialConventionPage implements OnInit {
     // For each rating that is selected, add its value to the corresponding Convention
     allRatings.forEach(rating => {
       if (rating.isSelected) {
+        this.usersSelected++;
         // Iterate through all keys of a rating object (excluding name and isSelected)
         Object.keys(rating).forEach(key => {
           if (key !== 'name' && key !== 'isSelected') {
             // Find the convention that matches the rating's key and add the rating value
-            const convention = this.allConventions.find(con => con.label.includes(key));
+            const convention = this.allConventions.find(con => con.label.includes(key.replace('_', ' ')));
             if (convention) {
               convention.total_rating += rating[key].rating;
             }
