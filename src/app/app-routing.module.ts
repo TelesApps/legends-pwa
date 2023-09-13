@@ -45,6 +45,10 @@ const routes: Routes = [
     path: 'encyclopedia-tabs',
     loadChildren: () => import('./encyclopedia-tabs/encyclopedia-tabs.module').then( m => m.EncyclopediaTabsPageModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'special-convention',
+    loadChildren: () => import('./special-convention/special-convention.module').then( m => m.SpecialConventionPageModule)
   }
 ];
 @NgModule({

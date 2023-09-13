@@ -11,6 +11,7 @@
       "schematics": {},
       "architect": {
         "build": {
+          "defaultConfiguration": "production",
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "www",
@@ -44,6 +45,14 @@
             "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -73,11 +82,15 @@
           }
         },
         "serve": {
+          "defaultConfiguration": "development",
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "app:build"
           },
           "configurations": {
+            "development": {
+              "browserTarget": "app:build:development"
+             },
             "production": {
               "browserTarget": "app:build:production"
             },

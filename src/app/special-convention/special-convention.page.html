@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Special Convention Rating</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col sizeXs="12" sizeSm="6" sizeMd="4">
+        <ion-row>
+          <ion-col size="12">
+            <h3 class="ion-text-center">Group Members</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col *ngFor="let rating of allRatings$ | async" size="12">
+            <ion-item>
+              <ion-checkbox [(ngModel)]="rating.isSelected" style="margin-right: 6px;" (ionChange)="recalculateTotalRating()"></ion-checkbox>
+              <ion-label>{{ rating.name }}</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size="12">
+            <ion-button (click)="onAddMember()">
+              Add Member
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col sizeXs="12" sizeSm="6" sizeMd="8">
+        <ion-row>
+          <ion-col size="12">
+            <h3 class="ion-text-center">Location Order</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-text-end" *ngFor="let location of allConventions let i = index" size="12">
+            <div class="location-container">
+              <div class="number">{{ i + 1 }}</div>
+              <div class="location">
+                <div class="img">
+                  <ion-img [src]="location.src"></ion-img>
+                </div>
+                <div class="location-text">
+                  <div class="name" [style]="'color: ' + location.color">{{ location.label }}</div>
+                  <div class="rating">{{ location.total_rating }}</div>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

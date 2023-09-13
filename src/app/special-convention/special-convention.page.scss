@@ -1,0 +1,20 @@
+
+.location-container {
+    display: flex;
+    transition: transform 0.3s ease-in-out; // This will provide a smooth animation effect
+}
+
+.location {
+    display: flex;
+}
+
+.location-text {
+    font-family: WTMannaSans,Roboto,'Noto Sans','Helvetica Neue',Helvetica,Arial,'Arial Unicode MS',sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+:host {
+    display: block;
+    overflow: hidden; // Ensures that animated elements don't go outside the boundaries
+}
