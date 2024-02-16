@@ -9,8 +9,7 @@
 <ion-content class="ion-padding">
   <form [formGroup]="createRoomForm" action="">
     <ion-item>
-      <ion-label position="floating">Room Name</ion-label>
-      <ion-input aria-label="Room Name" [formControl]="roomName" type="text" placeholder="Enter Room Name"></ion-input>
+      <ion-input aria-label="Room Name" [formControl]="roomName" type="text" label="Room Name" labelPlacement="floating" placeholder="Enter Room Name"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Player Limit:</ion-label>
@@ -35,8 +34,7 @@
       <ion-icon color="primary" name="add-circle" (click)="addTotalCharactersAllowed(1)"></ion-icon>
     </ion-item>
     <ion-item>
-      <ion-label>Public Room</ion-label>
-      <ion-checkbox [formControl]="publicGame">Public Room</ion-checkbox>
+      <ion-checkbox [formControl]="publicGame" label="Public Room">Public Room</ion-checkbox>
     </ion-item>
   </form>
 </ion-content>

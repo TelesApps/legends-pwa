@@ -20,4 +20,8 @@ export class GameRoomsService {
     // Get all charracters that contains the gameRoomId in their Array of gameRoomIds
     return this.afs.collection('characters', ref => ref.where("gameRoomIds", "array-contains", gameRoomId)).valueChanges();
   }
+
+  getAllGameRoomsWithPlayerId(playerId: string) {
+    return this.afs.collection('game_rooms', ref => ref.where("playersId", "array-contains", playerId)).valueChanges();
+  }
 }

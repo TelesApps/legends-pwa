@@ -52,6 +52,14 @@ export class FirebaseDataService {
     return this.afs.collection('characters').doc(id).delete();
   }
 
+  getCharacterPortrait(characterId): Observable<string> {
+    // update this to return the portrait url as a promise
+    
+    return this.afs.collection('characters').doc(characterId).get().pipe(map((doc: any) => {
+      return doc.data().portraitUrl;
+    }))
+  }
+
 
   // DO NOT DELETE, REFERENCE TO GETTING COLLECTION USING THE GET METHOD
   // getAllCharacters() {
