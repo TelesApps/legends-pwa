@@ -134,19 +134,19 @@ export class SpecialConventionPage implements OnInit {
   onAddMember() {
     const rating: Rating =
     {
-      name: 'The Claudio',
-      Chile: { label: 'Chile (Santiago)', rating: 3 },
+      name: 'Ms. Yvette Fatbottom 😂',
+      Chile: { label: 'Chile (Santiago)', rating: 2 },
       Dominican_Republic: { label: 'Dominican Republic (Santo Domingo)', rating: 2 },
       Guadeloupe: { label: 'Guadeloupe (Baie-Mahault)', rating: 2 },
       Paraguay: { label: 'Paraguay (Asunción)', rating: 2 },
-      Fiji: { label: 'Fiji (Suva)', rating: 2 },
-      Bulgaria: { label: 'Bulgaria (Sofia)', rating: 4 },
+      Fiji: { label: 'Fiji (Suva)', rating: 3 },
+      Bulgaria: { label: 'Bulgaria (Sofia)', rating: 3 },
       Czech_Republic: { label: 'Czech Republic (Prague)', rating: 4 },
-      Finland: { label: 'Finland (Helsinki)', rating: 3 },
-      France: { label: 'France (Lyon)', rating: 5 },
-      Hungary: { label: 'Hungary (Budapest)', rating: 3 },
-      Iceland: { label: 'Iceland (Reykjavík)', rating: 5 },
-      Switzerland: { label: 'Switzerland (Zürich)', rating: 5 },
+      Finland: { label: 'Finland (Helsinki)', rating: 5 },
+      France: { label: 'France (Lyon)', rating: 3 },
+      Hungary: { label: 'Hungary (Budapest)', rating: 4 },
+      Iceland: { label: 'Iceland (Reykjavík)', rating: 4 },
+      Switzerland: { label: 'Switzerland (Zürich)', rating: 4 },
       isSelected: false
     }
     this.updateRating(rating);
