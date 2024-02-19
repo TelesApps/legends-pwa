@@ -9,6 +9,7 @@ import { CreateRoomComponent } from '../modals/create-room/create-room.component
 import { CreateGameRoomObject, GameRoom } from '../interfaces/game-room.interface';
 import { GameRoomsService } from '../services/game-rooms.service';
 import { Subscription, take } from 'rxjs';
+import { ConfirmSelectionComponent } from '../modals/confirm-selection/confirm-selection.component';
 
 @Component({
   selector: 'app-main-lobby',
@@ -23,7 +24,8 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   isCreateRoomModalOpen: boolean = false;
   createRoomName: string = '';
   gamesSubs$: Subscription;
-  gameRooms: GameRoom[] = [];
+  playerGameRooms: GameRoom[] = [];
+  currentGame: GameRoom;
   characterPortraits: Map<string, string> = new Map<string, string>();
 
   constructor(
@@ -35,10 +37,9 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     this.auth.Player$.pipe(takeUntilDestroyed()).subscribe((player) => {
       if (player) {
         this.gamesSubs$ = this.gameRoomService.getAllGameRoomsWithPlayerId(player.playerId).subscribe((gameRooms: GameRoom[]) => {
-          console.log('gameRooms', gameRooms);
-          this.gameRooms = gameRooms;
+          this.setGameRooms(player, gameRooms);
           // get all portraits for all characters in these game rooms
-          this.gameRooms.forEach(gameroom => {
+          this.playerGameRooms.forEach(gameroom => {
             this.firebase.getCharacters(gameroom.charactersId).then((characters) => {
               characters.forEach(character => {
                 this.characterPortraits.set(character.characterId, character.portraitUrl);
@@ -57,10 +58,14 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     });
   }
 
-  loadCharacterPortraits(ids: string[]) {
-    // const characters = this.firebase.getCharacters(ids);
-    // console.log('characters', characters);
-    return true;
+  setGameRooms(player: Player, gameRooms: GameRoom[]) {
+    console.log('gameRooms', gameRooms);
+    this.playerGameRooms = gameRooms;
+    if (player.currentGameRoom) {
+      this.currentGame = gameRooms.find((gameRoom) => gameRoom.gameRoomId === player.currentGameRoom);
+    }
+    console.log('currentPlayerGameRoom', this.currentGame);
+
   }
 
   setProfileInfo(player: Player) {
@@ -100,6 +105,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
       gameRoom.charactersId = gameRoom.charactersId.concat(player.selectedCharactersIds);
       // Add game room ID to the player then save it to cloud.
       player.gameRooms.push(gameRoom.gameRoomId);
+      player.currentGameRoom = gameRoom.gameRoomId;
       this.auth.updateUserData(player);
       // Add game room ID to each character in game room then save it to cloud.
       this.charactersService.selectedCharacters.getValue().forEach((character) => {
@@ -112,6 +118,66 @@ export class MainLobbyPage implements OnInit, OnDestroy {
       console.log('save this to firebase, ', gameRoom);
       this.gameRoomService.createGameRoom(gameRoom);
     }
+  }
+
+  onGoToGame(player: Player, gameRoom: GameRoom) {
+    // this.gameRoomService.updateGameRoom(gameRoom);
+    // this.auth.updateUserData(player);
+  }
+
+  async onLeaveGameRoom(player: Player, gameRoom: GameRoom) {
+    let headerText = 'Leave Game Room?';
+    let bodyText = 'Are you sure you want to leave this game room? You can return or be invited back at any time!';
+    
+    const modal = await this.modalCtrl.create({
+      component: ConfirmSelectionComponent,
+      componentProps: {
+        'headerTxt': headerText,
+        'bodyTxt': bodyText,
+        'cancelBtnTxt': 'Cancel',
+        'confirmBtnTxt': 'Leave'
+      }
+    });
+    modal.present();
+
+    // Once Model Is Dismissed
+    const { data } = await modal.onWillDismiss();
+    if (data && data.isConfirm) {
+      
+    }
+  }
+
+  async onDeleteGame(player: Player, gameRoom: GameRoom) {
+    let headerText = 'Delete Game Room?';
+    let bodyText = 'Are you sure you want to delete this game room? This cannot be undone!';
+    
+    const modal = await this.modalCtrl.create({
+      component: ConfirmSelectionComponent,
+      componentProps: {
+        'headerTxt': headerText,
+        'bodyTxt': bodyText,
+        'cancelBtnTxt': 'Cancel',
+        'confirmBtnTxt': 'Delete Forever'
+      }
+    });
+    modal.present();
+
+    // Once Model Is Dismissed
+    const { data } = await modal.onWillDismiss();
+    if (data && data.isConfirm) {
+      // delete gameroom from player object
+      player.gameRooms.splice(player.gameRooms.indexOf(gameRoom.gameRoomId), 1);
+      // if gameroom is the current gameroom, set current gameroom to null
+      if (player.currentGameRoom === gameRoom.gameRoomId) {
+        player.currentGameRoom = null;
+      }
+      // update firebase
+      this.gameRoomService.deleteGameRoom(gameRoom.gameRoomId);
+    }
+
+
+
+
   }
 
   ngOnDestroy() {

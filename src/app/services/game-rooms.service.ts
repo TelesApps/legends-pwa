@@ -24,4 +24,8 @@ export class GameRoomsService {
   getAllGameRoomsWithPlayerId(playerId: string) {
     return this.afs.collection('game_rooms', ref => ref.where("playersId", "array-contains", playerId)).valueChanges();
   }
+
+  deleteGameRoom(gameRoomId: string) {
+    return this.afs.doc(`game_rooms/${gameRoomId}`).delete();
+  }
 }

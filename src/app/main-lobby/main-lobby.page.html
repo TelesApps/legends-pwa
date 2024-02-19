@@ -58,27 +58,57 @@
               You do not have any selected characters, please select one before proceeding</ion-card-title>
           </ion-card-header>
         </ion-card>
-        <ion-card>
+        <ion-card *ngIf="(auth.Player$ | async) as player" class="player-games">
           <ion-card-header>
             <ion-card-subtitle>Current Game</ion-card-subtitle>
-            <ion-card-title>Weazel's Game</ion-card-title>
+            @if (currentGame && currentGame.gameRoomName) {
+            <ion-item>
+              <ion-card-title>{{ currentGame.gameRoomName }}</ion-card-title>
+              @if (currentGame && currentGame.gameMasterId === player.playerId) {
+              <ion-fab-button slot="end" color="danger" aria-label="Delete" (click)="onDeleteGame(player, currentGame)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-fab-button>
+              } @else {
+              <ion-fab-button slot="end" color="warning">
+                <ion-icon name="log-out-outline"></ion-icon>
+              </ion-fab-button>
+              }
+            </ion-item>
+            } @else {
+            <ion-card-title>You are not part of any current games</ion-card-title>
+            }
           </ion-card-header>
           <ion-card-content>
             <h3>Games you belong to:</h3>
-            @for (gameRoom of gameRooms; track gameRoom.gameRoomId) {
-              <ion-item>
-                <ion-label>{{ gameRoom.gameRoomName }}</ion-label>
-                @if (gameRoom.charactersId && gameRoom.charactersId.length > 0) {
+            @for (gameRoom of playerGameRooms; track gameRoom.gameRoomId) {
+            <ion-item>
+              <ion-label>{{ gameRoom.gameRoomName }}</ion-label>
+              @if (gameRoom.charactersId && gameRoom.charactersId.length > 0) {
+                <div class="gameroom-portrait-list">
                   @for (id of gameRoom.charactersId; track id) {
-                    <div slot="" class="character">
-                      <ion-img class="thumbnail" [src]="characterPortraits.get(id)"></ion-img>
+                    <div slot="" class="character thumbnail">
+                      <ion-img [src]="characterPortraits.get(id)"></ion-img>
                     </div>
                   }
-                }
-                <ion-button>
-                  Leave Game
-                </ion-button>
-              </ion-item>              
+                </div>
+              }
+              @if(player.currentGameRoom !== gameRoom.gameRoomId) {
+                <ion-fab-button slot="end" (click)="onGoToGame(player, gameRoom)">
+                  <ion-icon name="arrow-redo-outline"></ion-icon>
+                </ion-fab-button>
+              } @else {
+               <div style="width: 44px;"></div>
+              }
+              @if (gameRoom && gameRoom.gameMasterId === player.playerId) {
+              <ion-fab-button slot="end" color="danger" (click)="onDeleteGame(player, gameRoom)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-fab-button>
+              } @else {
+              <ion-fab-button slot="end" color="warning" (click)="onLeaveGameRoom(player, gameRoom)">
+                <ion-icon name="log-out-outline"></ion-icon>
+              </ion-fab-button>
+              }
+            </ion-item>
             }
           </ion-card-content>
         </ion-card>
@@ -106,6 +136,12 @@
                 Refresh
               </ion-button>
             </ion-card-subtitle>
+            <ion-card-content>
+
+              <ion-item>
+                
+              </ion-item>
+            </ion-card-content>
           </ion-card-header>
           <ion-card-content>
 
@@ -115,6 +151,12 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-popover trigger="hover-trigger" triggerAction="hover">
+  <ng-template>
+    <ion-content class="ion-padding">Hello World!</ion-content>
+  </ng-template>
+</ion-popover>
 
 <ion-footer>
   <ion-toolbar>
