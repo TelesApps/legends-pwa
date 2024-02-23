@@ -15,6 +15,15 @@ export class GameRoomsService {
     return docRef.set(gameRoom, { merge: true });
   }
 
+  updateGameRoom(gameRoom: GameRoom) {
+    const docRef: AngularFirestoreDocument<any> = this.afs.doc(`game_rooms/${gameRoom.gameRoomId}`);
+    return docRef.set(gameRoom, { merge: true });
+  }
+
+  getAllPublicGameRooms() {
+    return this.afs.collection('game_rooms', ref => ref.where("isGamePublic", "==", true)).valueChanges();
+  }
+
   // Get every character in game room from firebase, and subscribe to their value changes
   getAllGameRoomCharacters(gameRoomId: string) {
     // Get all charracters that contains the gameRoomId in their Array of gameRoomIds

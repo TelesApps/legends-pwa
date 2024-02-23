@@ -8,8 +8,9 @@ import { ModalController } from '@ionic/angular';
 import { CreateRoomComponent } from '../modals/create-room/create-room.component';
 import { CreateGameRoomObject, GameRoom } from '../interfaces/game-room.interface';
 import { GameRoomsService } from '../services/game-rooms.service';
-import { Subscription, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { ConfirmSelectionComponent } from '../modals/confirm-selection/confirm-selection.component';
+import { InformPlayerComponent } from '../modals/inform-player/inform-player.component';
 
 @Component({
   selector: 'app-main-lobby',
@@ -25,6 +26,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   createRoomName: string = '';
   gamesSubs$: Subscription;
   playerGameRooms: GameRoom[] = [];
+  publicGameRooms: GameRoom[] = [];
   currentGame: GameRoom;
   characterPortraits: Map<string, string> = new Map<string, string>();
 
@@ -34,6 +36,10 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     private firebase: FirebaseDataService,
     private gameRoomService: GameRoomsService,
     private modalCtrl: ModalController) {
+    // Get all public rooms
+    this.gameRoomService.getAllPublicGameRooms().pipe(takeUntilDestroyed()).subscribe((gameRooms: GameRoom[]) => {
+      this.publicGameRooms = gameRooms;
+    });
     this.auth.Player$.pipe(takeUntilDestroyed()).subscribe((player) => {
       if (player) {
         this.gamesSubs$ = this.gameRoomService.getAllGameRoomsWithPlayerId(player.playerId).subscribe((gameRooms: GameRoom[]) => {
@@ -58,6 +64,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     });
   }
 
+
   setGameRooms(player: Player, gameRooms: GameRoom[]) {
     console.log('gameRooms', gameRooms);
     this.playerGameRooms = gameRooms;
@@ -65,6 +72,45 @@ export class MainLobbyPage implements OnInit, OnDestroy {
       this.currentGame = gameRooms.find((gameRoom) => gameRoom.gameRoomId === player.currentGameRoom);
     }
     console.log('currentPlayerGameRoom', this.currentGame);
+
+  }
+
+  async onJoinNewGame(player: Player, gameroom: GameRoom) {
+    // Make sure the number of selected characters is equal or less to the number of characters per player for this room
+    if (player.selectedCharactersIds.length > gameroom.charactersPerPlayerAlloted) {
+      console.log('You have selected too many characters for this game room');
+      const modal = await this.modalCtrl.create({
+        component: InformPlayerComponent,
+        componentProps: {
+          'headerTxt': 'Cant Join Game Room',
+          'bodyTxt': 'You have too many characters selected for this game room. This game room allows for ' +
+            gameroom.charactersPerPlayerAlloted + ' characters per player.',
+        }
+      });
+      modal.present();
+      return;
+    } else {
+      // Add game room ID to the player then save it to cloud.
+      player.gameRooms.push(gameroom.gameRoomId);
+      player.currentGameRoom = gameroom.gameRoomId;
+      this.auth.updateUserData(player);
+      console.log('updated player', player);
+      // Add game room ID to each character in game room then save it to cloud.
+      this.charactersService.selectedCharacters.getValue().forEach((character) => {
+        if (!character.gameRoomIds) {
+          character['gameRoomIds'] = [];
+        }
+        character.gameRoomIds.push(gameroom.gameRoomId);
+        this.firebase.updateCharacter(character);
+        console.log('updated character', character);
+      });
+      // add the character IDs to the game room
+      gameroom.charactersId = gameroom.charactersId.concat(player.selectedCharactersIds);
+      gameroom.playersId.push(player.playerId);
+      this.gameRoomService.updateGameRoom(gameroom);
+      console.log('updated game room', gameroom);
+    }
+
 
   }
 
@@ -128,7 +174,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   async onLeaveGameRoom(player: Player, gameRoom: GameRoom) {
     let headerText = 'Leave Game Room?';
     let bodyText = 'Are you sure you want to leave this game room? You can return or be invited back at any time!';
-    
+
     const modal = await this.modalCtrl.create({
       component: ConfirmSelectionComponent,
       componentProps: {
@@ -143,14 +189,14 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     // Once Model Is Dismissed
     const { data } = await modal.onWillDismiss();
     if (data && data.isConfirm) {
-      
+
     }
   }
 
   async onDeleteGame(player: Player, gameRoom: GameRoom) {
     let headerText = 'Delete Game Room?';
     let bodyText = 'Are you sure you want to delete this game room? This cannot be undone!';
-    
+
     const modal = await this.modalCtrl.create({
       component: ConfirmSelectionComponent,
       componentProps: {

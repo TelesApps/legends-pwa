@@ -13,10 +13,11 @@ export interface Player {
     photoUrl?: string;
 }
 
-export function CreateUser(playerId: string, userName: string, email: string, emailVerified: boolean = false, photoUrl?: string): Player {
+export function CreateUser(
+    playerId: string, userName: string, email: string, emailVerified: boolean = false, photoUrl?: string, playerStatus = 'visitor'): Player {
     const player: Player = {
         playerId,
-        playerStatus: 'visitor',
+        playerStatus: playerStatus as 'visitor' | 'player' | 'gameMaster',
         userName,
         email,
         emailVerified,

@@ -84,20 +84,20 @@
             <ion-item>
               <ion-label>{{ gameRoom.gameRoomName }}</ion-label>
               @if (gameRoom.charactersId && gameRoom.charactersId.length > 0) {
-                <div class="gameroom-portrait-list">
-                  @for (id of gameRoom.charactersId; track id) {
-                    <div slot="" class="character thumbnail">
-                      <ion-img [src]="characterPortraits.get(id)"></ion-img>
-                    </div>
-                  }
+              <div class="gameroom-portrait-list">
+                @for (id of gameRoom.charactersId; track id) {
+                <div slot="" class="character thumbnail">
+                  <ion-img [src]="characterPortraits.get(id)"></ion-img>
                 </div>
+                }
+              </div>
               }
               @if(player.currentGameRoom !== gameRoom.gameRoomId) {
-                <ion-fab-button slot="end" (click)="onGoToGame(player, gameRoom)">
-                  <ion-icon name="arrow-redo-outline"></ion-icon>
-                </ion-fab-button>
+              <ion-fab-button slot="end" (click)="onGoToGame(player, gameRoom)">
+                <ion-icon name="arrow-redo-outline"></ion-icon>
+              </ion-fab-button>
               } @else {
-               <div style="width: 44px;"></div>
+              <div style="width: 44px;"></div>
               }
               @if (gameRoom && gameRoom.gameMasterId === player.playerId) {
               <ion-fab-button slot="end" color="danger" (click)="onDeleteGame(player, gameRoom)">
@@ -129,7 +129,7 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-card>
+        <ion-card *ngIf="(auth.Player$ | async) as player">
           <ion-card-header>
             <ion-card-subtitle>Search Public Games
               <ion-button size="small">
@@ -137,10 +137,22 @@
               </ion-button>
             </ion-card-subtitle>
             <ion-card-content>
-
+              @if (publicGameRooms && publicGameRooms.length > 0) {
+              @for (publicGame of publicGameRooms; track publicGame.gameRoomId) {
               <ion-item>
-                
+                <ion-label>{{ publicGame.gameRoomName }}</ion-label>
+                <!-- // Chech if player is already part of the gameroom -->
+                @if(publicGame.playersId && publicGame.playersId.includes(player.playerId)) {
+                already a member
+                } @else {
+                <ion-button (click)="onJoinNewGame(player, publicGame)" expand="block">
+                  Join Game
+                </ion-button>
+                }
               </ion-item>
+
+              }
+              }
             </ion-card-content>
           </ion-card-header>
           <ion-card-content>

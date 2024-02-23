@@ -29,6 +29,7 @@ export class FirebaseDataService {
 
   /// Makes a single call to get an array of characters based on an array of string.
   getCharacters(ids: string[]) {
+    if(ids === null || ids.length === 0) return null;
     return this.afs.collection('characters', ref => ref.where("characterId", "in", ids)).get().pipe(map((querysnapshot) => {
       const characters: Array<Character> = [];
       querysnapshot.forEach(doc => {

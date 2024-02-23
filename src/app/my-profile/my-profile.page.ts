@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { CharactersService } from '../services/characters.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -11,7 +12,7 @@ export class MyProfilePage implements OnInit {
 
   backUrl: string = '';
   
-  constructor(private auth: AuthService, private route: ActivatedRoute) { }
+  constructor(private auth: AuthService, private route: ActivatedRoute, private characterService: CharactersService) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -23,6 +24,7 @@ export class MyProfilePage implements OnInit {
   }
 
   onLogout() {
+    this.characterService.selectedCharacters.next([]);
     this.auth.logOut();
   }
 
