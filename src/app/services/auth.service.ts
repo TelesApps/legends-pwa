@@ -99,6 +99,7 @@ export class AuthService {
 
   // Update User information in Firebase Database
   updateUserData(userData: Player) {
+    console.log('updating user data with the following data', userData);
     const docRef: AngularFirestoreDocument<any> = this.afs.doc(`players/${userData.playerId}`);
     return docRef.set(userData, { merge: true });
   }

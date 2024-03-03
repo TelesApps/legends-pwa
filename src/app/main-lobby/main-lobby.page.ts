@@ -90,11 +90,6 @@ export class MainLobbyPage implements OnInit, OnDestroy {
       modal.present();
       return;
     } else {
-      // Add game room ID to the player then save it to cloud.
-      player.gameRooms.push(gameroom.gameRoomId);
-      player.currentGameRoom = gameroom.gameRoomId;
-      this.auth.updateUserData(player);
-      console.log('updated player', player);
       // Add game room ID to each character in game room then save it to cloud.
       this.charactersService.selectedCharacters.getValue().forEach((character) => {
         if (!character.gameRoomIds) {
@@ -109,6 +104,11 @@ export class MainLobbyPage implements OnInit, OnDestroy {
       gameroom.playersId.push(player.playerId);
       this.gameRoomService.updateGameRoom(gameroom);
       console.log('updated game room', gameroom);
+      // Add game room ID to the player then save it to cloud.
+      player.gameRooms.push(gameroom.gameRoomId);
+      player.currentGameRoom = gameroom.gameRoomId;
+      this.auth.updateUserData(player);
+      console.log('updated player', player);
     }
 
 
@@ -189,7 +189,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     // Once Model Is Dismissed
     const { data } = await modal.onWillDismiss();
     if (data && data.isConfirm) {
-
+      this.gameRoomService.leaveGameRoom(player, gameRoom);
     }
   }
 
@@ -211,19 +211,9 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     // Once Model Is Dismissed
     const { data } = await modal.onWillDismiss();
     if (data && data.isConfirm) {
-      // delete gameroom from player object
-      player.gameRooms.splice(player.gameRooms.indexOf(gameRoom.gameRoomId), 1);
-      // if gameroom is the current gameroom, set current gameroom to null
-      if (player.currentGameRoom === gameRoom.gameRoomId) {
-        player.currentGameRoom = null;
-      }
-      // update firebase
-      this.gameRoomService.deleteGameRoom(gameRoom.gameRoomId);
+      // Deleted the gameroom ID from the players and Characters then deletes the game
+      this.gameRoomService.deleteGameRoom(gameRoom);
     }
-
-
-
-
   }
 
   ngOnDestroy() {
