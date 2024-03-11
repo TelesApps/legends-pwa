@@ -11,6 +11,7 @@ import { GameRoomsService } from '../services/game-rooms.service';
 import { Observable, Subscription, take } from 'rxjs';
 import { ConfirmSelectionComponent } from '../modals/confirm-selection/confirm-selection.component';
 import { InformPlayerComponent } from '../modals/inform-player/inform-player.component';
+import { Character } from '../interfaces/character.interface';
 
 @Component({
   selector: 'app-main-lobby',
@@ -25,6 +26,8 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   isCreateRoomModalOpen: boolean = false;
   createRoomName: string = '';
   gamesSubs$: Subscription;
+  characterSubs$: Subscription;
+  playerCharacters: Character[] = [];
   playerGameRooms: GameRoom[] = [];
   publicGameRooms: GameRoom[] = [];
   currentGame: GameRoom;
@@ -33,7 +36,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   constructor(
     public auth: AuthService,
     public charactersService: CharactersService,
-    private firebase: FirebaseDataService,
+    public firebase: FirebaseDataService,
     private gameRoomService: GameRoomsService,
     private modalCtrl: ModalController) {
     // Get all public rooms
@@ -42,6 +45,11 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     });
     this.auth.Player$.pipe(takeUntilDestroyed()).subscribe((player) => {
       if (player) {
+        this.characterSubs$ = this.firebase.getAllCharacters(player.playerId).subscribe((characters: Character[]) => {
+          this.playerCharacters = characters;
+          this.charactersService.selectedCharacters.next(characters);
+          this.auth.updatePlayerSelectedCharacters(characters);
+        });
         this.gamesSubs$ = this.gameRoomService.getAllGameRoomsWithPlayerId(player.playerId).subscribe((gameRooms: GameRoom[]) => {
           this.setGameRooms(player, gameRooms);
           // get all portraits for all characters in these game rooms
@@ -73,6 +81,11 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     }
     console.log('currentPlayerGameRoom', this.currentGame);
 
+  }
+
+  onViewCharacter(index: number) {
+    console.log('view character', index);
+    
   }
 
   async onJoinNewGame(player: Player, gameroom: GameRoom) {
@@ -167,8 +180,18 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   }
 
   onGoToGame(player: Player, gameRoom: GameRoom) {
-    // this.gameRoomService.updateGameRoom(gameRoom);
-    // this.auth.updateUserData(player);
+    // set the players selected characters to the characters he has in this room if there are any.
+    const characters = this.playerCharacters.filter((character) => gameRoom.charactersId.includes(character.characterId));
+    this.charactersService.selectedCharacters.next(characters);
+    this.auth.updatePlayerSelectedCharacters(characters).then(() => {
+      // set the current game room for the player
+      player.currentGameRoom = gameRoom.gameRoomId;
+      this.auth.updateUserData(player).then(() => {
+        this.currentGame = gameRoom;
+        // navigate to the game room
+        // this.router.navigate(['/game-room', gameRoom.gameRoomId]);
+      });
+    });
   }
 
   async onLeaveGameRoom(player: Player, gameRoom: GameRoom) {
@@ -219,6 +242,8 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.gamesSubs$)
       this.gamesSubs$.unsubscribe();
+    if (this.characterSubs$)
+      this.characterSubs$.unsubscribe();
   }
 
 }

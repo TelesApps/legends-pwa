@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, firstValueFrom, of } from 'rxjs';
 import { CreateUser, Player } from '../interfaces/player.interface';
-import { first, map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap, take } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { actionCodeSettings } from 'src/environments/environment';
 import * as firebase from 'firebase/auth';
 import { Router } from '@angular/router';
+import { Character } from '../interfaces/character.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ export class AuthService {
     try {
       console.log('login with google called');
       const provider = new firebase.GoogleAuthProvider();
-      return this.oAuthLogin(provider);
+      this.oAuthLogin(provider);
     } catch (error) {
       console.error('Error Loging in with google');
       console.error(error);
@@ -75,9 +76,9 @@ export class AuthService {
   }
 
   private async oAuthLogin(provider) {
-    return this.afAuth.signInWithPopup(provider)
+    this.afAuth.signInWithPopup(provider)
       .then((credential) => {
-        this.Player$.subscribe((user) => {
+        this.Player$.pipe(take(1)).subscribe((user) => {
           // Create New User if User is Null
           if (!user) {
             console.log('Creating a new User Profile');
@@ -95,6 +96,15 @@ export class AuthService {
           }
         });
       }).catch((err) => {console.error(err)});
+  }
+
+  async updatePlayerSelectedCharacters(characters: Character[]) {
+    const player = await this.getPlayer();
+    // check if the list of selected characters is different from the current list
+    if (JSON.stringify(player.selectedCharactersIds) !== JSON.stringify(characters.map(c => c.characterId))) {
+      player.selectedCharactersIds = characters.map(c => c.characterId);
+      this.updateUserData(player);
+    }
   }
 
   // Update User information in Firebase Database

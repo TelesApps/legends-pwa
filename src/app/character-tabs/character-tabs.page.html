@@ -1,7 +1,12 @@
 <ion-header>
   <ion-toolbar>
+    @if(viewMode === 'personal') {
+    <ion-icon id="back-icon" slot="start" name="arrow-back" [routerLink]="['/' + backUrl]"></ion-icon>
+    }
     <ion-title *ngIf="characterSer.selectedCharacters && characterSer.selectedCharacters.getValue()[0]" slot="start">
-      <ion-select interface="popover" [value]="(characterSer.selectedCharacters | async)[0].characterId" (ionChange)="onViewChange($event)">
+      <ion-select interface="popover"
+        [value]="selectedCharacterId? selectedCharacterId : (characterSer.selectedCharacters | async)[0].characterId"
+        (ionChange)="onViewChange($event)">
         <ion-select-option *ngFor="let char of (characterSer.selectedCharacters | async)" [value]="char.characterId">
           {{char.characterName }}</ion-select-option>
       </ion-select>
@@ -48,9 +53,11 @@
       <ion-icon name="finger-print-outline"></ion-icon>
       <ion-label>Abilities/Traits</ion-label>
     </ion-tab-button>
-    <ion-tab-button tab="party">
-      <ion-icon name="people-outline"></ion-icon>
-      <ion-label>Party</ion-label>
-    </ion-tab-button>
+    @if (viewMode !== 'personal') {
+      <ion-tab-button tab="party">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label>Party</ion-label>
+      </ion-tab-button>
+    }
   </ion-tab-bar>
 </ion-tabs>

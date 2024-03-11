@@ -8,6 +8,7 @@ import { InformPlayerComponent } from '../modals/inform-player/inform-player.com
 import { AuthService } from '../services/auth.service';
 import { CharactersService } from '../services/characters.service';
 import { FirebaseDataService } from '../services/firebase-data.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-select-character',
@@ -29,7 +30,7 @@ export class SelectCharacterPage implements OnInit {
   ngOnInit() {
     this.auth.getPlayer().then((player: Player) => {
       console.log('got player', player);
-      this.firebaseData.getAllCharacters(player.playerId).subscribe((characters: Array<Character>) => {
+      this.firebaseData.getAllCharacters(player.playerId).pipe(take(1)).subscribe((characters: Array<Character>) => {
         player.selectedCharactersIds.forEach(id => {
           const selectedCharacter = characters.find(c => c.characterId === id);
           if (selectedCharacter) {
