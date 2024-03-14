@@ -23,10 +23,6 @@
       <p class="totalCharacters">{{ charactersPerPlayer? charactersPerPlayer : 'No Limit' }}</p>
       <ion-icon color="primary" name="add-circle" (click)="addCharactersPerPlayer(1)"></ion-icon>
     </ion-item>
-    <ion-text *ngIf="isLimitError" style="font-size: 10pt;" color="danger">
-      The number of characters you have exceeds the limit your are setting, first select fewer characters under character selection
-      before creating a new room with this limit.
-    </ion-text>
     <ion-item>
       <ion-label>Total Characters Allowed:</ion-label>
       <ion-icon color="primary" name="remove-circle" (click)="addTotalCharactersAllowed(-1)"></ion-icon>
@@ -39,7 +35,7 @@
   </form>
 </ion-content>
 <ion-toolbar>
-  <ion-button [disabled]="!createRoomForm.valid || isLimitError" (click)="onCreateRoom()" expand="block">
+  <ion-button [disabled]="!createRoomForm.valid" (click)="onCreateRoom()" expand="block">
     Create Room
   </ion-button>
 </ion-toolbar>

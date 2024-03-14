@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Character } from '../interfaces/character.interface';
 
@@ -28,15 +28,17 @@ export class FirebaseDataService {
   }
 
   /// Makes a single call to get an array of characters based on an array of string.
-  getCharacters(ids: string[]) {
-    if(ids === null || ids.length === 0) return null;
-    return this.afs.collection('characters', ref => ref.where("characterId", "in", ids)).get().pipe(map((querysnapshot) => {
+  getCharacters(ids: string[]): Promise<Character[] | null> {
+    if (ids === null || ids.length === 0) {
+      return Promise.resolve(null); // Now returns a Promise that resolves to null
+    }
+    return firstValueFrom(this.afs.collection('characters', ref => ref.where("characterId", "in", ids)).get().pipe(map((querysnapshot) => {
       const characters: Array<Character> = [];
       querysnapshot.forEach(doc => {
         characters.push(<Character>doc.data());
       });
       return characters;
-    })).toPromise()
+    })));
   }
 
   getAllCharacters(playerId: string) {

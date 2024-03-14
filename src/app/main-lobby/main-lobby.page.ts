@@ -53,13 +53,21 @@ export class MainLobbyPage implements OnInit, OnDestroy {
         this.gamesSubs$ = this.gameRoomService.getAllGameRoomsWithPlayerId(player.playerId).subscribe((gameRooms: GameRoom[]) => {
           this.setGameRooms(player, gameRooms);
           // get all portraits for all characters in these game rooms
-          this.playerGameRooms.forEach(gameroom => {
-            this.firebase.getCharacters(gameroom.charactersId).then((characters) => {
-              characters.forEach(character => {
-                this.characterPortraits.set(character.characterId, character.portraitUrl);
-              });
+          if (this.playerGameRooms && this.playerGameRooms.length > 0) {
+            this.playerGameRooms.forEach(gameroom => {
+              if (gameroom && gameroom.charactersId) {
+                this.firebase.getCharacters(gameroom.charactersId).then((characters) => {
+                  if (characters) {
+                    characters.forEach(character => {
+                      this.characterPortraits.set(character.characterId, character.portraitUrl);
+                    });
+                  }
+                }).catch((error) => {
+                  console.log('No characters were found');
+                });
+              }
             });
-          });
+          }
         });
       }
     });
@@ -75,8 +83,10 @@ export class MainLobbyPage implements OnInit, OnDestroy {
 
   setGameRooms(player: Player, gameRooms: GameRoom[]) {
     console.log('gameRooms', gameRooms);
-    this.playerGameRooms = gameRooms;
-    if (player.currentGameRoom) {
+    if (gameRooms && gameRooms.length > 0) {
+      this.playerGameRooms = gameRooms;
+    }
+    if (player && player.currentGameRoom) {
       this.currentGame = gameRooms.find((gameRoom) => gameRoom.gameRoomId === player.currentGameRoom);
     }
     console.log('currentPlayerGameRoom', this.currentGame);
@@ -85,7 +95,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
 
   onViewCharacter(index: number) {
     console.log('view character', index);
-    
+
   }
 
   async onJoinNewGame(player: Player, gameroom: GameRoom) {
@@ -161,19 +171,10 @@ export class MainLobbyPage implements OnInit, OnDestroy {
       gameRoom.totalCharactersAlloted = data.totalCharacters;
       gameRoom.gameMasterId = player.playerId;
       gameRoom.playersId.push(player.playerId);
-      gameRoom.charactersId = gameRoom.charactersId.concat(player.selectedCharactersIds);
       // Add game room ID to the player then save it to cloud.
       player.gameRooms.push(gameRoom.gameRoomId);
       player.currentGameRoom = gameRoom.gameRoomId;
       this.auth.updateUserData(player);
-      // Add game room ID to each character in game room then save it to cloud.
-      this.charactersService.selectedCharacters.getValue().forEach((character) => {
-        if (!character.gameRoomIds) {
-          character['gameRoomIds'] = [];
-        }
-        character.gameRoomIds.push(gameRoom.gameRoomId);
-        this.firebase.updateCharacter(character);
-      });
       console.log('save this to firebase, ', gameRoom);
       this.gameRoomService.createGameRoom(gameRoom);
     }
@@ -183,15 +184,17 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     // set the players selected characters to the characters he has in this room if there are any.
     const characters = this.playerCharacters.filter((character) => gameRoom.charactersId.includes(character.characterId));
     this.charactersService.selectedCharacters.next(characters);
-    this.auth.updatePlayerSelectedCharacters(characters).then(() => {
-      // set the current game room for the player
-      player.currentGameRoom = gameRoom.gameRoomId;
-      this.auth.updateUserData(player).then(() => {
-        this.currentGame = gameRoom;
-        // navigate to the game room
-        // this.router.navigate(['/game-room', gameRoom.gameRoomId]);
+    if (characters) {
+      this.auth.updatePlayerSelectedCharacters(characters).then(() => {
+        // set the current game room for the player
+        player.currentGameRoom = gameRoom.gameRoomId;
+        this.auth.updateUserData(player).then(() => {
+          this.currentGame = gameRoom;
+          // navigate to the game room
+          // this.router.navigate(['/game-room', gameRoom.gameRoomId]);
+        });
       });
-    });
+    }
   }
 
   async onLeaveGameRoom(player: Player, gameRoom: GameRoom) {

@@ -16,7 +16,7 @@ export class CreateRoomComponent implements OnInit {
   publicGame: FormControl = new FormControl({ value: true, disabled: true }, [Validators.required]);
   playerLimit: number = 0;
   charactersPerPlayer: number = 1;
-  isLimitError = false;
+  // isLimitError = false;
   totalCharacters: number = 0;
   @Input() player: Player;
 
@@ -26,9 +26,6 @@ export class CreateRoomComponent implements OnInit {
     this.createRoomForm = new FormGroup({
       roomName: this.roomName
     });
-    if (this.player && this.player.selectedCharactersIds.length > 1) {
-      this.charactersPerPlayer = this.player.selectedCharactersIds.length;
-    }
   }
 
   onCancel() {
@@ -47,9 +44,6 @@ export class CreateRoomComponent implements OnInit {
     if (this.charactersPerPlayer < 0) {
       this.charactersPerPlayer = 0;
     }
-    this.charactersPerPlayer < this.player.selectedCharactersIds.length ? this.isLimitError = true : this.isLimitError = false;
-    if (this.charactersPerPlayer === 0)
-      this.isLimitError = false;
   }
 
   addTotalCharactersAllowed(value) {
