@@ -12,7 +12,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ConfirmSelectionComponent } from './modals/confirm-selection/confirm-selection.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AirtableDataService } from './services/airtable-data.service';
 import { ItemsListPage } from './encyclopedia-tabs/items-list/items-list.page';
 import { FormsModule } from '@angular/forms';
@@ -31,13 +31,10 @@ import { GameRoomsService } from './services/game-rooms.service';
 
 firebase.initializeApp(environment.firebaseConfig);
 
-@NgModule({
-    declarations: [AppComponent, ItemsListPage],
-    imports: [
-        BrowserModule,
+@NgModule({ declarations: [AppComponent, ItemsListPage],
+    bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
         IonicModule.forRoot(),
-        HttpClientModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AppRoutingModule,
         LoginPageModule,
@@ -53,15 +50,12 @@ firebase.initializeApp(environment.firebaseConfig);
             // Register the ServiceWorker as soon as the application is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000'
-        })
-    ],
-    providers: [
+        })], providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         CharacterCreationService,
         AirtableDataService,
         CalculationsService,
-        GameRoomsService
-    ],
-    bootstrap: [AppComponent]
-})
+        GameRoomsService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {}
