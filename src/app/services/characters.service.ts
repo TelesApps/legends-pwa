@@ -15,6 +15,7 @@ import { DmgType } from '../interfaces/airtable-data.interface';
 })
 export class CharactersService {
 
+  allCharacters: BehaviorSubject<Array<Character>> = new BehaviorSubject([]);
   selectedCharacters: BehaviorSubject<Array<Character>> = new BehaviorSubject([]);
   viewIndex: number = 0;
 
@@ -28,7 +29,7 @@ export class CharactersService {
         if (player.charactersId) {
           console.log('inside player subscribe', player)
           this.firebaseData.getCharacters(player.selectedCharactersIds).then((characters) => {
-            console.log('characters', characters)
+            console.log('selected characters', characters)
             this.selectedCharacters.next(characters);
           });
 

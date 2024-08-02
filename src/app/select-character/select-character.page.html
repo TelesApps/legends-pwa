@@ -16,15 +16,22 @@
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
-        <h2 *ngIf="characters && characters.length == 0">You have no characters, try creating a new one.</h2>
-        <ion-item *ngFor="let character of characters let i = index" lines="none">
-          <ion-checkbox slot="end" (ionChange)="onCharacterClick($event, character)" [checked]="character.isPlayerUsing"></ion-checkbox>
+        @if (characters && characters.length == 0) {
+        <h2>You have no characters, try creating a new one.</h2>
+        } @else {
+        @for (character of characters; track character) {
+        <ion-item lines="none">
+          <ion-checkbox slot="end" [(ngModel)]="character.isPlayerUsing"></ion-checkbox>
           <ion-thumbnail class="portrait">
             <img [src]="character.portraitUrl" />
           </ion-thumbnail>
-          <ion-label class="ion-margin-start">{{ character.characterName }} <span *ngIf="character.classTitle">({{
+          <ion-label style="z-index: -1;" class="ion-margin-start">{{ character.characterName }} <span *ngIf="character.classTitle">({{
               character.classTitle }})</span></ion-label>
         </ion-item>
+
+        }
+
+        }
       </ion-col>
     </ion-row>
   </ion-grid>

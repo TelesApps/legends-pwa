@@ -98,8 +98,7 @@ export class AuthService {
       }).catch((err) => {console.error(err)});
   }
 
-  async updatePlayerSelectedCharacters(characters: Character[]) {
-    const player = await this.getPlayer();
+  async updatePlayerSelectedCharacters(characters: Character[], player: Player) {
     // check if the list of selected characters is different from the current list
     if (JSON.stringify(player.selectedCharactersIds) !== JSON.stringify(characters.map(c => c.characterId))) {
       player.selectedCharactersIds = characters.map(c => c.characterId);

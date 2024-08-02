@@ -75,6 +75,16 @@ ion-card {
     }
 }
 
+#selected-icon {
+    align-self: flex-end;
+    height: 0px;
+    color: var(--ion-background-color);
+    ion-icon {
+        background-color: var(--ion-color-primary);;
+        border-radius: 50%;
+    }
+}
+
 .gameroom-portrait-list {
     display: flex;
     flex-wrap: wrap;

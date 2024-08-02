@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Character } from '../interfaces/character.interface';
@@ -8,7 +8,6 @@ import { InformPlayerComponent } from '../modals/inform-player/inform-player.com
 import { AuthService } from '../services/auth.service';
 import { CharactersService } from '../services/characters.service';
 import { FirebaseDataService } from '../services/firebase-data.service';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-select-character',
@@ -19,10 +18,11 @@ export class SelectCharacterPage implements OnInit {
 
   characters: Array<Character> = [];
   backUrl: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private auth: AuthService,
+    public auth: AuthService,
     private firebaseData: FirebaseDataService,
     public modalController: ModalController,
     public characterSer: CharactersService) { }
@@ -30,17 +30,26 @@ export class SelectCharacterPage implements OnInit {
   ngOnInit() {
     this.auth.getPlayer().then((player: Player) => {
       console.log('got player', player);
-      this.firebaseData.getAllCharacters(player.playerId).pipe(take(1)).subscribe((characters: Array<Character>) => {
-        player.selectedCharactersIds.forEach(id => {
-          const selectedCharacter = characters.find(c => c.characterId === id);
-          if (selectedCharacter) {
-            selectedCharacter.isPlayerUsing = true;
+      this.firebaseData.getAllCharactersData(player.playerId).then((characters: Array<Character>) => {
+        console.log('got all characters', characters);
+        characters.forEach(chararacter => {
+          this.characters.push(chararacter);
+          // if character.isPlayerUsing is undefined, set it to false
+          if (chararacter.isPlayerUsing === undefined) {
+            chararacter.isPlayerUsing = false;
+          }
+          // if character id is found inside player.selectedCharactersIds, set isPlayerUsing to true
+          if (player.selectedCharactersIds.find(id => id === chararacter.characterId)) {
+            chararacter.isPlayerUsing = true;
+          } else {
+            chararacter.isPlayerUsing = false;
           }
         });
-        console.log('characters', characters);
-        this.characters = characters;
       });
     })
+
+    this.auth.Player$.pipe().subscribe((player: Player) => {
+    });
     this.route.queryParams.subscribe((params) => {
       console.log(params);
       if (params.breadcrumb) {
@@ -57,12 +66,8 @@ export class SelectCharacterPage implements OnInit {
   }
 
   async onCharacterClick(event, character: Character) {
-    if (event.detail.checked) {
-      character.isPlayerUsing = true;
-      // }
-    } else {
-      character.isPlayerUsing = false;
-    }
+    console.log('character', character);
+    character.isPlayerUsing = !character.isPlayerUsing;
   }
 
   async onDeleteCharacters() {
@@ -115,9 +120,8 @@ export class SelectCharacterPage implements OnInit {
 
     }
   }
-
   async onFinishSelection() {
-    const player = await this.auth.getPlayer();
+    const player: Player = await this.auth.getPlayer();
     console.log('player onFinish', player);
     this.characterSer.selectedCharacters.next([]);
     let selected: string[] = [];
@@ -127,11 +131,11 @@ export class SelectCharacterPage implements OnInit {
         this.characterSer.selectedCharacters.getValue().push(character);
       }
     });
-    if (selected.toString() !== player.selectedCharactersIds.toString()) {
-      console.log('Updating User Data in Firebase', player);
-      player.selectedCharactersIds = selected;
-      this.auth.updateUserData(player);
-    }
+    console.log('selected', selected);
+    player.selectedCharactersIds = selected;
+    console.log('Updating User Data in Firebase', player);
+    this.auth.updateUserData(player);
+
     this.router.navigate(['/'])
   }
 

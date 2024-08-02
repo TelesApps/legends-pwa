@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Player } from '../interfaces/player.interface';
 import { AuthService } from '../services/auth.service';
@@ -27,7 +27,7 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   createRoomName: string = '';
   gamesSubs$: Subscription;
   characterSubs$: Subscription;
-  playerCharacters: Character[] = [];
+  playerCharacters: WritableSignal<Character[]> = signal([]);
   playerGameRooms: GameRoom[] = [];
   publicGameRooms: GameRoom[] = [];
   currentGame: GameRoom;
@@ -45,10 +45,10 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     });
     this.auth.Player$.pipe(takeUntilDestroyed()).subscribe((player) => {
       if (player) {
+        console.log('player', player);
         this.characterSubs$ = this.firebase.getAllCharacters(player.playerId).subscribe((characters: Character[]) => {
-          this.playerCharacters = characters;
-          this.charactersService.selectedCharacters.next(characters);
-          this.auth.updatePlayerSelectedCharacters(characters);
+          this.playerCharacters.set(characters);
+          this.setSelectedCharacters(player.selectedCharactersIds);
         });
         this.gamesSubs$ = this.gameRoomService.getAllGameRoomsWithPlayerId(player.playerId).subscribe((gameRooms: GameRoom[]) => {
           this.setGameRooms(player, gameRooms);
@@ -71,6 +71,18 @@ export class MainLobbyPage implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  setSelectedCharacters(selectCharactersId: string[]) {
+    const allCharacters = this.playerCharacters();
+    allCharacters.forEach(character => {
+      if(selectCharactersId.includes(character.characterId)) {
+        character.isPlayerUsing = true;
+      } else {
+        character.isPlayerUsing = false;
+      }
+    });
+    this.playerCharacters.set(allCharacters);
   }
 
   ngOnInit() {
@@ -181,18 +193,14 @@ export class MainLobbyPage implements OnInit, OnDestroy {
   }
 
   onGoToGame(player: Player, gameRoom: GameRoom) {
+    player.currentGameRoom = gameRoom.gameRoomId;
     // set the players selected characters to the characters he has in this room if there are any.
-    const characters = this.playerCharacters.filter((character) => gameRoom.charactersId.includes(character.characterId));
+    const characters = this.playerCharacters().filter((character) => gameRoom.charactersId.includes(character.characterId));
     this.charactersService.selectedCharacters.next(characters);
     if (characters) {
-      this.auth.updatePlayerSelectedCharacters(characters).then(() => {
-        // set the current game room for the player
+      this.auth.updatePlayerSelectedCharacters(characters, player).then(() => {
         player.currentGameRoom = gameRoom.gameRoomId;
-        this.auth.updateUserData(player).then(() => {
-          this.currentGame = gameRoom;
-          // navigate to the game room
-          // this.router.navigate(['/game-room', gameRoom.gameRoomId]);
-        });
+        this.setSelectedCharacters(player.selectedCharactersIds);
       });
     }
   }

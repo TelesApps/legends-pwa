@@ -45,6 +45,17 @@ export class FirebaseDataService {
     return this.afs.collection('characters', ref => ref.where("playerId", "==", playerId)).valueChanges();
   }
 
+  getAllCharactersData(playerId: string) {
+    // Return a promise that resolves to an array of characters
+    return firstValueFrom(this.afs.collection('characters', ref => ref.where("playerId", "==", playerId)).get().pipe(map((querysnapshot) => {
+      const characters: Array<Character> = [];
+      querysnapshot.forEach(doc => {
+        characters.push(<Character>doc.data());
+      });
+      return characters;
+    })));
+  }
+
   //Update Character In Cloud
   updateCharacter(character: Character) {
     const docRef = this.afs.collection('characters').doc(character.characterId)
@@ -57,7 +68,7 @@ export class FirebaseDataService {
 
   getCharacterPortrait(characterId): Observable<string> {
     // update this to return the portrait url as a promise
-    
+
     return this.afs.collection('characters').doc(characterId).get().pipe(map((doc: any) => {
       return doc.data().portraitUrl;
     }))

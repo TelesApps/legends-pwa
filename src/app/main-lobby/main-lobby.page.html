@@ -36,13 +36,16 @@
         <ion-card>
           <ion-card-header>
             @if (playerCharacters) {
-            <ion-card-subtitle>Characters:{{playerCharacters.length}}</ion-card-subtitle>
+            <ion-card-subtitle>Characters:{{playerCharacters().length}}</ion-card-subtitle>
             }
             <ion-card-title>
               <div class="character-list">
-                @for (character of playerCharacters; track character.characterId; let i = $index) {
+                @for (character of playerCharacters(); track character.characterId; let i = $index) {
                 <div class="character" [routerLink]="['/character-tabs/main']" routerLinkActive="router-link-active"
                   [queryParams]="{breadcrumb: 'main-lobby', viewMode: 'personal', characterIndex: i, characterId: character.characterId}">
+                  @if (character.isPlayerUsing) {
+                  <div id="selected-icon"><ion-icon name="checkmark-outline"></ion-icon></div>
+                  }
                   <ion-img [src]="character.portraitUrl"></ion-img>
                   <p>{{ character.characterName }}</p>
                 </div>
@@ -52,10 +55,14 @@
             <ion-button [routerLink]="['/select-character']" [queryParams]="{breadcrumb: 'main-lobby'}">
               Manage Characters
             </ion-button>
-            <ion-card-title
-              *ngIf="!charactersService.selectedCharacters || (charactersService.selectedCharacters | async).length == 0"
-              class="ion-text-center">
-              You do not have any selected characters, please select one before proceeding</ion-card-title>
+            <div *ngIf="auth.Player$ | async as player">
+              @if(player.selectedCharactersIds && player.selectedCharactersIds.length == 0){
+              <ion-card-title class="ion-text-center">
+                You do not have any selected characters
+              </ion-card-title>
+              }
+            </div>
+
           </ion-card-header>
         </ion-card>
         <ion-card *ngIf="(auth.Player$ | async) as player" class="player-games">

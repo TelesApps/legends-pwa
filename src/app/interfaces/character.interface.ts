@@ -2,6 +2,7 @@ import { StatusEffect } from "./status-effect.interface";
 
 export interface Character {
     playerId: string;
+    controlingPlayerId: Array<string>;
     characterId: string;
     gameRoomIds?: Array<string>;
     characterName: string;
@@ -17,7 +18,6 @@ export interface Character {
     abilitiesId: Array<string>;
     skillsTraitsId: Array<string>;
     isPlayerUsing?: boolean;
-    controlingPlayerId?: Array<string>;
 }
 
 interface PrimaryStats {
@@ -114,6 +114,7 @@ interface Equipments {
 export function CreateNewCharacter() {
     const character: Character = {
         playerId: '',
+        controlingPlayerId: [],
         characterId: '',
         gameRoomIds: [],
         characterName: '',
