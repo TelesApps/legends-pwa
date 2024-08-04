@@ -30,6 +30,7 @@ export class CharacterTabsPage implements OnInit, OnDestroy {
       if (params.characterIndex) {
         this.characterSer.viewIndex = params.characterIndex;
         this.selectedCharacterId = params.characterId;
+        this.onViewChange({ detail: { value: this.selectedCharacterId } });
       }
       console.log(params);
 
@@ -48,6 +49,7 @@ export class CharacterTabsPage implements OnInit, OnDestroy {
   onViewChange(event: any) {
     console.log(event)
     const index = this.characterSer.selectedCharacters.getValue().findIndex(c => c.characterId === event.detail.value);
+
     if (index !== -1) {
       this.characterSer.viewIndex = index;
       this.router.navigate([], {

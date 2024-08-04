@@ -1,15 +1,22 @@
 <ion-header>
+  <ion-icon *ngIf="gameRoom" id="back-icon" slot="start" name="arrow-back" (click)="closeModal()"></ion-icon>
   <ion-text class="ion-text-center">
     <h2>Select Character(s)</h2>
   </ion-text>
-  <ion-toolbar>
-    <ion-button slot="start" color="danger" (click)="onDeleteCharacters()">
-      Delete
-    </ion-button>
-    <ion-button slot="end" [routerLink]="['/character-creation-tabs']">
-      Create New
-    </ion-button>
-  </ion-toolbar>
+  @if(gameRoom) {
+    <ion-toolbar>
+      <h5 style="text-align: center;">You are allowed to select {{gameRoom.charactersPerPlayerAlloted}} for this game</h5>
+    </ion-toolbar>
+  } @else {
+    <ion-toolbar>
+      <ion-button slot="start" color="danger" (click)="onDeleteCharacters()">
+        Delete
+      </ion-button>
+      <ion-button slot="end" [routerLink]="['/character-creation-tabs']">
+        Create New
+      </ion-button>
+    </ion-toolbar>
+  }
 </ion-header>
 
 <ion-content class="background-color-darker">
@@ -39,7 +46,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-button expand="block" (click)="onFinishSelection()">
+    <ion-button expand="block" (click)="onFinishSelection()" [disabled]="isBtnDisabled()">
       Done
     </ion-button>
   </ion-toolbar>

@@ -41,8 +41,7 @@
             <ion-card-title>
               <div class="character-list">
                 @for (character of playerCharacters(); track character.characterId; let i = $index) {
-                <div class="character" [routerLink]="['/character-tabs/main']" routerLinkActive="router-link-active"
-                  [queryParams]="{breadcrumb: 'main-lobby', viewMode: 'personal', characterIndex: i, characterId: character.characterId}">
+                <div class="character" (click)="onViewCharacter(i, character)">
                   @if (character.isPlayerUsing) {
                   <div id="selected-icon"><ion-icon name="checkmark-outline"></ion-icon></div>
                   }
@@ -71,12 +70,22 @@
             @if (currentGame && currentGame.gameRoomName) {
             <ion-item>
               <ion-card-title>{{ currentGame.gameRoomName }}</ion-card-title>
+              @for (id of currentGame.charactersId; track id) {
+              <div slot="end" class="character thumbnail">
+                <ion-img [src]="characterPortraits.get(id)"></ion-img>
+              </div>
+              }
+              @if(isPlayerCharacterInRoom(player, currentGame) === false) {
+                <ion-text color="danger">
+                  <p style="margin-left: 6px;">(No Characters In Game)</p>
+                </ion-text>
+              }
               @if (currentGame && currentGame.gameMasterId === player.playerId) {
               <ion-fab-button slot="end" color="danger" aria-label="Delete" (click)="onDeleteGame(player, currentGame)">
                 <ion-icon name="trash-outline"></ion-icon>
               </ion-fab-button>
               } @else {
-              <ion-fab-button slot="end" color="warning">
+              <ion-fab-button slot="end" color="warning" (click)="onLeaveGameRoom(player, currentGame)">
                 <ion-icon name="log-out-outline"></ion-icon>
               </ion-fab-button>
               }
@@ -84,6 +93,17 @@
             } @else {
             <ion-card-title>You are not part of any current games</ion-card-title>
             }
+            @if(player && currentGame && isPlayerCharacterInRoom(player, currentGame) === false){
+              <ion-button (click)="onAddCharactersToGame(player, currentGame)" expand="block">
+                Add Characters To This Game
+              </ion-button>
+            }
+            <ion-button expand="block" [routerLink]="['/character-tabs/main']" routerLinkActive="router-link-active"
+              [queryParams]="{breadcrumb: 'main-lobby', viewMode: 'party', characterIndex: 0}"
+              [disabled]="!currentGame || player && currentGame && isPlayerCharacterInRoom(player, currentGame) == false"
+              (click)="onContinueCurrentGame(player, currentGame)">
+              Continue Current Game
+            </ion-button>
           </ion-card-header>
           <ion-card-content>
             <h3>Games you belong to:</h3>

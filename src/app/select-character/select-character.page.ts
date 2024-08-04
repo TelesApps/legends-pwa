@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Character } from '../interfaces/character.interface';
@@ -8,6 +8,7 @@ import { InformPlayerComponent } from '../modals/inform-player/inform-player.com
 import { AuthService } from '../services/auth.service';
 import { CharactersService } from '../services/characters.service';
 import { FirebaseDataService } from '../services/firebase-data.service';
+import { GameRoom } from '../interfaces/game-room.interface';
 
 @Component({
   selector: 'app-select-character',
@@ -18,6 +19,7 @@ export class SelectCharacterPage implements OnInit {
 
   characters: Array<Character> = [];
   backUrl: string = '';
+  @Input() gameRoom: GameRoom;
 
   constructor(
     private route: ActivatedRoute,
@@ -133,10 +135,40 @@ export class SelectCharacterPage implements OnInit {
     });
     console.log('selected', selected);
     player.selectedCharactersIds = selected;
-    console.log('Updating User Data in Firebase', player);
-    this.auth.updateUserData(player);
 
-    this.router.navigate(['/'])
+    if (this.gameRoom) {
+      this.modalController.dismiss({
+        'selectedCharacters': selected,
+        'player' : player,
+      })
+    } else {
+      console.log('Updating User Data in Firebase', player);
+      this.auth.updateUserData(player);
+
+      this.router.navigate(['/'])
+    }
+
+  }
+
+  isBtnDisabled() {
+    if(!this.gameRoom) return false;
+    let selected: string[] = [];
+    this.characters.forEach(character => {
+      if (character.isPlayerUsing) {
+        selected.push(character.characterId);
+      }
+    });
+    if (selected.length == 0) {
+      return true;
+    } else if (this.gameRoom && selected.length > this.gameRoom.charactersPerPlayerAlloted) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  closeModal() {
+    this.modalController.dismiss();
   }
 
 }

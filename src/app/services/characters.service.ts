@@ -15,7 +15,6 @@ import { DmgType } from '../interfaces/airtable-data.interface';
 })
 export class CharactersService {
 
-  allCharacters: BehaviorSubject<Array<Character>> = new BehaviorSubject([]);
   selectedCharacters: BehaviorSubject<Array<Character>> = new BehaviorSubject([]);
   viewIndex: number = 0;
 

@@ -55,6 +55,7 @@ ion-card {
 
 .character-list {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .character {
