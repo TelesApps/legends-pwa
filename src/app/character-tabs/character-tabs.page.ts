@@ -30,6 +30,7 @@ export class CharacterTabsPage implements OnInit, OnDestroy {
       if (params.characterIndex) {
         this.characterSer.viewIndex = params.characterIndex;
         this.selectedCharacterId = params.characterId;
+        console.log(this.characterSer.selectedCharacters[this.characterSer.viewIndex]);
         this.onViewChange({ detail: { value: this.selectedCharacterId } });
       }
       console.log(params);

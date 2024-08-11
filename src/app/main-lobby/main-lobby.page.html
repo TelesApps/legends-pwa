@@ -76,9 +76,9 @@
               </div>
               }
               @if(isPlayerCharacterInRoom(player, currentGame) === false) {
-                <ion-text color="danger">
-                  <p style="margin-left: 6px;">(No Characters In Game)</p>
-                </ion-text>
+              <ion-text color="danger">
+                <p style="margin-left: 6px;">(No Characters In Game)</p>
+              </ion-text>
               }
               @if (currentGame && currentGame.gameMasterId === player.playerId) {
               <ion-fab-button slot="end" color="danger" aria-label="Delete" (click)="onDeleteGame(player, currentGame)">
@@ -94,9 +94,9 @@
             <ion-card-title>You are not part of any current games</ion-card-title>
             }
             @if(player && currentGame && isPlayerCharacterInRoom(player, currentGame) === false){
-              <ion-button (click)="onAddCharactersToGame(player, currentGame)" expand="block">
-                Add Characters To This Game
-              </ion-button>
+            <ion-button (click)="onAddCharactersToGame(player, currentGame)" expand="block">
+              Add Characters To This Game
+            </ion-button>
             }
             <ion-button expand="block" [routerLink]="['/character-tabs/main']" routerLinkActive="router-link-active"
               [queryParams]="{breadcrumb: 'main-lobby', viewMode: 'party', characterIndex: 0}"
@@ -144,8 +144,8 @@
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating">Enter game number to join a new game</ion-label>
-          <ion-input type="text" placeholder="Awesome Input"></ion-input>
+          <ion-input label="Enter game number to join a new game" labelPlacement="floating" type="text"
+            placeholder="123456"></ion-input>
         </ion-item>
         <div class="ion-text-end">
           <ion-button>

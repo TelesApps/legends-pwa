@@ -164,152 +164,159 @@ export class MainLobbyPage implements OnInit, OnDestroy {
     if (player && gameRoom && gameRoom.gameMasterId === player.playerId) {
       return true;
     }
-      let value = false;
-      // check to see if any of the players characters are in the game room
-      if (player && player.selectedCharactersIds && gameRoom && gameRoom.charactersId) {
-        value = player.selectedCharactersIds.some((characterId) => gameRoom.charactersId.includes(characterId));
-      } else {
-        value = false;
-      }
-      return value;
+    let value = false;
+    // check to see if any of the players characters are in the game room
+    if (player && player.selectedCharactersIds && gameRoom && gameRoom.charactersId) {
+      value = player.selectedCharactersIds.some((characterId) => gameRoom.charactersId.includes(characterId));
+    } else {
+      value = false;
     }
+    return value;
+  }
 
   async onOpenCreateRoomModal(player: Player) {
-      const modal = await this.modalCtrl.create({
-        component: CreateRoomComponent,
-        componentProps: {
-          player
-        }
-      });
-      modal.present();
-
-      const { data } = await modal.onWillDismiss();
-
-      if (player && data && data.status === 'confirm') {
-        let gameRoom = CreateGameRoomObject();
-        const timestamp = new Date();
-        gameRoom.gameRoomId = player.userName.toLocaleLowerCase().replace(/ /g, "_") + '_' +
-          data.roomName.toLocaleLowerCase().replace(/ /g, "_") + '_' + timestamp.valueOf();
-        gameRoom.gameRoomName = data.roomName;
-        gameRoom.isGamePublic = data.publicGame;
-        gameRoom.playersAlloted = data.playerLimit;
-        gameRoom.charactersPerPlayerAlloted = data.charactersPerPlayer;
-        gameRoom.totalCharactersAlloted = data.totalCharacters;
-        gameRoom.gameMasterId = player.playerId;
-        gameRoom.playersId.push(player.playerId);
-        // Add game room ID to the player then save it to cloud.
-        player.gameRooms.push(gameRoom.gameRoomId);
-        player.currentGameRoom = gameRoom.gameRoomId;
-        this.auth.updateUserData(player);
-        console.log('save this to firebase, ', gameRoom);
-        this.gameRoomService.createGameRoom(gameRoom);
+    const modal = await this.modalCtrl.create({
+      component: CreateRoomComponent,
+      componentProps: {
+        player
       }
-    }
+    });
+    modal.present();
 
-    onContinueCurrentGame(player: Player, currentGame: GameRoom) {
-      this.onGoToGame(player, currentGame);
-      this.router.navigate(['/character-tabs/main'], {
-        queryParams: {
-          breadcrumb: 'main-lobby',
-          viewMode: 'party',
-          characterIndex: 0
-        }
-      });
-    }
+    const { data } = await modal.onWillDismiss();
 
-    onGoToGame(player: Player, gameRoom: GameRoom) {
+    if (player && data && data.status === 'confirm') {
+      let gameRoom = CreateGameRoomObject();
+      const timestamp = new Date();
+      gameRoom.gameRoomId = player.userName.toLocaleLowerCase().replace(/ /g, "_") + '_' +
+        data.roomName.toLocaleLowerCase().replace(/ /g, "_") + '_' + timestamp.valueOf();
+      gameRoom.gameRoomName = data.roomName;
+      gameRoom.isGamePublic = data.publicGame;
+      gameRoom.playersAlloted = data.playerLimit;
+      gameRoom.charactersPerPlayerAlloted = data.charactersPerPlayer;
+      gameRoom.totalCharactersAlloted = data.totalCharacters;
+      gameRoom.gameMasterId = player.playerId;
+      gameRoom.playersId.push(player.playerId);
+      // Add game room ID to the player then save it to cloud.
+      player.gameRooms.push(gameRoom.gameRoomId);
       player.currentGameRoom = gameRoom.gameRoomId;
-      // set the players selected characters to the characters he has in this room if there are any.
-      const characters = this.playerCharacters().filter((character) => gameRoom.charactersId.includes(character.characterId));
-      this.charactersService.selectedCharacters.next(characters);
-      if (characters) {
-        this.auth.updatePlayerSelectedCharacters(characters, player).then(() => {
-          player.currentGameRoom = gameRoom.gameRoomId;
-          this.setSelectedCharacters(player.selectedCharactersIds);
-        });
-      }
+      this.auth.updateUserData(player);
+      console.log('save this to firebase, ', gameRoom);
+      this.gameRoomService.createGameRoom(gameRoom);
     }
+  }
+
+  onContinueCurrentGame(player: Player, currentGame: GameRoom) {
+    this.onGoToGame(player, currentGame);
+    this.router.navigate(['/character-tabs/main'], {
+      queryParams: {
+        breadcrumb: 'main-lobby',
+        viewMode: 'party',
+        characterIndex: 0
+      }
+    });
+  }
+
+  onGoToGame(player: Player, gameRoom: GameRoom) {
+    player.currentGameRoom = gameRoom.gameRoomId;
+    // set the players selected characters to the characters he has in this room if there are any.
+    const characters = this.playerCharacters().filter((character) => gameRoom.charactersId.includes(character.characterId));
+    this.charactersService.selectedCharacters.next(characters);
+    if (characters) {
+      this.auth.updatePlayerSelectedCharacters(characters, player).then(() => {
+        player.currentGameRoom = gameRoom.gameRoomId;
+        this.setSelectedCharacters(player.selectedCharactersIds);
+      });
+    }
+  }
 
   async onAddCharactersToGame(player: Player, gameRoom: GameRoom) {
-      const modal = await this.modalCtrl.create({
-        component: SelectCharacterPage,
-        componentProps: {
-          gameRoom
-        }
-      });
-      modal.present();
+    const modal = await this.modalCtrl.create({
+      component: SelectCharacterPage,
+      componentProps: {
+        gameRoom
+      }
+    });
+    modal.present();
 
-      const { data } = await modal.onWillDismiss();
-      console.log('data', data);
-      // add characters to the game room
-      if (data && data.selectedCharacters) {
-        // add the characters to the game room if they are not already in the room
-        if (gameRoom && gameRoom.charactersId) {
-          data.selectedCharacters.forEach((characterId) => {
-            if (!gameRoom.charactersId.includes(characterId)) {
-              gameRoom.charactersId.push(characterId);
-            }
-          });
-        }
-        this.gameRoomService.updateGameRoom(gameRoom);
+    const { data } = await modal.onWillDismiss();
+    console.log('data', data);
+    // add characters to the game room
+    if (data && data.selectedCharacters) {
+      // add the characters to the game room if they are not already in the room
+      if (gameRoom && gameRoom.charactersId) {
+        data.selectedCharacters.forEach((characterId) => {
+          if (!gameRoom.charactersId.includes(characterId)) {
+            gameRoom.charactersId.push(characterId);
+          }
+          // set the initial teamnumber of the characters.
+          const character = this.playerCharacters().find((character) => character.characterId === characterId);
+          if (character) {
+            if (!character.teamNumber) character['teamNumber'] = 0;
+            gameRoom.gameMasterId === player.playerId ? character.teamNumber = 0 : character.teamNumber = 1;
+
+          }
+        });
       }
-      // update the player with the selected characters
-      if (data && data.selectedCharacters) {
-        player.selectedCharactersIds = player.selectedCharactersIds.concat(data.selectedCharacters);
-        this.auth.updateUserData(player);
-      }
+      this.gameRoomService.updateGameRoom(gameRoom);
     }
+    // update the player with the selected characters
+    if (data && data.selectedCharacters) {
+      player.selectedCharactersIds = player.selectedCharactersIds.concat(data.selectedCharacters);
+      this.auth.updateUserData(player);
+    }
+  }
 
   async onLeaveGameRoom(player: Player, gameRoom: GameRoom) {
-      let headerText = 'Leave Game Room?';
-      let bodyText = 'Are you sure you want to leave this game room? You can return or be invited back at any time!';
+    let headerText = 'Leave Game Room?';
+    let bodyText = 'Are you sure you want to leave this game room? You can return or be invited back at any time!';
 
-      const modal = await this.modalCtrl.create({
-        component: ConfirmSelectionComponent,
-        componentProps: {
-          'headerTxt': headerText,
-          'bodyTxt': bodyText,
-          'cancelBtnTxt': 'Cancel',
-          'confirmBtnTxt': 'Leave'
-        }
-      });
-      modal.present();
-
-      // Once Model Is Dismissed
-      const { data } = await modal.onWillDismiss();
-      if (data && data.isConfirm) {
-        this.gameRoomService.leaveGameRoom(player, gameRoom);
+    const modal = await this.modalCtrl.create({
+      component: ConfirmSelectionComponent,
+      componentProps: {
+        'headerTxt': headerText,
+        'bodyTxt': bodyText,
+        'cancelBtnTxt': 'Cancel',
+        'confirmBtnTxt': 'Leave'
       }
+    });
+    modal.present();
+
+    // Once Model Is Dismissed
+    const { data } = await modal.onWillDismiss();
+    if (data && data.isConfirm) {
+      this.gameRoomService.leaveGameRoom(player, gameRoom);
     }
+  }
 
   async onDeleteGame(player: Player, gameRoom: GameRoom) {
-      let headerText = 'Delete Game Room?';
-      let bodyText = 'Are you sure you want to delete this game room? This cannot be undone!';
+    let headerText = 'Delete Game Room?';
+    let bodyText = 'Are you sure you want to delete this game room? This cannot be undone!';
 
-      const modal = await this.modalCtrl.create({
-        component: ConfirmSelectionComponent,
-        componentProps: {
-          'headerTxt': headerText,
-          'bodyTxt': bodyText,
-          'cancelBtnTxt': 'Cancel',
-          'confirmBtnTxt': 'Delete Forever'
-        }
-      });
-      modal.present();
-
-      // Once Model Is Dismissed
-      const { data } = await modal.onWillDismiss();
-      if (data && data.isConfirm) {
-        // Deleted the gameroom ID from the players and Characters then deletes the game
-        this.gameRoomService.deleteGameRoom(gameRoom);
+    const modal = await this.modalCtrl.create({
+      component: ConfirmSelectionComponent,
+      componentProps: {
+        'headerTxt': headerText,
+        'bodyTxt': bodyText,
+        'cancelBtnTxt': 'Cancel',
+        'confirmBtnTxt': 'Delete Forever'
       }
-    }
+    });
+    modal.present();
 
-    ngOnDestroy() {
-      if (this.gamesSubs$)
-        this.gamesSubs$.unsubscribe();
-      if (this.characterSubs$)
-        this.characterSubs$.unsubscribe();
+    // Once Model Is Dismissed
+    const { data } = await modal.onWillDismiss();
+    if (data && data.isConfirm) {
+      // Deleted the gameroom ID from the players and Characters then deletes the game
+      this.gameRoomService.deleteGameRoom(gameRoom);
     }
-
   }
+
+  ngOnDestroy() {
+    if (this.gamesSubs$)
+      this.gamesSubs$.unsubscribe();
+    if (this.characterSubs$)
+      this.characterSubs$.unsubscribe();
+  }
+
+}

@@ -18,6 +18,7 @@ export interface Character {
     abilitiesId: Array<string>;
     skillsTraitsId: Array<string>;
     isPlayerUsing?: boolean;
+    teamNumber: number;
 }
 
 interface PrimaryStats {
@@ -121,6 +122,7 @@ export function CreateNewCharacter() {
         classTitle: '',
         bios: '',
         portraitUrl: '',
+        teamNumber: 0,
         primaryStats: {
             core_maxArmor: 0,
             maxArmor: 0,
